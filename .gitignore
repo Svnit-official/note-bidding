@@ -1,2 +1,5 @@
 /server/node_modules
 /server/.env
+application//node_modules
+application/.eslintrc.json
+application/config.env
