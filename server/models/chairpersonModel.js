@@ -22,22 +22,37 @@ const chairpersonSchema = new mongoose.Schema({
     type: String,
     required: [true, "Signature must be there"],
   },
-  pendingRequests: {
-    type: Request,
-  },
-  approved: {
-    type: Request,
-  },
-  sentBackForCorrection: {
-    type: Request,
-  },
+  pendingRequests: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Request",
+    },
+  ],
+  approved: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Request",
+    },
+  ],
+  sentBackForCorrection: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Request",
+    },
+  ],
   history: {
-    approved: {
-      type: Request,
-    },
-    rejected: {
-      type: Request,
-    },
+    approved: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Request",
+      },
+    ],
+    rejected: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Request",
+      },
+    ],
   },
   createdAt: {
     type: Date,

@@ -31,22 +31,37 @@ const clubSchema = new mongoose.Schema({
     type: String,
     required: [true, "Signature must be there"],
   },
-  drafts: {
-    type: Request,
-  },
-  requestsSent: {
-    type: Request,
-  },
-  receivedForCorrection: {
-    type: Request,
-  },
+  drafts: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Request",
+    },
+  ],
+  requestsSent: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Request",
+    },
+  ],
+  receivedForCorrection: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Request",
+    },
+  ],
   history: {
-    approved: {
-      type: Request,
-    },
-    rejected: {
-      type: Request,
-    },
+    approved: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Request",
+      },
+    ],
+    rejected: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Request",
+      },
+    ],
   },
   createdAt: {
     type: Date,
