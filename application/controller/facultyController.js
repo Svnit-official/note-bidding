@@ -1,4 +1,4 @@
-const Club = require("./../models/clubModel");
+const Faculty = require("./../models/facultyModel");
 const Request = require("./../models/request");
 
 ///////////////////////////ROUTE: login
@@ -17,7 +17,7 @@ exports.dashboard(req, (res) => {
   //come here after authentication
 });
 
-/////////////////////////////////////ROUTE: clubDetails
+/////////////////////////////////////ROUTE: facultyDetails
 exports.getDetailsById(req, (res) => {
   // get details
 });
@@ -28,18 +28,18 @@ exports.deleteDetailsById(req, (res) => {
   // delete details
 });
 
-/////////////////////////////////ROUTE: drafts
-exports.getDrafts(req, (res) => {
-  // drafts
+/////////////////////////////////ROUTE: pendingRequests
+exports.getpendingRequests(req, (res) => {
+  // get pending Requests
 });
-exports.postDrafts(req, (res) => {
-  // post drafts
+exports.postpendingRequests(req, (res) => {
+  // post pending Requests
 });
-exports.updateDrafts(req, (res) => {
-  // update drafts
+exports.updatependingRequests(req, (res) => {
+  // update pending Requests
 });
-exports.deleteDrafts(req, (res) => {
-  // delet drafts
+exports.deletependingRequests(req, (res) => {
+  // delete pending Requests
 });
 
 ////////////////////////////////////ROUTE: sentRequests
@@ -48,20 +48,6 @@ exports.getSentRequests(req, (res) => {
 });
 exports.deleteSentRequests(req, (res) => {
   // delete sent requests
-});
-
-/////////////////////////////////////////ROUTE: receivedRequests
-exports.getReceivedRequests(req, (res) => {
-  // get received requests
-});
-exports.deleteReceivedRequests(req, (res) => {
-  // delete received requests
-});
-exports.updateReceivedRequests(req, (res) => {
-  // update received requests
-});
-exports.postReceivedRequests(req, (res) => {
-  // post received requests
 });
 
 //////////////////////////////////////Route: history
