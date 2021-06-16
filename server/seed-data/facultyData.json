@@ -1,0 +1,14 @@
+{
+  "username": "samplefaculty",
+  "password": "samplePass",
+  "facultyName": "samplefacultyName",
+  "signature": "sampleSignature",
+  "pendingRequests": [],
+  "Approved": [],
+  "sentBackForCorrection": [],
+  "history": {
+    "approved": [],
+    "rejected": []
+  },
+  "createdAt": ""
+}

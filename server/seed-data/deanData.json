@@ -1,0 +1,12 @@
+{
+  "username": "sampledean",
+  "password": "samplePass",
+  "deanName": "sampledeanName",
+  "signature": "sampleSignature",
+  "pendingRequests": [],
+  "history": {
+    "approved": [],
+    "rejected": []
+  },
+  "createdAt": ""
+}

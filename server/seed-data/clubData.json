@@ -1,0 +1,21 @@
+{
+  "username": "sampleClub",
+  "password": "samplePass",
+  "clubName": "sampleClubName",
+  "clubDescription": "sampleClubDescription",
+  "headName": "sampleHeadName",
+  "signature": "sampleSignature",
+  "drafts": [
+  ],
+  "requestsSent": [
+  ],
+  "receivedForCorrection": [
+  ],
+  "history": {
+    "approved": [
+    ],
+    "rejected": [
+    ]
+  },
+  "createdAt": ""
+}
