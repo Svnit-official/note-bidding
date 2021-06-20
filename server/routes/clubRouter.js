@@ -11,36 +11,39 @@ router
     .post(clubController.authentication)
 
 router
-    .route('/')
+    .route('/:id/')
     .get(clubController.dashboard)
 
 router
-    .route('/clubDetails')
+    .route('/:id/clubDetails')
     .get(clubController.getDetailsById)
     .patch(clubController.updateDetailsById)
-    .delete(clubController.deleteDetailstById);
+    .delete(clubController.deleteDetailsById);
 
 router
-    .route('/drafts')
+    .route('/:id/drafts')
     .get(clubController.getDrafts)
-    .post(clubController.postDrafts)
-    .patch(clubController.updateDrafts)
-    .delete(clubController.deleteDrafts);
 
 router
-    .route('/sentRequests')
+    .route('/:id/:reqid')
+    .post(clubController.postRequest)
+    .patch(clubController.updateRequest)
+    .delete(clubController.deleteRequest);
+
+router
+    .route('/:id/sentRequests')
     .get(clubController.getSentRequests)
     .delete(clubController.deleteSentRequests);
 
 router
-    .route('/receivedRequests')
+    .route('/:id/receivedRequests')
     .get(clubController.getReceivedRequests)
-    .patch(clubController.updateReceivedRequests)
-    .post(clubController.postReceivedRequests)
-    .delete(clubController.deleteReceivedRequests);
+    // .patch(clubController.updateReceivedRequests)
+    // .post(clubController.postReceivedRequests)
+    // .delete(clubController.deleteReceivedRequests);
 
 router
-    .route('history')
+    .route('/:id/history')
     .get(clubController.getHistory)
 
 module.exports = router
