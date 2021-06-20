@@ -1,21 +1,23 @@
-{
-  "username": "sampleClub",
-  "password": "samplePass",
-  "clubName": "sampleClubName",
-  "clubDescription": "sampleClubDescription",
-  "headName": "sampleHeadName",
-  "signature": "sampleSignature",
-  "drafts": [
-  ],
-  "requestsSent": [
-  ],
-  "receivedForCorrection": [
-  ],
-  "history": {
-    "approved": [
+[
+    {
+    "username": "sampleClub",
+    "password": "samplePass",
+    "clubName": "sampleClubName",
+    "clubDescription": "sampleClubDescription",
+    "headName": "sampleHeadName",
+    "signature": "sampleSignature",
+    "drafts": [
     ],
-    "rejected": [
-    ]
-  },
-  "createdAt": ""
-}
+    "requestsSent": [
+    ],
+    "receivedForCorrection": [
+    ],
+    "history": {
+      "approved": [
+      ],
+      "rejected": [
+      ]
+    },
+    "createdAt": ""
+  }
+]

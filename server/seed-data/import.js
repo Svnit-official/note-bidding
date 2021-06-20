@@ -1,19 +1,20 @@
 const fs = require("fs");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
-const Club = require(`${__dirname}/../../models/clubModel.js`);
-const Finance = require(`${__dirname}/../../models/chairpersonModel.js`);
-const Faculty = require(`${__dirname}/../../models/facultyModel.js`);
-const Dean = require(`${__dirname}/../../models/deanModel.js`);
+const Club = require(`${__dirname}/../models/clubModel`);
+const Finance = require(`${__dirname}/../models/financeModel`);
+const Faculty = require(`${__dirname}/../models/facultyModel`);
+const Dean = require(`${__dirname}/../models/deanModel`);
 
 dotenv.config({ path: `${__dirname}/../../config.env` });
 
 const db =
-  process.env.DATABASE_URL.replace("<PASSWORD>", process.env.USER_PASSWORD) ||
-  process.env.DATABASE_LOCAL;
+  "mongodb+srv://Anubhav:svnit@cluster0.ojfjb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+  // process.env.DATABASE_URL.replace("<PASSWORD>", process.env.USER_PASSWORD) ||
+  // process.env.DATABASE_LOCAL;
 
-const connect = async () => {
-  await mongoose
+const connect =  () => {
+  mongoose
     .connect(db, {
       useUnifiedTopology: true,
       useNewUrlParser: true,
@@ -23,7 +24,6 @@ const connect = async () => {
     .then(() => {
       console.log("Database Connected");
     });
-  process.exit();
 };
 
 const read = async () => {
@@ -32,11 +32,11 @@ const read = async () => {
     const facultySeeds = JSON.parse(fs.readFileSync(`${__dirname}/facultyData.json`));
     const deanSeeds = JSON.parse(fs.readFileSync(`${__dirname}/deanData.json`));
     //seeding clubs
-    try {
-        for (let club of clubSeeds) {
+  try {
+      for (let club of clubSeeds) {
         await Club.create(club);
-        }
-        console.log("successfully seeded clubs!");
+      }
+      console.log("successfully seeded clubs!");
     } catch (err) {
         console.log("failed to seed clubs");
         console.log(err);
@@ -60,7 +60,8 @@ const read = async () => {
     } catch (err) {
       console.log("failed to seed finance");
       console.log(err);
-    }
+  }
+  //seeding deans
     try {
       for (let dean of deanSeeds) {
         await Dean.create(dean);

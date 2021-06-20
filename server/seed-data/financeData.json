@@ -1,8 +1,8 @@
 [
   {
-    "username": "samplefaculty",
+    "username": "samplefinance",
     "password": "samplePass",
-    "facultyName": "samplefacultyName",
+    "financeName": "samplefinanceName",
     "signature": "sampleSignature",
     "pendingRequests": [],
     "Approved": [],
