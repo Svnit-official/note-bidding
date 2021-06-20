@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Request = require("./requestModel");
 
-const chairpersonSchema = new mongoose.Schema({
+const financeSchema = new mongoose.Schema({
   username: {
     type: String,
     required: [true, "A name must be there"],
@@ -13,7 +13,7 @@ const chairpersonSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
-  chairpersonName: {
+  financeName: {
     required: [true, "A name must be there"],
     type: String,
     trim: true,
@@ -60,6 +60,6 @@ const chairpersonSchema = new mongoose.Schema({
   },
 });
 
-const Chairperson = new mongoose.model("Chairperson", chairpersonSchema);
+const Finance = new mongoose.model("finance", financeSchema);
 
-module.exports = Chairperson;
+module.exports = Finance;

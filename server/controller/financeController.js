@@ -1,4 +1,4 @@
-const Finance = require("./../models/chairpersonModel");
+const Finance = require("./../models/financeModel");
 const Request = require("./../models/requestModel");
 
 ///////////////////////////ROUTE: login
