@@ -6,6 +6,7 @@ const router = express.Router();
 //router.param('id', testController.checkId);
 
 //buttons on request = send, save as draft, delete, update and save as draft, update and send (last two for received requests)
+//buttons on dashboard = Club Details, New Request, Drafts, Sent Requests, Received for Correction  
 
 router
     .route('/login')
@@ -13,13 +14,18 @@ router
     .post(clubController.authentication)
 
 router
-    .route('/:id/')
+    .route('/:id')
     .get(clubController.dashboard)
 
 router
     .route('/:id/clubDetails')
     .get(clubController.getDetailsById)                 // 'Club Details' button on dashboard
     .patch(clubController.updateDetailsById)            // 'Update' button on club details page
+
+router
+    .route('/:id/req')
+    .get(clubController.newRequest)                     // 'New Request' or '+' button on dashboard
+    .delete(clubController.deleteRequest);              // 'Delete' button on 'Request'
 
 router
     .route('/:id/drafts')                               
@@ -33,11 +39,6 @@ router
 
 router
     .route('/:id/receivedRequests')
-    .get(clubController.getReceivedRequests)            // 'Received' button on dashboard
-
-router
-    .route('/:id/req')
-    .get(clubController.newRequest)                     // 'New Request' or '+' button on dashboard
-    .delete(clubController.deleteRequest);              // 'Delete' button on 'Request'
+    .get(clubController.getReceivedRequests)            // 'Received for Correction' button on dashboard
 
 module.exports = router

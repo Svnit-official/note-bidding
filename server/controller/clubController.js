@@ -2,22 +2,6 @@ const Club = require('./../models/clubModel');
 const Request = require('./../models/requestModel');
 const Faculty = require('./../models/facultyModel');
 
-// types of status of requests:
-//  1. draft (not sent to anyone yet)
-//  2. sentByClub (sent by club, received by faculty)
-//  3. sentByFaculty (sent back for correction by faculty)
-//  4. sentByFinance (sent back for correction by finance)
-//  5. correctedDraft (sent back for corrections and saved as draft)
-//  5. receivedByFaculty (received after correction by faculty)
-//  6. receivedByFinance (received after correction by finance)
-//  7. approvedByFaculty (approved by faculty, received by finance)
-//  8. rejectedByFaculty
-//  9. rejectedByFinance
-// 10. approvedByFaculty (approved by finance, received by dean)
-// 11. approved (by dean)
-// 12. rejectedByDean
-
-
 //////////////////////////////////////////////////////////////////////////////ROUTE: /login
 module.exports.login = async (req, res) => {
     try {
