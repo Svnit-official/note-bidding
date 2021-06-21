@@ -22,7 +22,9 @@ const BottomNav = () => {
       <BottomNavigationAction label="Student" icon={<EmojiPeopleIcon />} />
       <BottomNavigationAction label="Billing" icon={<ViewListIcon />} />
       <BottomNavigationAction label="Sponsorship" icon={<PeopleIcon />} />
+      
     </BottomNavigation>
+    
     </AppBar>
     )
 }
