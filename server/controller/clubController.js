@@ -1,6 +1,6 @@
 const Club = require('./../models/clubModel');
 const Request = require('./../models/requestModel');
-const Faculty = require('./../models/facultyModel');
+// const Faculty = require('./../models/facultyModel');
 
 //////////////////////////////////////////////////////////////////////////////ROUTE: /login
 module.exports.login = async (req, res) => {
@@ -19,7 +19,7 @@ module.exports.login = async (req, res) => {
     }
 };
 
-module.exports.authenticate= async (req, res) => {
+module.exports.authentication= async (req, res) => {
     try {
         res.status(200).json({
             status: "success",
@@ -210,23 +210,26 @@ module.exports.sendRequest = async (req, res) => {
             request.status === "sentByFaculty" ||
             request.status === "sentByFinance" ||
             request.status === "correctedDraft"
-        ) await Request.findByIdAndUpdate(req.params.id, {
-            status: "receivedByFaculty",
-        });
+        ) { await Request.findByIdAndUpdate(request._id, {
+                status: "receivedByFaculty",
+            });
+        }
         else {
-            request.status = "sentByClub"
-            await Request.create(request);
+            await Request.findByIdAndUpdate(request._id, {
+                status: "sentByClub",
+            })
             const sentRequests = clubDetails.sentRequests;
             sentRequests.push(request);
-            await Club.findByIdAndUpdate(req.params.id, {sentRequests})
+            await Club.findByIdAndUpdate(req.params.id, { sentRequests })
+            
         }
-        
+        const sentRequest = Request.findById(req.params.id);
         res.status(200).json({
             status: "success",
             requested: req.requestTime,
             data: {
                 message: "flash of message sent, redirect to /sentRequests",
-                sentRequest : request
+                sentRequest
             },
         });
     } catch (err) {

@@ -25,9 +25,9 @@ router
 router
   .route("/:id/pendingRequests")
   .get(facultyController.getPendingRequests)              // 'Pending Requests' button on dashboard
-  .post(facultyController.sendBackPendingRequest)         // 'Send back' button on request (after adding comments)
+  .patch(facultyController.sendBackPendingRequest)        // 'Send back' button on request (after adding comments)
   .post(facultyController.approvePendingRequest)          // 'Approve' button on request (after adding comments)
-  .post(facultyController.rejectPendingRequest)           // 'Reject' button on request (after adding comments)
+  .put(facultyController.rejectPendingRequest)            // 'Reject' button on request (after adding comments)
 
 router
   .route("/:id/respondedRequests")

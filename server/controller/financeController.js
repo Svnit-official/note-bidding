@@ -18,7 +18,7 @@ module.exports.login = async (req, res) => {
   }
 };
 
-module.exports.authenticate = async (req, res) => {
+module.exports.authentication = async (req, res) => {
   try {
     res.status(200).json({
       status: "success",
@@ -103,7 +103,7 @@ module.exports.updateDetailsById = async (req, res) => {
 ////////////////////////////////////////////////////////////////ROUTE: /:id/pendingRequests
 module.exports.getPendingRequests = async (req, res) => {
   try {
-    const requests = Request.find({ status: "approvedByFaculty" });
+    const requests = await Request.find({ status: "approvedByFaculty" });
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
@@ -121,9 +121,9 @@ module.exports.getPendingRequests = async (req, res) => {
   }
 };
 
-module.exports.sendBackPendingRequests = async (req, res) => {
+module.exports.sendBackPendingRequest = async (req, res) => {
   try {
-    const request = req.body;
+    const request = await Request.findById(req.body._id);
     const comments = req.body.comments;
     const finance = await Finance.findById(req.params.id);
     const respondedRequests = finance.respondedRequests;
@@ -131,13 +131,14 @@ module.exports.sendBackPendingRequests = async (req, res) => {
       respondedRequests.push(request);
       await Finance.findByIdAndUpdate(req.params.id, { respondedRequests });  
     }
-    Request.findByIdAndUpdate(req.body.id, { status: "sentByFinance", comments });
+    await Request.findByIdAndUpdate(req.body._id, { status: "sentByFinance", comments });
+    const sentRequest = await Request.findById(req.body._id);
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
       data: {
         message: "redirect to /respondedRequests",
-        request,
+        sentRequest,
       },
     });
   } catch (err) {
@@ -151,7 +152,7 @@ module.exports.sendBackPendingRequests = async (req, res) => {
 
 module.exports.approvePendingRequest = async (req, res) => {
   try {
-    const request = req.body;
+    const request = await Request.findById(req.body._id);
     const comments = req.body.comments;
     const finance = await Finance.findById(req.params.id);
     const respondedRequests = finance.respondedRequests;
@@ -159,13 +160,14 @@ module.exports.approvePendingRequest = async (req, res) => {
       respondedRequests.push(request);
       await Finance.findByIdAndUpdate(req.params.id, { respondedRequests });  
     }
-    Request.findByIdAndUpdate(req.body.id, { status: "approvedByFinance", comments });
+    await Request.findByIdAndUpdate(req.body._id, { status: "approvedByFinance", comments });
+    const appRequest = await Request.findById(req.body._id);
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
       data: {
         message: "redirect to /respondedRequests",
-        request,
+        appRequest,
       },
     });
   } catch (err) {
@@ -178,7 +180,7 @@ module.exports.approvePendingRequest = async (req, res) => {
 };
 module.exports.rejectPendingRequest = async (req, res) => {
   try {
-    const request = req.body;
+    const request = await Request.findById(req.body._id);
     const comments = req.body.comments;
     const finance = await Finance.findById(req.params.id);
     const respondedRequests = finance.respondedRequests;
@@ -186,13 +188,14 @@ module.exports.rejectPendingRequest = async (req, res) => {
       respondedRequests.push(request);
       await Finance.findByIdAndUpdate(req.params.id, { respondedRequests });  
     }
-    Request.findByIdAndUpdate(req.body.id, { status: "rejectedByFinance", comments });
+    await Request.findByIdAndUpdate(req.body._id, { status: "rejectedByFinance", comments });
+    const rejRequest = await Request.findById(req.body._id);
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
       data: {
         message: "redirect to /respondedRequests",
-        request,
+        rejRequest,
       },
     });
   } catch (err) {
@@ -209,7 +212,7 @@ module.exports.getRespondedRequests = async (req, res) => {
   try {
     const finance = await Finance.findById(req.params.id);
     const requestIds = finance.respondedRequests;
-    const requests = Request.find({ _id: [...requestIds] });
+    const requests = await Request.find({ _id: [...requestIds] });
     res.status(200).json({
       status: "success",
       requested: req.requestTime,

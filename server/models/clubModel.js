@@ -36,30 +36,6 @@ const clubSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Faculty",
   },
-  // requests: [
-  //   {
-  //     type: mongoose.Schema.Types.ObjectId,
-  //     ref: "Request"
-  //   }
-  // ],
-  // drafts: [
-  //   {
-  //     type: mongoose.Schema.Types.ObjectId,
-  //     ref: "Request",
-  //   },
-  // ],
-  // requestsSent: [
-  //   {
-  //     type: mongoose.Schema.Types.ObjectId,
-  //     ref: "Request",
-  //   },
-  // ],
-  // receivedForCorrection: [
-  //   {
-  //     type: mongoose.Schema.Types.ObjectId,
-  //     ref: "Request",
-  //   },
-  // ],
   sentRequests: [
     {
       type: mongoose.Schema.Types.ObjectId,

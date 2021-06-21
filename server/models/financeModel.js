@@ -28,32 +28,6 @@ const financeSchema = new mongoose.Schema({
       ref: "Request",
     },
   ],
-  // approved: [
-  //   {
-  //     type: mongoose.Schema.Types.ObjectId,
-  //     ref: "Request",
-  //   },
-  // ],
-  // sentBackForCorrection: [
-  //   {
-  //     type: mongoose.Schema.Types.ObjectId,
-  //     ref: "Request",
-  //   },
-  // ],
-  // history: {
-  //   approved: [
-  //     {
-  //       type: mongoose.Schema.Types.ObjectId,
-  //       ref: "Request",
-  //     },
-  //   ],
-  //   rejected: [
-  //     {
-  //       type: mongoose.Schema.Types.ObjectId,
-  //       ref: "Request",
-  //     },
-  //   ],
-  // },
   createdAt: {
     type: Date,
     default: Date.now(),
