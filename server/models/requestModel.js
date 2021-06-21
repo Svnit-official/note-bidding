@@ -1,6 +1,16 @@
 const mongoose = require('mongoose');
+const Club = require('./clubModel');
+const Faculty = require('./facultyModel');
 
 const requestSchema = new mongoose.Schema({
+    clubId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Club"
+    },
+    facultyId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Faculty"
+    },
     clubName: {
         type: String,
         required: [true, "A name must be there"],
@@ -24,6 +34,7 @@ const requestSchema = new mongoose.Schema({
     },
     Status: {
         type: String,
+        default: "draft"
     },
     Comments: {
         type: String,

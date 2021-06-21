@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Request = require("./requestModel")
+const Faculty = require("./facultyModel")
 
 const clubSchema = new mongoose.Schema({
   username: {
@@ -31,38 +32,40 @@ const clubSchema = new mongoose.Schema({
     type: String,
     required: [true, "Signature must be there"],
   },
-  drafts: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Request",
-    },
-  ],
-  requestsSent: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Request",
-    },
-  ],
-  receivedForCorrection: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Request",
-    },
-  ],
-  history: {
-    approved: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Request",
-      },
-    ],
-    rejected: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Request",
-      },
-    ],
+  faculty: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Faculty",
   },
+  // requests: [
+  //   {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: "Request"
+  //   }
+  // ],
+  // drafts: [
+  //   {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: "Request",
+  //   },
+  // ],
+  // requestsSent: [
+  //   {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: "Request",
+  //   },
+  // ],
+  // receivedForCorrection: [
+  //   {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: "Request",
+  //   },
+  // ],
+  sentRequests: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Request",
+    },
+  ]  
   createdAt: {
     type: Date,
     default: Date.now(),

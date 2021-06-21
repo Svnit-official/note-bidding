@@ -5,6 +5,8 @@ const router = express.Router();
 
 //router.param('id', testController.checkId);
 
+//buttons on request = send, save as draft, delete, update and save as draft, update and send (last two for received requests)
+
 router
     .route('/login')
     .get(clubController.login)
@@ -16,34 +18,26 @@ router
 
 router
     .route('/:id/clubDetails')
-    .get(clubController.getDetailsById)
-    .patch(clubController.updateDetailsById)
-    .delete(clubController.deleteDetailsById);
+    .get(clubController.getDetailsById)                 // 'Club Details' button on dashboard
+    .patch(clubController.updateDetailsById)            // 'Update' button on club details page
 
 router
-    .route('/:id/drafts')
-    .get(clubController.getDrafts)
+    .route('/:id/drafts')                               
+    .get(clubController.getDrafts)                      // 'Drafts' button on dashboard
+    .post(clubController.postDraft)                     // 'Save as Draft' or 'Update and save as draft' button on 'Request'
 
 router
-    .route('/:id/:reqid')
-    .post(clubController.postRequest)
-    .patch(clubController.updateRequest)
-    .delete(clubController.deleteRequest);
-
-router
-    .route('/:id/sentRequests')
-    .get(clubController.getSentRequests)
-    .delete(clubController.deleteSentRequests);
+    .route('/:id/sentRequests')             
+    .get(clubController.getSentRequests)                // 'Sent Requests' button on dashboard
+    .post(clubController.sendRequest)                   // 'Send' or 'Update and send' button on 'Request'
 
 router
     .route('/:id/receivedRequests')
-    .get(clubController.getReceivedRequests)
-    // .patch(clubController.updateReceivedRequests)
-    // .post(clubController.postReceivedRequests)
-    // .delete(clubController.deleteReceivedRequests);
+    .get(clubController.getReceivedRequests)            // 'Received' button on dashboard
 
 router
-    .route('/:id/history')
-    .get(clubController.getHistory)
+    .route('/:id/req')
+    .get(clubController.newRequest)                     // 'New Request' or '+' button on dashboard
+    .delete(clubController.deleteRequest);              // 'Delete' button on 'Request'
 
 module.exports = router
