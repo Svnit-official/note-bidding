@@ -2,20 +2,20 @@ const mongoose = require('mongoose');
 const Club = require('./clubModel');
 const Faculty = require('./facultyModel');
 
-// types of status of requests:
-//  1. draft (not sent to anyone yet)
-//  2. sentByClub (sent by club, received by faculty)
-//  3. sentByFaculty (sent back for correction by faculty)
-//  4. sentByFinance (sent back for correction by finance)
-//  5. correctedDraft (sent back for corrections and saved as draft)
-//  6. receivedByFaculty (received by faculty after correction )  
-//  7. approvedByFaculty (approved by faculty, received by finance)
-//  8. rejectedByFaculty
-//  9. rejectedByFinance
-// 10. approvedByFaculty (approved by finance, received by dean)
-// 11. approved (by dean)
-// 12. rejectedByDean
-
+const allowedStatus= [
+  "draft",                      // types of status of requests:
+  "sentByClub",                 // (sent by club, received by faculty)  
+  "sentByFaculty",              // (sent back for correction by faculty)
+  "sentByFinance",              // (sent back for correction by finance)  
+  "correctedDraft",             // (sent back for corrections and saved as draft)           
+  "receivedByFaculty",          // (received by faculty after correction )
+  "approvedByFaculty",          // (approved by faculty, received by finance)
+  "rejectedByFaculty",          
+  "approvedByFinance",          // (approved by finance, received by dean)
+  "rejectedByFinance",
+  "approvedByDean",
+  "rejectedByDean",
+];
 
 const requestSchema = new mongoose.Schema({
     clubId: {
@@ -49,7 +49,8 @@ const requestSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        default: "draft"
+        default: "draft",
+        enum: allowedStatus
     },
     comments: {
         type: String,

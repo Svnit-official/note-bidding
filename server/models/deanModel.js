@@ -22,30 +22,30 @@ const deanSchema = new mongoose.Schema({
     type: String,
     required: [true, "Signature must be there"],
   },
-  pendingRequests: [
+  respondedRequests: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Request",
     },
   ],
-  history: {
-    approved: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Request",
-      },
-    ],
-    rejected: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Request",
-      },
-    ],
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now(),
-  },
+  // history: {
+  //   approved: [
+  //     {
+  //       type: mongoose.Schema.Types.ObjectId,
+  //       ref: "Request",
+  //     },
+  //   ],
+  //   rejected: [
+  //     {
+  //       type: mongoose.Schema.Types.ObjectId,
+  //       ref: "Request",
+  //     },
+  //   ],
+  // },
+  // createdAt: {
+  //   type: Date,
+  //   default: Date.now(),
+  // },
 });
 
 const Dean = new mongoose.model("Dean", deanSchema);

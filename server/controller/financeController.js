@@ -108,7 +108,7 @@ module.exports.getPendingRequests = async (req, res) => {
       status: "success",
       requested: req.requestTime,
       data: {
-        message: "redirect to /financeDetails",
+        message: "redirect to /pendingRequests",
         requests,
       },
     });
@@ -136,7 +136,7 @@ module.exports.sendBackPendingRequests = async (req, res) => {
       status: "success",
       requested: req.requestTime,
       data: {
-        message: "redirect to /pendingRequests",
+        message: "redirect to /respondedRequests",
         request,
       },
     });
@@ -164,7 +164,7 @@ module.exports.approvePendingRequest = async (req, res) => {
       status: "success",
       requested: req.requestTime,
       data: {
-        message: "redirect to /pendingRequests",
+        message: "redirect to /respondedRequests",
         request,
       },
     });
@@ -191,7 +191,7 @@ module.exports.rejectPendingRequest = async (req, res) => {
       status: "success",
       requested: req.requestTime,
       data: {
-        message: "redirect to /pendingRequests",
+        message: "redirect to /respondedRequests",
         request,
       },
     });
