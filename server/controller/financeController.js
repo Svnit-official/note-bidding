@@ -1,57 +1,231 @@
 const Finance = require("./../models/financeModel");
 const Request = require("./../models/requestModel");
 
-///////////////////////////ROUTE: login
-module.exports.login= (req, res) => {
-  //get request
-  //login page
+///////////////////////////////////////////////////////////////////ROUTE: /login
+module.exports.login = async (req, res) => {
+  try {
+    res.status(200).json({
+      status: "success",
+      requested: req.requestTime,
+      message: "finance Login Page",
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({
+      status: "failed",
+      messsage: err,
+    });
+  }
 };
 
-module.exports.login= (req, res) => {
-  //post request
-  //authenticate
-  //redirect to dashboard
+module.exports.authenticate = async (req, res) => {
+  try {
+    res.status(200).json({
+      status: "success",
+      requested: req.requestTime,
+      message: "post request for authentication",
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({
+      status: "failed",
+      messsage: err,
+    });
+  }
 };
 
-module.exports.dashboard= (req, res) => {
-  //come here after authentication
+//////////////////////////////////////////////////////////////////////ROUTE: /:id
+module.exports.dashboard = async (req, res) => {
+  try {
+    res.status(200).json({
+      status: "success",
+      requested: req.requestTime,
+      message: "dashboard",
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({
+      status: "failed",
+      messsage: err,
+    });
+  }
 };
 
-/////////////////////////////////////ROUTE: financeDetails
-module.exports.getDetailsById= (req, res) => {
-  // get details
-};
-module.exports.updateDetailsById= (req, res) => {
-  // update details
-};
-module.exports.deleteDetailsById= (req, res) => {
-  // delete details
-};
-
-/////////////////////////////////ROUTE: pendingRequests
-module.exports.getpendingRequests= (req, res) => {
-  // get pending Requests
-};
-module.exports.postpendingRequests= (req, res) => {
-  // post pending Requests
-};
-module.exports.updatependingRequests= (req, res) => {
-  // update pending Requests
-};
-module.exports.deletependingRequests= (req, res) => {
-  // delete pending Requests
+///////////////////////////////////////////////////////////////////ROUTE: /:id/financeDetails
+module.exports.getDetailsById = async (req, res) => {
+  try {
+    const financeDetails = await Finance.findById(req.params.id);
+    res.status(200).json({
+      status: "success",
+      requested: req.requestTime,
+      data: {
+        financeDetails,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({
+      status: "failed",
+      messsage: err,
+    });
+  }
 };
 
-////////////////////////////////////ROUTE: sentRequests
-module.exports.getSentRequests= (req, res) => {
-  // get sent requests
-};
-module.exports.deleteSentRequests= (req, res) => {
-  // delete sent requests
+module.exports.updateDetailsById = async (req, res) => {
+  try {
+    const financeDetailsOld = await Finance.findById(req.params.id);
+    const financeDetailsNew = await Finance.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    res.status(200).json({
+      status: "success",
+      requested: req.requestTime,
+      data: {
+        message: "redirect to /financeDetails",
+        financeDetailsOld,
+        financeDetailsNew,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({
+      status: "failed",
+      messsage: err,
+    });
+  }
 };
 
-//////////////////////////////////////Route: history
-module.exports.getHistory= (req, res) => {
-  // history
-  // approved requests, rejected requests
+////////////////////////////////////////////////////////////////ROUTE: /:id/pendingRequests
+module.exports.getPendingRequests = async (req, res) => {
+  try {
+    const requests = Request.find({ status: "approvedByFaculty" });
+    res.status(200).json({
+      status: "success",
+      requested: req.requestTime,
+      data: {
+        message: "redirect to /financeDetails",
+        requests,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({
+      status: "failed",
+      messsage: err,
+    });
+  }
 };
+
+module.exports.sendBackPendingRequests = async (req, res) => {
+  try {
+    const request = req.body;
+    const comments = req.body.comments;
+    const finance = await Finance.findById(req.params.id);
+    const respondedRequests = finance.respondedRequests;
+    if (!respondedRequests.includes(req.body._id)) {
+      respondedRequests.push(request);
+      await Finance.findByIdAndUpdate(req.params.id, { respondedRequests });  
+    }
+    Request.findByIdAndUpdate(req.body.id, { status: "sentByFinance", comments });
+    res.status(200).json({
+      status: "success",
+      requested: req.requestTime,
+      data: {
+        message: "redirect to /pendingRequests",
+        request,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({
+      status: "failed",
+      messsage: err,
+    });
+  }
+};
+
+module.exports.approvePendingRequest = async (req, res) => {
+  try {
+    const request = req.body;
+    const comments = req.body.comments;
+    const finance = await Finance.findById(req.params.id);
+    const respondedRequests = finance.respondedRequests;
+    if (!respondedRequests.includes(req.body._id)) {
+      respondedRequests.push(request);
+      await Finance.findByIdAndUpdate(req.params.id, { respondedRequests });  
+    }
+    Request.findByIdAndUpdate(req.body.id, { status: "approvedByFinance", comments });
+    res.status(200).json({
+      status: "success",
+      requested: req.requestTime,
+      data: {
+        message: "redirect to /pendingRequests",
+        request,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({
+      status: "failed",
+      messsage: err,
+    });
+  }
+};
+module.exports.rejectPendingRequest = async (req, res) => {
+  try {
+    const request = req.body;
+    const comments = req.body.comments;
+    const finance = await Finance.findById(req.params.id);
+    const respondedRequests = finance.respondedRequests;
+    if (!respondedRequests.includes(req.body._id)) {
+      respondedRequests.push(request);
+      await Finance.findByIdAndUpdate(req.params.id, { respondedRequests });  
+    }
+    Request.findByIdAndUpdate(req.body.id, { status: "rejectedByFinance", comments });
+    res.status(200).json({
+      status: "success",
+      requested: req.requestTime,
+      data: {
+        message: "redirect to /pendingRequests",
+        request,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({
+      status: "failed",
+      messsage: err,
+    });
+  }
+};
+
+/////////////////////////////////////////////////////////////////////////ROUTE: /:id/respondedRequests
+module.exports.getRespondedRequests = async (req, res) => {
+  try {
+    const finance = await Finance.findById(req.params.id);
+    const requestIds = finance.respondedRequests;
+    const requests = Request.find({ _id: [...requestIds] });
+    res.status(200).json({
+      status: "success",
+      requested: req.requestTime,
+      data: {
+        requests,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({
+      status: "failed",
+      messsage: err,
+    });
+  }
+};
+
+// module.exports.deleteSentRequests = async (req, res) => {
+//   // delete sent requests
+// };

@@ -8,8 +8,7 @@ const Faculty = require('./facultyModel');
 //  3. sentByFaculty (sent back for correction by faculty)
 //  4. sentByFinance (sent back for correction by finance)
 //  5. correctedDraft (sent back for corrections and saved as draft)
-//  5. receivedByFaculty (received by faculty after correction )  
-//  6. receivedByFinance (received by finance after correction )
+//  6. receivedByFaculty (received by faculty after correction )  
 //  7. approvedByFaculty (approved by faculty, received by finance)
 //  8. rejectedByFaculty
 //  9. rejectedByFinance

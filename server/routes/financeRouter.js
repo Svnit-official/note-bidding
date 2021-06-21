@@ -5,31 +5,33 @@ const router = express.Router();
 
 //router.param('id', testController.checkId);
 
+//buttons on request = reject, approve, send back, add comments
+//buttons on dashboard = Finance details, Pending Requests, Responded Requests
+
 router
   .route("/login")
   .get(financeController.login)
   .post(financeController.authentication);
 
-router.route("/").get(financeController.dashboard);
+router
+  .route("/:id")
+  .get(financeController.dashboard);
 
 router
-  .route("/financeDetails")
-  .get(financeController.getDetailsById)
-  .patch(financeController.updateDetailsById)
-  .delete(financeController.deleteDetailstById);
+  .route("/:id/financeDetails")                             
+  .get(financeController.getDetailsById)                  // 'Finance Details' button on dashboard 
+  .patch(financeController.updateDetailsById)             // 'Update' button on finance details page
 
 router
-  .route("/pendingRequests")
-  .get(financeController.getPendingRequests)
-  .post(financeController.postPendingRequests)
-  .patch(financeController.updatePendingRequests)
-  .delete(financeController.deletePendingRequests);
+  .route("/:id/pendingRequests")
+  .get(financeController.getPendingRequests)              // 'Pending Requests' button on dashboard
+  .post(financeController.sendBackPendingRequest)         // 'Send back' button on request (after adding comments)
+  .post(financeController.approvePendingRequest)          // 'Approve' button on request (after adding comments)
+  .post(financeController.rejectPendingRequest)           // 'Reject' button on request (after adding comments)
 
 router
-  .route("/sentRequests")
-  .get(financeController.getSentRequests)
-  .delete(financeController.deleteSentRequests);
-
-router.route("history").get(financeController.getHistory);
+  .route("/:id/respondedRequests")
+  .get(financeController.getRespondedRequests)            // 'Responded Requests' button on dashboard 
+//  .delete(financeController.deleteSentRequests);
 
 module.exports = router;

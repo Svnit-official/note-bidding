@@ -126,7 +126,7 @@ module.exports.getPendingRequests= async (req, res) => {
   }
 };
 
-module.exports.sendBackSentByClub= async (req, res) => {
+module.exports.sendPendingRequests= async (req, res) => {
   try {
     const request = req.body;
     const comments = req.body.comments;
@@ -210,7 +210,7 @@ module.exports.rejectPendingRequest = async (req, res) => {
 };
 
 
-/////////////////////////////////////////////////////////////////////////ROUTE: respondedRequests
+/////////////////////////////////////////////////////////////////////////ROUTE: /:id/respondedRequests
 module.exports.getRespondedRequests= async (req, res) => {
   try {
     const faculty = await Faculty.findById(req.params.id);
