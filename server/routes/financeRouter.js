@@ -1,5 +1,6 @@
 const express = require("express");
 const financeController = require("./../controller/financeController");
+const authController = require("./../controller/authController");
 
 const router = express.Router();
 
@@ -15,23 +16,23 @@ router
 
 router
   .route("/:id")
-  .get(financeController.dashboard);
+  .get(authController.protect, financeController.dashboard);
 
 router
   .route("/:id/financeDetails")                             
-  .get(financeController.getDetailsById)                  // 'Finance Details' button on dashboard 
-  .patch(financeController.updateDetailsById)             // 'Update' button on finance details page
+  .get(authController.protect, financeController.getDetailsById)                  // 'Finance Details' button on dashboard 
+  .patch(authController.protect, financeController.updateDetailsById)             // 'Update' button on finance details page
 
 router
   .route("/:id/pendingRequests")
-  .get(financeController.getPendingRequests)              // 'Pending Requests' button on dashboard
-  .patch(financeController.sendBackPendingRequest)        // 'Send back' button on request (after adding comments)
-  .post(financeController.approvePendingRequest)          // 'Approve' button on request (after adding comments)
-  .put(financeController.rejectPendingRequest)            // 'Reject' button on request (after adding comments)
+  .get(authController.protect, financeController.getPendingRequests)              // 'Pending Requests' button on dashboard
+  .patch(authController.protect, financeController.sendBackPendingRequest)        // 'Send back' button on request (after adding comments)
+  .post(authController.protect, financeController.approvePendingRequest)          // 'Approve' button on request (after adding comments)
+  .put(authController.protect, financeController.rejectPendingRequest)            // 'Reject' button on request (after adding comments)
 
 router
   .route("/:id/respondedRequests")
-  .get(financeController.getRespondedRequests)            // 'Responded Requests' button on dashboard 
+  .get(authController.protect, financeController.getRespondedRequests)            // 'Responded Requests' button on dashboard 
 //  .delete(financeController.deleteSentRequests);
 
 module.exports = router;
