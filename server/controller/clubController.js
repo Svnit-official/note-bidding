@@ -1,8 +1,8 @@
 const Club = require('./../models/clubModel');
 const Request = require('./../models/requestModel');
 const jwt = require('jsonwebtoken');
-const secret = process.env.SECRET || 'this-is-my-club-secret';
-const expires = process.env.EXPIRES || 1000;
+const secret = process.env.SECRET || 'this-is-my-secret';
+const expires = process.env.EXPIRES || 100000;
 // const Faculty = require('./../models/facultyModel');
 
 const signToken = function (id) {
@@ -40,6 +40,7 @@ module.exports.authentication= async (req, res) => {
         const foundClub = await Club.findOne({ username }).select('+password');
         if (foundClub && await foundClub.correctPassword(password, foundClub.password)) {
             const token = signToken(foundClub._id);
+            req.userId = foundClub._id;
             res.status(200).json({
                 status: "success",
                 requested: req.time,
@@ -69,9 +70,9 @@ module.exports.authentication= async (req, res) => {
 module.exports.dashboard= async (req, res) => {
     try {
         res.status(200).json({
-            status: "success",
-            requested: req.requestTime,
-            message : `dashboard for club id :${req.params.id}`
+          status: "success",
+          requested: req.requestTime,
+          message: `dashboard for club id :${req.userId}`,   //:${req.params.id}`
         });
     } catch (err) {
         console.log(err);

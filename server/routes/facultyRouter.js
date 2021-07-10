@@ -1,5 +1,6 @@
 const express = require("express");
 const facultyController = require("./../controller/facultyController");
+const authController = require("./../controller/authController");
 
 const router = express.Router();
 
@@ -15,23 +16,23 @@ router
 
 router
   .route("/:id")
-  .get(facultyController.dashboard);
+  .get(authController.protect, facultyController.dashboard);
 
 router
   .route("/:id/facultyDetails")                             
-  .get(facultyController.getDetailsById)                  // 'Faculty Details' button on dashboard 
-  .patch(facultyController.updateDetailsById)             // 'Update' button on faculty details page
+  .get(authController.protect, facultyController.getDetailsById)                  // 'Faculty Details' button on dashboard 
+  .patch(authController.protect, facultyController.updateDetailsById)             // 'Update' button on faculty details page
 
 router
   .route("/:id/pendingRequests")
-  .get(facultyController.getPendingRequests)              // 'Pending Requests' button on dashboard
-  .patch(facultyController.sendBackPendingRequest)        // 'Send back' button on request (after adding comments)
-  .post(facultyController.approvePendingRequest)          // 'Approve' button on request (after adding comments)
-  .put(facultyController.rejectPendingRequest)            // 'Reject' button on request (after adding comments)
+  .get(authController.protect, facultyController.getPendingRequests)              // 'Pending Requests' button on dashboard
+  .patch(authController.protect, facultyController.sendBackPendingRequest)        // 'Send back' button on request (after adding comments)
+  .post(authController.protect, facultyController.approvePendingRequest)          // 'Approve' button on request (after adding comments)
+  .put(authController.protect, facultyController.rejectPendingRequest)            // 'Reject' button on request (after adding comments)
 
 router
   .route("/:id/respondedRequests")
-  .get(facultyController.getRespondedRequests)            // 'Responded Requests' button on dashboard 
+  .get(authController.protect, facultyController.getRespondedRequests)            // 'Responded Requests' button on dashboard 
 //  .delete(facultyController.deleteSentRequests);
 
 module.exports = router;
