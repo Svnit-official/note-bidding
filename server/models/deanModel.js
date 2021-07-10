@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Request = require("./requestModel");
+const bcrypt = require("bcrypt");
 
 const deanSchema = new mongoose.Schema({
   username: {
@@ -29,6 +30,16 @@ const deanSchema = new mongoose.Schema({
     },
   ]
 });
+
+deanSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+  this.password = await bcrypt.hash(this.password, 12);
+  next();
+});
+
+deanSchema.methods.correctPassword = async function (candidatePass, userPass) {
+  return await bcrypt.compare(candidatePass, userPass);
+};
 
 const Dean = new mongoose.model("Dean", deanSchema);
 

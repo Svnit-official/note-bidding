@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Request = require("./requestModel");
+const bcrypt = require("bcrypt");
 
 const financeSchema = new mongoose.Schema({
   username: {
@@ -11,7 +12,7 @@ const financeSchema = new mongoose.Schema({
   password: {
     required: [true, "A name must be there"],
     type: String,
-    trim: true,
+    select: false
   },
   financeName: {
     required: [true, "A name must be there"],
@@ -33,6 +34,16 @@ const financeSchema = new mongoose.Schema({
     default: Date.now(),
   },
 });
+
+financeSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+  this.password = await bcrypt.hash(this.password, 12);
+  next();
+});
+
+financeSchema.methods.correctPassword = async function (candidatePass, userPass) {
+  return await bcrypt.compare(candidatePass, userPass);
+};
 
 const Finance = new mongoose.model("finance", financeSchema);
 

@@ -4,13 +4,6 @@
     "password": "samplePass",
     "financeName": "samplefinanceName",
     "signature": "sampleSignature",
-    "pendingRequests": [],
-    "Approved": [],
-    "sentBackForCorrection": [],
-    "history": {
-      "approved": [],
-      "rejected": []
-    },
-    "createdAt": ""
+    "respondedRequests": []
   }
 ]
