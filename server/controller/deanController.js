@@ -23,7 +23,6 @@ module.exports.login = async (req, res) => {
     });
   }
 };
-
 module.exports.authentication = async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -84,7 +83,7 @@ module.exports.dashboard = async (req, res) => {
 ///////////////////////////////////////////////////////////////////ROUTE: /:id/deanDetails
 module.exports.getDetailsById = async (req, res) => {
   try {
-    console.log('hello')
+    console.log("hello");
     const deanDetails = await Dean.findById(req.params.id);
     res.status(200).json({
       status: "success",
@@ -160,7 +159,10 @@ module.exports.approvePendingRequest = async (req, res) => {
     const respondedRequests = dean.respondedRequests;
     respondedRequests.push(request);
     await Dean.findByIdAndUpdate(req.params.id, { respondedRequests });
-    await Request.findByIdAndUpdate(req.body._id, { status: "approvedByDean", comments });
+    await Request.findByIdAndUpdate(req.body._id, {
+      status: "approvedByDean",
+      comments,
+    });
     const appRequest = await Request.findById(req.body._id);
     res.status(200).json({
       status: "success",
@@ -186,7 +188,10 @@ module.exports.rejectPendingRequest = async (req, res) => {
     const respondedRequests = dean.respondedRequests;
     respondedRequests.push(request);
     await Dean.findByIdAndUpdate(req.params.id, { respondedRequests });
-    await Request.findByIdAndUpdate(req.body._id, { status: "rejectedByDean", comments});
+    await Request.findByIdAndUpdate(req.body._id, {
+      status: "rejectedByDean",
+      comments,
+    });
     const rejRequest = await Request.findById(req.body._id);
     res.status(200).json({
       status: "success",
