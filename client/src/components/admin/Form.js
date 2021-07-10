@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import {
   Avatar,
@@ -7,23 +8,30 @@ import {
   Typography,
   Container,
 } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Input from "./input";
 import useStyles from "./styles";
+import { signin } from "../actions/auth";
 const initialState = {
-  firstName: "",
-  lastName: "",
-  email: "",
+  username: "",
   password: "",
-  confirmPassword: "",
 };
 const Form = () => {
+  const dispatch = useDispatch();
+  const history = useHistory();
   const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState(initialState);
   const handleShowPassword = () => setShowPassword(!showPassword);
   const classes = useStyles();
-  const handleChange = (e) =>
+  const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(signin(form, history));
+  };
   return (
     <Container component="main" maxWidth="xs">
       <Paper className={classes.paper} elevation={5}>
@@ -33,7 +41,7 @@ const Form = () => {
         <Typography component="h1" variant="h5">
           Admin Login
         </Typography>
-        <form className={classes.form} onSubmit={() => {}}>
+        <form className={classes.form} onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Input
               name="username"
