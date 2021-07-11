@@ -9,4 +9,9 @@ API.interceptors.request.use((req) => {
 
   return req;
 });
-export const login = (formdata) => API.post("/api/v1/dean/login", formdata);
+export const deanLogin = (formdata) => API.post("/api/v1/dean/login", formdata);
+export const clubLogin = (formdata) => API.post("/api/v1/club/login", formdata);
+export const financeLogin = (formdata) =>
+  API.post("/api/v1/finance/login", formdata);
+export const facultyLogin = (formdata) =>
+  API.post("/api/v1/faculty/login", formdata);

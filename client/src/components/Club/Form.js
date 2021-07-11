@@ -13,12 +13,12 @@ import { useDispatch } from "react-redux";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Input from "./input";
 import useStyles from "./styles";
-import { signin } from "../../actions/auth";
+import { clubsignin } from "../../actions/auth";
 const initialState = {
   username: "",
   password: "",
 };
-const Form = () => {
+const ClubForm = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [showPassword, setShowPassword] = useState(false);
@@ -30,7 +30,7 @@ const Form = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(signin(form, history));
+    dispatch(clubsignin(form, history));
   };
   return (
     <Container component="main" maxWidth="xs">
@@ -39,7 +39,7 @@ const Form = () => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Admin Login
+          Club Login
         </Typography>
         <form className={classes.form} onSubmit={handleSubmit}>
           <Grid container spacing={2}>
@@ -72,4 +72,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default ClubForm;
