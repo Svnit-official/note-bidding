@@ -1,6 +1,5 @@
 const express = require("express");
 const financeController = require("./../controller/financeController");
-const authController = require("./../controller/authController");
 const { isFinanceLoggedIn } = require("./../controller/authController");
 
 const router = express.Router();
@@ -15,23 +14,32 @@ router
   .get(financeController.login)
   .post(financeController.authentication);
 
-router.route("/:id").get(isFinanceLoggedIn, financeController.dashboard);
+router.route("/")
+  .get(isFinanceLoggedIn, financeController.dashboard);
 
 router
-  .route("/:id/financeDetails")
+  .route("/financeDetails")
   .get(isFinanceLoggedIn, financeController.getDetailsById) // 'Finance Details' button on dashboard
   .patch(isFinanceLoggedIn, financeController.updateDetailsById); // 'Update' button on finance details page
 
 router
-  .route("/:id/pendingRequests")
+  .route("/changePassword")
+  .get(isFinanceLoggedIn, financeController.changePassword)
+  .patch(isFinanceLoggedIn, financeController.authorise);
+
+router
+  .route("/pendingRequests")
   .get(isFinanceLoggedIn, financeController.getPendingRequests) // 'Pending Requests' button on dashboard
   .patch(isFinanceLoggedIn, financeController.sendBackPendingRequest) // 'Send back' button on request (after adding comments)
   .post(isFinanceLoggedIn, financeController.approvePendingRequest) // 'Approve' button on request (after adding comments)
   .put(isFinanceLoggedIn, financeController.rejectPendingRequest); // 'Reject' button on request (after adding comments)
 
 router
-  .route("/:id/respondedRequests")
+  .route("/respondedRequests")
   .get(isFinanceLoggedIn, financeController.getRespondedRequests); // 'Responded Requests' button on dashboard
 //  .delete(financeController.deleteSentRequests);
+
+router.route("/logout")
+  .get(isFinanceLoggedIn, financeController.logout);
 
 module.exports = router;

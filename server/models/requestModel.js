@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-const Club = require('./clubModel');
-const Faculty = require('./facultyModel');
 
 const allowedStatus= [
   "draft",                      // types of status of requests:

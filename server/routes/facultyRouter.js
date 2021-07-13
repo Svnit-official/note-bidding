@@ -14,23 +14,34 @@ router
   .get(facultyController.login)
   .post(facultyController.authentication);
 
-router.route("/:id").get(isFacultyLoggedIn, facultyController.dashboard);
+router.route("/")
+  .get(isFacultyLoggedIn, facultyController.dashboard);
 
 router
-  .route("/:id/facultyDetails")
+  .route("/facultyDetails")
   .get(isFacultyLoggedIn, facultyController.getDetailsById) // 'Faculty Details' button on dashboard
   .patch(isFacultyLoggedIn, facultyController.updateDetailsById); // 'Update' button on faculty details page
 
 router
-  .route("/:id/pendingRequests")
+  .route("/changePassword")
+  .get(isFacultyLoggedIn, facultyController.changePassword)
+  .patch(isFacultyLoggedIn, facultyController.authorise);
+
+router
+  .route("/pendingRequests")
   .get(isFacultyLoggedIn, facultyController.getPendingRequests) // 'Pending Requests' button on dashboard
   .patch(isFacultyLoggedIn, facultyController.sendBackPendingRequest) // 'Send back' button on request (after adding comments)
   .post(isFacultyLoggedIn, facultyController.approvePendingRequest) // 'Approve' button on request (after adding comments)
   .put(isFacultyLoggedIn, facultyController.rejectPendingRequest); // 'Reject' button on request (after adding comments)
 
 router
-  .route("/:id/respondedRequests")
+  .route("/respondedRequests")
   .get(isFacultyLoggedIn, facultyController.getRespondedRequests); // 'Responded Requests' button on dashboard
 //  .delete(facultyController.deleteSentRequests);
+
+router
+  .route("/logout")
+  .get(isFacultyLoggedIn, facultyController.logout);
+
 
 module.exports = router;

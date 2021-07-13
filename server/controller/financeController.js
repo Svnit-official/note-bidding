@@ -1,13 +1,13 @@
 const Finance = require("./../models/financeModel");
 const Request = require("./../models/requestModel");
-const jwt = require("jsonwebtoken");
-const secret = process.env.SECRET || "this-is-my-finance-secret";
-const expires = process.env.EXPIRES || 1000;
-// const Faculty = require('./../models/facultyModel');
-const bcrypt = require("bcryptjs");
-const signToken = function (id) {
-  return jwt.sign({ id }, secret, { expiresIn: expires });
-};
+// const jwt = require("jsonwebtoken");
+// const secret = process.env.SECRET || "this-is-my-finance-secret";
+// const expires = process.env.EXPIRES || 1000;
+// // const Faculty = require('./../models/facultyModel');
+// const bcrypt = require("bcryptjs");
+// const signToken = function (id) {
+//   return jwt.sign({ id }, secret, { expiresIn: expires });
+// };
 
 ///////////////////////////////////////////////////////////////////ROUTE: /login
 module.exports.login = async (req, res) => {
@@ -27,29 +27,44 @@ module.exports.login = async (req, res) => {
 };
 
 module.exports.authentication = async (req, res) => {
-  const { username, password } = req.body;
-  console.log(username, password);
-  const foundFinance = await Finance.findOne({ username });
-  const flag = await bcrypt.compare(password, foundFinance.password);
-  if (flag == true) {
-    req.session.user_id = foundFinance._id;
-    console.log("loggedIn");
-    res.status(200).json({
-      status: "success",
-      requested: req.time,
-      message: "authorised",
-      FinanceID: foundFinance._id,
-    });
-  } else {
-    res.status(401).json({
-      status: "unauthorised",
-      requested: req.time,
-      message: "incorrect username or password",
+  try {
+    const { username, password } = req.body;
+    console.log(username, password);
+    if (!username || !password) {
+      res.status(400).json({
+        status: "bad request",
+        requested: req.time,
+        message: "please provied username and password",
+      });
+    }
+    const foundFinance = await Finance.findOne({ username }).select("+password");
+    const flag = await foundFinance.correctPassword(password, foundFinance.password);
+    if (flag == true) {
+      req.session.user_id = foundFinance._id;
+      console.log("loggedIn");
+      res.status(200).json({
+        status: "success",
+        requested: req.time,
+        message: "authorised",
+        clubID: foundFinance._id,
+      });
+    } else {
+      res.status(401).json({
+        status: "unauthorised",
+        requested: req.time,
+        message: "incorrect username or password",
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({
+      status: "failed",
+      message: err,
     });
   }
 };
 
-//////////////////////////////////////////////////////////////////////ROUTE: /:id
+//////////////////////////////////////////////////////////////////////ROUTE: /
 module.exports.dashboard = async (req, res) => {
   try {
     res.status(200).json({
@@ -66,10 +81,10 @@ module.exports.dashboard = async (req, res) => {
   }
 };
 
-///////////////////////////////////////////////////////////////////ROUTE: /:id/financeDetails
+///////////////////////////////////////////////////////////////////ROUTE: /financeDetails
 module.exports.getDetailsById = async (req, res) => {
   try {
-    const financeDetails = await Finance.findById(req.params.id);
+    const financeDetails = await Finance.findById(req.session.user_id);
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
@@ -88,9 +103,9 @@ module.exports.getDetailsById = async (req, res) => {
 
 module.exports.updateDetailsById = async (req, res) => {
   try {
-    const financeDetailsOld = await Finance.findById(req.params.id);
+    const financeDetailsOld = await Finance.findById(req.session.user_id);
     const financeDetailsNew = await Finance.findByIdAndUpdate(
-      req.params.id,
+      req.session.user_id,
       req.body,
       {
         new: true,
@@ -115,7 +130,7 @@ module.exports.updateDetailsById = async (req, res) => {
   }
 };
 
-////////////////////////////////////////////////////////////////ROUTE: /:id/pendingRequests
+////////////////////////////////////////////////////////////////ROUTE: /pendingRequests
 module.exports.getPendingRequests = async (req, res) => {
   try {
     const requests = await Request.find({ status: "approvedByFaculty" });
@@ -140,11 +155,11 @@ module.exports.sendBackPendingRequest = async (req, res) => {
   try {
     const request = await Request.findById(req.body._id);
     const comments = req.body.comments;
-    const finance = await Finance.findById(req.params.id);
+    const finance = await Finance.findById(req.session.user_id);
     const respondedRequests = finance.respondedRequests;
     if (!respondedRequests.includes(req.body._id)) {
       respondedRequests.push(request);
-      await Finance.findByIdAndUpdate(req.params.id, { respondedRequests });
+      await Finance.findByIdAndUpdate(req.session.user_id, { respondedRequests });
     }
     await Request.findByIdAndUpdate(req.body._id, {
       status: "sentByFinance",
@@ -172,11 +187,11 @@ module.exports.approvePendingRequest = async (req, res) => {
   try {
     const request = await Request.findById(req.body._id);
     const comments = req.body.comments;
-    const finance = await Finance.findById(req.params.id);
+    const finance = await Finance.findById(req.session.user_id);
     const respondedRequests = finance.respondedRequests;
     if (!respondedRequests.includes(req.body._id)) {
       respondedRequests.push(request);
-      await Finance.findByIdAndUpdate(req.params.id, { respondedRequests });
+      await Finance.findByIdAndUpdate(req.session.user_id, { respondedRequests });
     }
     await Request.findByIdAndUpdate(req.body._id, {
       status: "approvedByFinance",
@@ -203,11 +218,11 @@ module.exports.rejectPendingRequest = async (req, res) => {
   try {
     const request = await Request.findById(req.body._id);
     const comments = req.body.comments;
-    const finance = await Finance.findById(req.params.id);
+    const finance = await Finance.findById(req.session.user_id);
     const respondedRequests = finance.respondedRequests;
     if (!respondedRequests.includes(req.body._id)) {
       respondedRequests.push(request);
-      await Finance.findByIdAndUpdate(req.params.id, { respondedRequests });
+      await Finance.findByIdAndUpdate(req.session.user_id, { respondedRequests });
     }
     await Request.findByIdAndUpdate(req.body._id, {
       status: "rejectedByFinance",
@@ -231,10 +246,10 @@ module.exports.rejectPendingRequest = async (req, res) => {
   }
 };
 
-/////////////////////////////////////////////////////////////////////////ROUTE: /:id/respondedRequests
+/////////////////////////////////////////////////////////////////////////ROUTE: /respondedRequests
 module.exports.getRespondedRequests = async (req, res) => {
   try {
-    const finance = await Finance.findById(req.params.id);
+    const finance = await Finance.findById(req.session.user_id);
     const requestIds = finance.respondedRequests;
     const requests = await Request.find({ _id: [...requestIds] });
     res.status(200).json({
@@ -256,3 +271,62 @@ module.exports.getRespondedRequests = async (req, res) => {
 // module.exports.deleteSentRequests = async (req, res) => {
 //   // delete sent requests
 // };
+
+//////////////////////////////////////////////////////////////////////ROUTE: /logout/
+module.exports.logout = async (req, res) => {
+  req.session= null;
+  console.log("logged out");
+  res.status(200).json({
+    status: 'success',
+    requested: req.requestTime,
+    messaage: "logged out, redirect to home"
+  })
+  res.send("logged out");
+}
+
+////////////////////////////////////////////////////////////////////ROUTE: /changePassword
+module.exports.changePassword = async (req, res) => {
+  module.exports.dashboard = async (req, res) => {
+    try {
+      res.status(200).json({
+        status: "success",
+        requested: req.requestTime,
+        message: "Page to change password",
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(404).json({
+        status: "failed",
+        messsage: err,
+      });
+    }
+  };
+}
+
+module.exports.authorise = async (req, res) => {
+  const { oldPassword, newPassword, confirmPassword } = req.body;
+  const finance = await Finance.findById(req.session.user_id).select('+password');
+  if (await finance.correctPassword(oldPassword, newPassword)) {
+    if (newPassword === confirmPassword) {
+      await Finance.findByIdAndUpdate(req.session.user_id, { newPassword })
+      req.session = null;
+      res.status(200).json({
+        status: 'success',
+        requested: req.requestTime,
+        message: 'redirect to home page'
+      });
+    } else {
+      res.status(400).json({
+        status: 'failed',
+        requested: req.requestTime,
+        message: "passwords don't match"
+      });
+    }
+  } else {
+    res.status(401).json({
+      status: 'unauthorized',
+      requested: req.requestTime,
+      message: 'incorrect password'
+    });
+  } 
+}

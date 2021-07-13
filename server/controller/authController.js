@@ -1,24 +1,56 @@
-module.exports.isDeanLoggedIn = function (req, res, next) {
-  if (!req.session.user_id) {
-    return res.send("not authorised");
+const Faculty = require("./../models/facultyModel");
+const Finance = require("./../models/FinanceModel");
+const Dean = require("./../models/deanModel");
+const Club = require("./../models/clubModel");
+
+module.exports.isDeanLoggedIn = async (req, res, next) => {
+  if (req.session.user_id && (await Dean.findById(req.session.user_id))) {
+    next();
+  } else {
+    return next(
+      res.status(401).json({
+        status: "failed",
+        message: "Please login to access this route",
+      })
+    );
   }
-  next();
 };
-module.exports.isClubLoggedIn = function (req, res, next) {
-  if (!req.session.user_id) {
-    return res.send("not authorised");
+
+module.exports.isClubLoggedIn = async (req, res, next)=> {
+  if(req.sessions.user_id && (await Club.findById(req.sessions.user_id))){
+    next();
+  } else {
+    return next(
+      res.status(401).json({
+        status: "failed",
+        message: "Please login to access this route",
+      })
+    );
   }
-  next();
 };
-module.exports.isFacultyLoggedIn = function (req, res, next) {
-  if (!req.session.user_id) {
-    return res.send("not authorised");
+
+module.exports.isFacultyLoggedIn = async (req, res, next) => {
+  if (req.session.user_id && (await Faculty.findById(req.session.user_id))) {
+    next();
+  } else {
+    return next(
+      res.status(401).json({
+        status: "failed",
+        message: "Please login to access this route",
+      })
+    );
   }
-  next();
 };
-module.exports.isFinanceLoggedIn = function (req, res, next) {
-  if (!req.session.user_id) {
-    return res.send("not authorised");
+
+module.exports.isFinanceLoggedIn = async (req, res, next) => {
+  if (req.session.user_id && (await Finance.findById(req.session.user_id))) {
+    next();
+  } else {
+    return next(
+      res.status(401).json({
+        status: "failed",
+        message: "Please login to access this route",
+      })
+    );
   }
-  next();
 };

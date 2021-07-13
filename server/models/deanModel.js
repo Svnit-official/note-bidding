@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const Request = require("./requestModel");
 const bcrypt = require("bcrypt");
 
 const deanSchema = new mongoose.Schema({
@@ -12,6 +11,7 @@ const deanSchema = new mongoose.Schema({
   password: {
     required: [true, "A name must be there"],
     type: String,
+    select: false
   },
   deanName: {
     required: [true, "A name must be there"],
