@@ -12,7 +12,6 @@ const deanSchema = new mongoose.Schema({
   password: {
     required: [true, "A name must be there"],
     type: String,
-    trim: true,
   },
   deanName: {
     required: [true, "A name must be there"],

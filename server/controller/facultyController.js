@@ -3,7 +3,7 @@ const Request = require("./../models/requestModel");
 const jwt = require("jsonwebtoken");
 const secret = process.env.SECRET || "this-is-my-faculty-secret";
 const expires = process.env.EXPIRES || 1000;
-
+const bcrypt = require("bcryptjs");
 const signToken = function (id) {
   return jwt.sign({ id }, secret, { expiresIn: expires });
 };
@@ -14,7 +14,7 @@ module.exports.login = async (req, res) => {
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
-      message: "Faculty Login Page"
+      message: "Faculty Login Page",
     });
   } catch (err) {
     console.log(err);
@@ -25,48 +25,31 @@ module.exports.login = async (req, res) => {
   }
 };
 
-module.exports.authentication= async (req, res) => {
-  try {
-    const { username, password } = req.body;
-    if (!username || !password) {
-      res.status(400).json({
-        status: "bad request",
-        requested: req.time,
-        message: "please provide username and password",
-      });
-      return;
-    }
-    const foundFaculty = await Faculty.findOne({ username }).select("+password");
-    if (
-      foundFaculty &&
-      (await foundFaculty.correctPassword(password, foundFaculty.password))
-    ) {
-      const token = signToken(foundFaculty._id);
-      res.status(200).json({
-        status: "success",
-        requested: req.time,
-        message: "authorised",
-        clubID: foundFaculty._id,
-        token,
-      });
-    } else {
-      res.status(401).json({
-        status: "unauthorised",
-        requested: req.time,
-        message: "incorrect username or password",
-      });
-    }
-  } catch (err) {
-    console.log(err);
-    res.status(404).json({
-      status: "failed",
-      messsage: err,
+module.exports.authentication = async (req, res) => {
+  const { username, password } = req.body;
+  console.log(username, password);
+  const foundFaculty = await Faculty.findOne({ username });
+  const flag = await bcrypt.compare(password, foundFaculty.password);
+  if (flag == true) {
+    req.session.user_id = foundFaculty._id;
+    console.log("loggedIn");
+    res.status(200).json({
+      status: "success",
+      requested: req.time,
+      message: "authorised",
+      FacultyID: foundFaculty._id,
+    });
+  } else {
+    res.status(401).json({
+      status: "unauthorised",
+      requested: req.time,
+      message: "incorrect username or password",
     });
   }
 };
 
 //////////////////////////////////////////////////////////////////////ROUTE: /:id
-module.exports.dashboard= async (req, res) => {
+module.exports.dashboard = async (req, res) => {
   try {
     res.status(200).json({
       status: "success",
@@ -132,20 +115,17 @@ module.exports.updateDetailsById = async (req, res) => {
 };
 
 ////////////////////////////////////////////////////////////////ROUTE: /:id/pendingRequests
-module.exports.getPendingRequests= async (req, res) => {
+module.exports.getPendingRequests = async (req, res) => {
   try {
     const requests = await Request.find({
-      $or: [
-        { status: "sentByClub" },
-        { status: "receivedByFaculty"}
-      ]
+      $or: [{ status: "sentByClub" }, { status: "receivedByFaculty" }],
     });
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
       data: {
         message: "redirect to /facultyDetails",
-        requests
+        requests,
       },
     });
   } catch (err) {
@@ -161,20 +141,23 @@ module.exports.sendBackPendingRequest = async (req, res) => {
   try {
     const request = await Request.findById(req.body._id);
     const comments = req.body.comments;
-    if (request.status === 'sentByClub') {
+    if (request.status === "sentByClub") {
       const faculty = await Faculty.findById(req.params.id);
       const respondedRequests = faculty.respondedRequests;
       respondedRequests.push(request);
       await Faculty.findByIdAndUpdate(req.params.id, { respondedRequests });
     }
-    await Request.findByIdAndUpdate(req.body._id, { status: 'sentByFaculty', comments });
+    await Request.findByIdAndUpdate(req.body._id, {
+      status: "sentByFaculty",
+      comments,
+    });
     const sentRequest = await Request.findById(req.body._id);
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
       data: {
         message: "redirect to /pendingRequests",
-        sentRequest
+        sentRequest,
       },
     });
   } catch (err) {
@@ -196,7 +179,10 @@ module.exports.approvePendingRequest = async (req, res) => {
       respondedRequests.push(request);
       await Faculty.findByIdAndUpdate(req.params.id, { respondedRequests });
     }
-    await Request.findByIdAndUpdate(req.body._id, { status: "approvedByFaculty", comments });
+    await Request.findByIdAndUpdate(req.body._id, {
+      status: "approvedByFaculty",
+      comments,
+    });
     const appRequest = await Request.findById(req.body._id);
     res.status(200).json({
       status: "success",
@@ -224,7 +210,10 @@ module.exports.rejectPendingRequest = async (req, res) => {
       respondedRequests.push(request);
       await Faculty.findByIdAndUpdate(req.params.id, { respondedRequests });
     }
-    await Request.findByIdAndUpdate(req.body._id, { status: "rejectedByFaculty", comments });
+    await Request.findByIdAndUpdate(req.body._id, {
+      status: "rejectedByFaculty",
+      comments,
+    });
     const rejRequest = await Request.findById(req.body._id);
     res.status(200).json({
       status: "success",
@@ -243,9 +232,8 @@ module.exports.rejectPendingRequest = async (req, res) => {
   }
 };
 
-
 /////////////////////////////////////////////////////////////////////////ROUTE: /:id/respondedRequests
-module.exports.getRespondedRequests= async (req, res) => {
+module.exports.getRespondedRequests = async (req, res) => {
   try {
     const faculty = await Faculty.findById(req.params.id);
     const requestIds = faculty.respondedRequests;
@@ -263,10 +251,9 @@ module.exports.getRespondedRequests= async (req, res) => {
       status: "failed",
       messsage: err,
     });
-  }    
+  }
 };
 
 // module.exports.deleteSentRequests = async (req, res) => {
 //   // delete sent requests
 // };
-

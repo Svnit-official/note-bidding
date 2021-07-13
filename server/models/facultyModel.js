@@ -12,7 +12,6 @@ const facultySchema = new mongoose.Schema({
   password: {
     required: [true, "A name must be there"],
     type: String,
-    select: false,
   },
   facultyName: {
     required: [true, "A name must be there"],
