@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt")
+const Request = require("./requestModel");
+const Faculty = require("./facultyModel");
+const bcrypt = require("bcrypt");
 
 const clubSchema = new mongoose.Schema({
   username: {
@@ -11,7 +13,6 @@ const clubSchema = new mongoose.Schema({
   password: {
     required: [true, "A name must be there"],
     type: String,
-    select: false,
   },
   passwordConfirm: {
     type: String,
@@ -48,24 +49,23 @@ const clubSchema = new mongoose.Schema({
     {
       type: mongoose.Schema.Types.ObjectId,
     },
-  ],  
+  ],
   createdAt: {
     type: Date,
     default: Date.now(),
   },
 });
 
-clubSchema.pre("save", async function (next) {
+clubSchema.statics.findAndValidate = async function (username, password) {
+  const foundUser = await this.findOne({ username });
+  const isvalid = await bcrypt.compare(password, foundUser.password);
+  return isvalid ? foundUser : false;
+};
+clubSchema.pre("save", function (next) {
   if (!this.isModified("password")) return next();
-  this.password = await bcrypt.hash(this.password, 12);
-  this.passwordConfirm = undefined;
+  this.password = bcrypt.hash(this.password, 12);
   next();
 });
-
-clubSchema.methods.correctPassword = async function (candidatePass, userPass) {
-  return await bcrypt.compare(candidatePass, userPass);
-};
-
 const Club = new mongoose.model("Club", clubSchema);
 
 module.exports = Club;

@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const secret = process.env.SECRET || "this-is-my-finance-secret";
 const expires = process.env.EXPIRES || 1000;
 // const Faculty = require('./../models/facultyModel');
-
+const bcrypt = require("bcryptjs");
 const signToken = function (id) {
   return jwt.sign({ id }, secret, { expiresIn: expires });
 };
@@ -27,41 +27,24 @@ module.exports.login = async (req, res) => {
 };
 
 module.exports.authentication = async (req, res) => {
-  try {
-    const { username, password } = req.body;
-    if (!username || !password) {
-      res.status(400).json({
-        status: "bad request",
-        requested: req.time,
-        message: "please provide username and password",
-      });
-      return;
-    }
-    const foundFinance = await Finance.findOne({ username }).select("+password");
-    if (
-      foundFinance &&
-      (await foundFinance.correctPassword(password, foundFinance.password))
-    ) {
-      const token = signToken(foundFinance._id);
-      res.status(200).json({
-        status: "success",
-        requested: req.time,
-        message: "authorised",
-        clubID: foundFinance._id,
-        token,
-      });
-    } else {
-      res.status(401).json({
-        status: "unauthorised",
-        requested: req.time,
-        message: "incorrect username or password",
-      });
-    }
-  } catch (err) {
-    console.log(err);
-    res.status(404).json({
-      status: "failed",
-      messsage: err,
+  const { username, password } = req.body;
+  console.log(username, password);
+  const foundFinance = await Finance.findOne({ username });
+  const flag = await bcrypt.compare(password, foundFinance.password);
+  if (flag == true) {
+    req.session.user_id = foundFinance._id;
+    console.log("loggedIn");
+    res.status(200).json({
+      status: "success",
+      requested: req.time,
+      message: "authorised",
+      FinanceID: foundFinance._id,
+    });
+  } else {
+    res.status(401).json({
+      status: "unauthorised",
+      requested: req.time,
+      message: "incorrect username or password",
     });
   }
 };
@@ -161,9 +144,12 @@ module.exports.sendBackPendingRequest = async (req, res) => {
     const respondedRequests = finance.respondedRequests;
     if (!respondedRequests.includes(req.body._id)) {
       respondedRequests.push(request);
-      await Finance.findByIdAndUpdate(req.params.id, { respondedRequests });  
+      await Finance.findByIdAndUpdate(req.params.id, { respondedRequests });
     }
-    await Request.findByIdAndUpdate(req.body._id, { status: "sentByFinance", comments });
+    await Request.findByIdAndUpdate(req.body._id, {
+      status: "sentByFinance",
+      comments,
+    });
     const sentRequest = await Request.findById(req.body._id);
     res.status(200).json({
       status: "success",
@@ -190,9 +176,12 @@ module.exports.approvePendingRequest = async (req, res) => {
     const respondedRequests = finance.respondedRequests;
     if (!respondedRequests.includes(req.body._id)) {
       respondedRequests.push(request);
-      await Finance.findByIdAndUpdate(req.params.id, { respondedRequests });  
+      await Finance.findByIdAndUpdate(req.params.id, { respondedRequests });
     }
-    await Request.findByIdAndUpdate(req.body._id, { status: "approvedByFinance", comments });
+    await Request.findByIdAndUpdate(req.body._id, {
+      status: "approvedByFinance",
+      comments,
+    });
     const appRequest = await Request.findById(req.body._id);
     res.status(200).json({
       status: "success",
@@ -218,9 +207,12 @@ module.exports.rejectPendingRequest = async (req, res) => {
     const respondedRequests = finance.respondedRequests;
     if (!respondedRequests.includes(req.body._id)) {
       respondedRequests.push(request);
-      await Finance.findByIdAndUpdate(req.params.id, { respondedRequests });  
+      await Finance.findByIdAndUpdate(req.params.id, { respondedRequests });
     }
-    await Request.findByIdAndUpdate(req.body._id, { status: "rejectedByFinance", comments });
+    await Request.findByIdAndUpdate(req.body._id, {
+      status: "rejectedByFinance",
+      comments,
+    });
     const rejRequest = await Request.findById(req.body._id);
     res.status(200).json({
       status: "success",
