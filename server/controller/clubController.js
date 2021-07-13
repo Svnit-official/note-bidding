@@ -32,9 +32,11 @@ module.exports.authentication = async (req, res) => {
   console.log(username, password);
   const foundClub = await Club.findOne({ username });
   const flag = await bcrypt.compare(password, foundClub.password);
+  console.log(password, foundClub.password);
   if (flag == true) {
     req.session.user_id = foundClub._id;
     console.log("loggedIn");
+    console.log(req.session.user_id);
     res.status(200).json({
       status: "success",
       requested: req.time,
@@ -218,31 +220,25 @@ module.exports.getSentRequests = async (req, res) => {
 
 module.exports.sendRequest = async (req, res) => {
   try {
-    const request = req.body;
-    const clubDetails = await Club.findById(req.params.id);
-    if (
-      request.status === "sentByFaculty" ||
-      request.status === "sentByFinance" ||
-      request.status === "correctedDraft"
-    ) {
-      await Request.findByIdAndUpdate(request._id, {
-        status: "receivedByFaculty",
-      });
-    } else {
-      await Request.findByIdAndUpdate(request._id, {
-        status: "sentByClub",
-      });
-      const sentRequests = clubDetails.sentRequests;
-      sentRequests.push(request);
-      await Club.findByIdAndUpdate(req.params.id, { sentRequests });
-    }
-    const sentRequest = Request.findById(req.params.id);
+    const { headName, eventName, eventDate, comments, pdf } = req.body;
+    const clubDetails = await Club.findById(req.session.user_id);
+    const newRequest = new Request({
+      clubName: clubDetails.clubName,
+      headName,
+      eventName,
+      eventDate,
+      comments,
+      pdf,
+    });
+    await newRequest.save();
+    clubDetails.sentRequests.push(newRequest._id);
+    await clubDetails.save();
+    console.log("successful");
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
       data: {
         message: "flash of message sent, redirect to /sentRequests",
-        sentRequest,
       },
     });
   } catch (err) {

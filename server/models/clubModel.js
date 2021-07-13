@@ -7,7 +7,6 @@ const clubSchema = new mongoose.Schema({
   username: {
     type: String,
     required: [true, "A name must be there"],
-    unique: true,
     trim: true,
   },
   password: {

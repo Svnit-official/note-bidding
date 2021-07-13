@@ -33,7 +33,7 @@ router
   .post(isClubLoggedIn, clubController.postDraft); // 'Save as Draft' or 'Update and save as draft' button on 'Request'
 
 router
-  .route("/:id/sentRequests")
+  .route("/sentRequests")
   .get(isClubLoggedIn, clubController.getSentRequests) // 'Sent Requests' button on dashboard
   .post(isClubLoggedIn, clubController.sendRequest); // 'Send' or 'Update and send' button on 'Request'
 
