@@ -5,7 +5,10 @@ import { Provider } from "react-redux";
 import { createStore, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
 import authReducer from "./reducer/auth";
-const store = createStore(authReducer, compose(applyMiddleware(thunk)));
+import formReducer from "./reducer/form";
+import { combineReducers } from "redux";
+const reducers = combineReducers({ authReducer, formReducer });
+const store = createStore(reducers, compose(applyMiddleware(thunk)));
 ReactDOM.render(
   <Provider store={store}>
     <App />

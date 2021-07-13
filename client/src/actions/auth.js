@@ -14,7 +14,7 @@ export const clubsignin = (formdata, router) => async (dispatch) => {
     const { data } = await api.clubLogin(formdata);
     dispatch({ type: "CLUB_LOGIN", data });
     console.log("loggedIn");
-    router.push("/");
+    router.push("/club/submit");
   } catch (e) {
     console.log(e);
   }
@@ -34,6 +34,18 @@ export const facultysignin = (formdata, router) => async (dispatch) => {
     const { data } = await api.facultyLogin(formdata);
     dispatch({ type: "FAC_LOGIN", data });
     console.log("loggedIn");
+    router.push("/");
+  } catch (e) {
+    console.log(e);
+  }
+};
+export const clubFormSubmit = (formdata, router) => async (dispatch) => {
+  console.log(formdata);
+  try {
+    const { data } = await api.clubFormSubmit(formdata);
+    console.log(data);
+    dispatch({ type: "CLUB_FORM_SUBMIT", data });
+    console.log("form submitted");
     router.push("/");
   } catch (e) {
     console.log(e);

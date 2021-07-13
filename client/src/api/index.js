@@ -15,3 +15,5 @@ export const financeLogin = (formdata) =>
   API.post("/api/v1/finance/login", formdata);
 export const facultyLogin = (formdata) =>
   API.post("/api/v1/faculty/login", formdata);
+export const clubFormSubmit = (formdata) =>
+  API.post("/api/v1/club/sentRequests", formdata);

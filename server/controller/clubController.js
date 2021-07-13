@@ -231,42 +231,56 @@ module.exports.getSentRequests = async (req, res) => {
 };
 
 module.exports.sendRequest = async (req, res) => {
-  try {
-    const request = req.body;
-    const clubDetails = await Club.findById(req.session.user_id);
-    if (
-      request.status === "sentByFaculty" ||
-      request.status === "sentByFinance" ||
-      request.status === "correctedDraft"
-    ) {
-      await Request.findByIdAndUpdate(request._id, {
-        status: "receivedByFaculty",
-      });
-    } else {
-      await Request.findByIdAndUpdate(request._id, {
-        status: "sentByClub",
-      });
-      const sentRequests = clubDetails.sentRequests;
-      sentRequests.push(request);
-      await Club.findByIdAndUpdate(req.session.user_id, { sentRequests });
-    }
-    const sentRequest = Request.findById(req.session.user_id);
-    res.status(200).json({
-      status: "success",
-      requested: req.requestTime,
-      data: {
-        message: "flash of message sent, redirect to /sentRequests",
-        sentRequest,
-      },
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(404).json({
-      status: "failed",
-      messsage: err,
-    });
-  }
-};
+  // try {
+  //   const request = req.body;
+  //   const clubDetails = await Club.findById(req.session.user_id);
+  //   if (
+  //     request.status === "sentByFaculty" ||
+  //     request.status === "sentByFinance" ||
+  //     request.status === "correctedDraft"
+  //   ) {
+  //     await Request.findByIdAndUpdate(request._id, {
+  //       status: "receivedByFaculty",
+  //     });
+  //   } else {
+  //     await Request.findByIdAndUpdate(request._id, {
+  //       status: "sentByClub",
+  //     });
+  //     const sentRequests = clubDetails.sentRequests;
+  //     sentRequests.push(request);
+  //     await Club.findByIdAndUpdate(req.session.user_id, { sentRequests });
+  //   }
+  const sentRequest = Request.findById(req.session.user_id);
+  const { headName, eventName, eventDate, comments, pdf } = req.body;
+  const clubDetails = await Club.findById(req.session.user_id);
+  const newRequest = new Request({
+    clubName: clubDetails.clubName,
+    headName,
+    eventName,
+    eventDate,
+    comments,
+    pdf,
+  });
+  await newRequest.save();
+  clubDetails.sentRequests.push(newRequest._id);
+  await clubDetails.save();
+  console.log("successful");
+  res.status(200).json({
+    status: "success",
+    requested: req.requestTime,
+    data: {
+      message: "flash of message sent, redirect to /sentRequests",
+    },
+  });
+}
+  // } catch (err) {
+  //   console.log(err);
+  //   res.status(404).json({
+  //     status: "failed",
+  //     messsage: err,
+  //   });
+  // }
+//};
 
 // /////////////////////////////////////////////////////////////////////////////ROUTE: /receivedRequests
 module.exports.getReceivedRequests = async (req, res) => {
