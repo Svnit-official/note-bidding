@@ -1,6 +1,4 @@
 const mongoose = require("mongoose");
-const Request = require("./requestModel")
-const Faculty = require("./facultyModel")
 const bcrypt = require("bcrypt")
 
 const clubSchema = new mongoose.Schema({
@@ -14,6 +12,16 @@ const clubSchema = new mongoose.Schema({
     required: [true, "A name must be there"],
     type: String,
     select: false,
+  },
+  passwordConfirm: {
+    type: String,
+    required: [true, "Please provide a password"],
+    validate: [
+      function (el) {
+        return el === this.password;
+      },
+      "Passwords doesn't match",
+    ]
   },
   clubName: {
     required: [true, "A name must be there"],
@@ -35,12 +43,10 @@ const clubSchema = new mongoose.Schema({
   },
   faculty: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Faculty",
   },
   sentRequests: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Request",
     },
   ],  
   createdAt: {
@@ -52,6 +58,7 @@ const clubSchema = new mongoose.Schema({
 clubSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
   this.password = await bcrypt.hash(this.password, 12);
+  this.passwordConfirm = undefined;
   next();
 });
 
