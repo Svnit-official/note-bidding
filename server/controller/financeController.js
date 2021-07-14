@@ -1,5 +1,5 @@
-const Finance = require("./../models/financeModel");
 const Request = require("./../models/requestModel");
+const Finance = require("../models/financeModel");
 // const jwt = require("jsonwebtoken");
 // const secret = process.env.SECRET || "this-is-my-finance-secret";
 // const expires = process.env.EXPIRES || 1000;
@@ -37,8 +37,13 @@ module.exports.authentication = async (req, res) => {
         message: "please provied username and password",
       });
     }
-    const foundFinance = await Finance.findOne({ username }).select("+password");
-    const flag = await foundFinance.correctPassword(password, foundFinance.password);
+    const foundFinance = await Finance.findOne({ username }).select(
+      "+password"
+    );
+    const flag = await foundFinance.correctPassword(
+      password,
+      foundFinance.password
+    );
     if (flag == true) {
       req.session.user_id = foundFinance._id;
       console.log("loggedIn");
@@ -159,7 +164,9 @@ module.exports.sendBackPendingRequest = async (req, res) => {
     const respondedRequests = finance.respondedRequests;
     if (!respondedRequests.includes(req.body._id)) {
       respondedRequests.push(request);
-      await Finance.findByIdAndUpdate(req.session.user_id, { respondedRequests });
+      await Finance.findByIdAndUpdate(req.session.user_id, {
+        respondedRequests,
+      });
     }
     await Request.findByIdAndUpdate(req.body._id, {
       status: "sentByFinance",
@@ -191,7 +198,9 @@ module.exports.approvePendingRequest = async (req, res) => {
     const respondedRequests = finance.respondedRequests;
     if (!respondedRequests.includes(req.body._id)) {
       respondedRequests.push(request);
-      await Finance.findByIdAndUpdate(req.session.user_id, { respondedRequests });
+      await Finance.findByIdAndUpdate(req.session.user_id, {
+        respondedRequests,
+      });
     }
     await Request.findByIdAndUpdate(req.body._id, {
       status: "approvedByFinance",
@@ -222,7 +231,9 @@ module.exports.rejectPendingRequest = async (req, res) => {
     const respondedRequests = finance.respondedRequests;
     if (!respondedRequests.includes(req.body._id)) {
       respondedRequests.push(request);
-      await Finance.findByIdAndUpdate(req.session.user_id, { respondedRequests });
+      await Finance.findByIdAndUpdate(req.session.user_id, {
+        respondedRequests,
+      });
     }
     await Request.findByIdAndUpdate(req.body._id, {
       status: "rejectedByFinance",
@@ -274,15 +285,15 @@ module.exports.getRespondedRequests = async (req, res) => {
 
 //////////////////////////////////////////////////////////////////////ROUTE: /logout/
 module.exports.logout = async (req, res) => {
-  req.session= null;
+  req.session = null;
   console.log("logged out");
   res.status(200).json({
-    status: 'success',
+    status: "success",
     requested: req.requestTime,
-    messaage: "logged out, redirect to home"
-  })
+    messaage: "logged out, redirect to home",
+  });
   res.send("logged out");
-}
+};
 
 ////////////////////////////////////////////////////////////////////ROUTE: /changePassword
 module.exports.changePassword = async (req, res) => {
@@ -301,32 +312,34 @@ module.exports.changePassword = async (req, res) => {
       });
     }
   };
-}
+};
 
 module.exports.authorise = async (req, res) => {
   const { oldPassword, newPassword, confirmPassword } = req.body;
-  const finance = await Finance.findById(req.session.user_id).select('+password');
+  const finance = await Finance.findById(req.session.user_id).select(
+    "+password"
+  );
   if (await finance.correctPassword(oldPassword, newPassword)) {
     if (newPassword === confirmPassword) {
-      await Finance.findByIdAndUpdate(req.session.user_id, { newPassword })
+      await Finance.findByIdAndUpdate(req.session.user_id, { newPassword });
       req.session = null;
       res.status(200).json({
-        status: 'success',
+        status: "success",
         requested: req.requestTime,
-        message: 'redirect to home page'
+        message: "redirect to home page",
       });
     } else {
       res.status(400).json({
-        status: 'failed',
+        status: "failed",
         requested: req.requestTime,
-        message: "passwords don't match"
+        message: "passwords don't match",
       });
     }
   } else {
     res.status(401).json({
-      status: 'unauthorized',
+      status: "unauthorized",
       requested: req.requestTime,
-      message: 'incorrect password'
+      message: "incorrect password",
     });
-  } 
-}
+  }
+};

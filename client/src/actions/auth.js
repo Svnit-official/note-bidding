@@ -22,7 +22,7 @@ export const clubsignin = (formdata, router) => async (dispatch) => {
 export const financesignin = (formdata, router) => async (dispatch) => {
   try {
     const { data } = await api.financeLogin(formdata);
-    dispatch({ type: "FIN_LOGIN", data });
+    dispatch({ type: "FIN_LOGIN", data: data });
     console.log("loggedIn");
     router.push("/");
   } catch (e) {

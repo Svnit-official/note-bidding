@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-
 const financeSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -40,10 +39,12 @@ financeSchema.pre("save", async function (next) {
   next();
 });
 
-financeSchema.methods.correctPassword = async function (candidatePass, userPass) {
+financeSchema.methods.correctPassword = async function (
+  candidatePass,
+  userPass
+) {
   return await bcrypt.compare(candidatePass, userPass);
 };
 
-const Finance = new mongoose.model("finance", financeSchema);
-
-module.exports = Finance;
+module.exports =
+  mongoose.models.Finance || mongoose.model("Finance", financeSchema);
