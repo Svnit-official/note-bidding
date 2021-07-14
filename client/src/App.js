@@ -5,6 +5,7 @@ import FinanceForm from "./components/Finance/Form";
 import FacultyForm from "./components/Faculty/Form";
 import DeanForm from "./components/Dean/Form";
 import SubmitForm from "./components/SubmitForm/SubmitForm";
+import Home from './components/Home/Home';
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
         <Route path="/faculty/login" component={FacultyForm} />
         <Route path="/dean/login" component={DeanForm} />
         <Route path="/club/submit" component={SubmitForm} />
+        <Route path="/club/home" component={Home} />
       </Switch>
     </BrowserRouter>
   );

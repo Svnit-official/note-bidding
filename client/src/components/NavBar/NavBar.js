@@ -1,16 +1,19 @@
 import React from 'react'
 
-import {AppBar,Toolbar,Typography,Button,IconButton} from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
-
+import {AppBar,Toolbar,Typography,Button} from '@material-ui/core';
+import SimpleDrawer from './SwipableMenu/SwipableMenu'
 import useStyles from './styles';
 
 const NavBar = () => {
     const classes = useStyles();
+    const open = true;
+
+
     return (
         <div className={classes.root}>
-            <AppBar position="static" color="primary" elevation={6}>
+            <AppBar position="static" color="primary" elevation={6} >
         <Toolbar>
+    <SimpleDrawer state={open}/>
           
           <Typography variant="h6" className={classes.title}>
             SVNIT FORUM
