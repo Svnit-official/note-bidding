@@ -7,7 +7,10 @@ import DeanForm from "./components/Dean/Form";
 import SubmitForm from "./components/SubmitForm/SubmitForm";
 import Home from "./components/Home/Home";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-import Dashboard from "./components/Dean/Profile";
+import DeanDashboard from "./components/Dean/Profile";
+import FacultyDashboard from "./components/Faculty/Profile";
+import FinanceDashboard from "./components/Finance/Profile";
+
 const App = () => {
   return (
     <BrowserRouter>
@@ -23,7 +26,9 @@ const App = () => {
         <Route path="/dean/login" component={DeanForm} />
         <Route path="/club/submit" component={SubmitForm} />
         <Route path="/club/home" component={Home} />
-        <Route path="/dean/dashboard" component={Dashboard} />
+        <Route path="/dean/dashboard" component={DeanDashboard} />
+        <Route path="/faculty/dashboard" component={FacultyDashboard} />
+        <Route path="/finance/dashboard" component={FinanceDashboard} />
       </Switch>
     </BrowserRouter>
   );
