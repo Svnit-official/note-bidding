@@ -17,6 +17,16 @@ const financeSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
+  financeEmail: {
+    type: String,
+    trim: true,
+  },
+  financeContact: {
+    type: String,
+  },
+  financePic: {
+    type: String,
+  },
   signature: {
     type: String,
     required: [true, "Signature must be there"],

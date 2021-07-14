@@ -18,6 +18,16 @@ const facultySchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
+  facultyEmail: {
+    type: String,
+    trim: true,
+  },
+  facultyContact: {
+    type: String,
+  },
+  facultyPic: {
+    type: String,
+  },
   signature: {
     type: String,
     required: [true, "Signature must be there"],

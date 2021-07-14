@@ -237,7 +237,7 @@ module.exports.getRespondedRequests = async (req, res) => {
 
 //////////////////////////////////////////////////////////////////////ROUTE: /logout
 module.exports.logout = async (req, res) => {
-  req.session= null;
+  req.session.user_id= null;
   console.log("logged out");
   res.status(200).json({
     status: 'success',
@@ -249,47 +249,64 @@ module.exports.logout = async (req, res) => {
 
 ////////////////////////////////////////////////////////////////////ROUTE: /changePassword
 module.exports.changePassword = async (req, res) => {
-  module.exports.dashboard = async (req, res) => {
-    try {
-      res.status(200).json({
-        status: "success",
-        requested: req.requestTime,
-        message: "Page to change password",
-      });
-    } catch (err) {
-      console.log(err);
-      res.status(404).json({
-        status: "failed",
-        messsage: err,
-      });
-    }
-  };
+ try {
+    res.status(200).json({
+      status: "success",
+      requested: req.requestTime,
+      message: "Page to change password",
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({
+      status: "failed",
+      messsage: err,
+    });
+  }
 }
 
 module.exports.authorise = async (req, res) => {
-  const { oldPassword, newPassword, confirmPassword } = req.body;
-  const dean = await Dean.findById(req.session.user_id).select('+password');
-  if (await dean.correctPassword(oldPassword, newPassword)) {
-    if (newPassword === confirmPassword) {
-      await Dean.findByIdAndUpdate(req.session.user_id, { newPassword })
-      req.session = null;
-      res.status(200).json({
-        status: 'success',
+  try {
+    const { oldPassword, newPassword, confirmPassword } = req.body;
+    if (!oldPassword || !newPassword || !confirmPassword) {
+      res.status(401).json({
+        status: "unauthorized",
         requested: req.requestTime,
-        message: 'redirect to home page'
+        message: "Please provide old and new password",
       });
-    } else {
-      res.status(400).json({
-        status: 'failed',
-        requested: req.requestTime,
-        message: "passwords don't match"
-      });
+      return;
     }
-  } else {
-    res.status(401).json({
-      status: 'unauthorized',
-      requested: req.requestTime,
-      message: 'incorrect password'
+    const dean = await Dean.findById(req.session.user_id).select("+password");
+    if (await dean.correctPassword(oldPassword, dean.password)) {
+      if (newPassword === confirmPassword) {
+        await Dean.findByIdAndUpdate(req.session.user_id, { newPassword });
+        req.session.user_id = null;
+        res.status(200).json({
+          status: "success",
+          requested: req.requestTime,
+          message: "redirect to home page",
+        });
+        return;
+      } else {
+        res.status(400).json({
+          status: "failed",
+          requested: req.requestTime,
+          message: "passwords don't match",
+        });
+        return;
+      }
+    } else {
+      res.status(401).json({
+        status: "unauthorized",
+        requested: req.requestTime,
+        message: "incorrect password",
+      });
+      return;
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({
+      status: "failed",
+      messsage: err,
     });
   } 
 }

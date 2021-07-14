@@ -41,7 +41,7 @@ module.exports.authentication = async (req, res) => {
     const flag = await foundClub.correctPassword(password, foundClub.password);
     if (flag == true) {
       req.session.user_id = foundClub._id;
-      console.log("loggedIn");
+      console.log("loggedIn, sent from clubController");
       res.status(200).json({
         status: "success",
         requested: req.time,
@@ -250,7 +250,6 @@ module.exports.sendRequest = async (req, res) => {
   //     sentRequests.push(request);
   //     await Club.findByIdAndUpdate(req.session.user_id, { sentRequests });
   //   }
-  const sentRequest = Request.findById(req.session.user_id);
   const { headName, eventName, eventDate, comments, pdf } = req.body;
   const clubDetails = await Club.findById(req.session.user_id);
   const newRequest = new Request({
@@ -355,60 +354,76 @@ module.exports.deleteRequest = async (req, res) => {
 };
 
 //////////////////////////////////////////////////////////////////////ROUTE: /logout/
-module.exports.logout = async (req, res) => {
-  req.session= null;
+module.exports.logout = (req, res) => {
+  req.session.user_id = null;
   console.log("logged out");
   res.status(200).json({
     status: 'success',
     requested: req.requestTime,
     messaage: "logged out, redirect to home"
   })
-  res.send("logged out");
 }
 
 ////////////////////////////////////////////////////////////////////ROUTE: /changePassword
 module.exports.changePassword = async (req, res) => {
-  module.exports.dashboard = async (req, res) => {
-    try {
-      res.status(200).json({
-        status: "success",
-        requested: req.requestTime,
-        message: "Page to change password",
-      });
-    } catch (err) {
-      console.log(err);
-      res.status(404).json({
-        status: "failed",
-        messsage: err,
-      });
-    }
-  };
+  try {
+    res.status(200).json({
+      status: "success",
+      requested: req.requestTime,
+      message: "Page to change password",
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({
+      status: "failed",
+      messsage: err,
+    });
+  }
 }
 
 module.exports.authorise = async (req, res) => {
-  const { oldPassword, newPassword, confirmPassword } = req.body;
-  const club = await Club.findById(req.session.user_id).select('+password');
-  if (await club.correctPassword(oldPassword, newPassword)) {
-    if (newPassword === confirmPassword) {
-      await Club.findByIdAndUpdate(req.session.user_id, { newPassword })
-      req.session = null;
-      res.status(200).json({
-        status: 'success',
+  try {
+    const { oldPassword, newPassword, confirmPassword } = req.body;
+    if (!oldPassword || !newPassword || !confirmPassword) {
+      res.status(401).json({
+        status: "unauthorized",
         requested: req.requestTime,
-        message: 'redirect to home page'
+        message: "Please provide old and new password",
       });
-    } else {
-      res.status(400).json({
-        status: 'failed',
-        requested: req.requestTime,
-        message: "passwords don't match"
-      });
+      return;
     }
-  } else {
-    res.status(401).json({
-      status: 'unauthorized',
-      requested: req.requestTime,
-      message: 'incorrect password'
+    const club = await Club.findById(req.session.user_id).select("+password");
+    if (await club.correctPassword(oldPassword, club.password)) {
+      if (newPassword === confirmPassword) {
+        await Club.findByIdAndUpdate(req.session.user_id, { newPassword });
+        req.session.user_id = null;
+        res.status(200).json({
+          status: "success",
+          requested: req.requestTime,
+          message: "redirect to home page",
+        });
+        return;
+      } else {
+        res.status(400).json({
+          status: "failed",
+          requested: req.requestTime,
+          message: "passwords don't match",
+        });
+        return;
+      }
+    } else {
+      res.status(401).json({
+        status: "unauthorized",
+        requested: req.requestTime,
+        message: "incorrect password",
+      });
+      return;
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({
+      status: "failed",
+      messsage: err,
     });
-  } 
+  }
 }

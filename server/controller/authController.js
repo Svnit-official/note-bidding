@@ -7,7 +7,7 @@ module.exports.isDeanLoggedIn = async (req, res, next) => {
   if (req.session.user_id && (await Dean.findById(req.session.user_id))) {
     next();
   } else {
-    return next(
+    return(
       res.status(401).json({
         status: "failed",
         message: "Please login to access this route",
@@ -16,14 +16,23 @@ module.exports.isDeanLoggedIn = async (req, res, next) => {
   }
 };
 
-module.exports.isClubLoggedIn = async (req, res, next)=> {
-  if(req.sessions.user_id && (await Club.findById(req.sessions.user_id))){
-    next();
-  } else {
-    return next(
+module.exports.isClubLoggedIn = async (req, res, next) => {
+  try {
+    if (req.session.user_id && (await Club.findById(req.session.user_id))) {
+      next();
+    } else {
+      return (
+        res.status(401).json({
+          status: "failed",
+          message: "Please login to access this route",
+        })
+      );
+    }
+  } catch(err) {
+    return (
       res.status(401).json({
         status: "failed",
-        message: "Please login to access this route",
+        message: err,
       })
     );
   }
@@ -33,7 +42,7 @@ module.exports.isFacultyLoggedIn = async (req, res, next) => {
   if (req.session.user_id && (await Faculty.findById(req.session.user_id))) {
     next();
   } else {
-    return next(
+    return (
       res.status(401).json({
         status: "failed",
         message: "Please login to access this route",
@@ -46,7 +55,7 @@ module.exports.isFinanceLoggedIn = async (req, res, next) => {
   if (req.session.user_id && (await Finance.findById(req.session.user_id))) {
     next();
   } else {
-    return next(
+    return (
       res.status(401).json({
         status: "failed",
         message: "Please login to access this route",

@@ -18,6 +18,16 @@ const deanSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
+  deanEmail: {
+    type: String,
+    trim: true,
+  },
+  deanContact: {
+    type: String,
+  },
+  deanPic: {
+    type: String
+  },  
   signature: {
     type: String,
     required: [true, "Signature must be there"],

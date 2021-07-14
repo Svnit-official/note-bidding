@@ -12,21 +12,20 @@ const clubSchema = new mongoose.Schema({
     type: String,
     select: false
   },
-  passwordConfirm: {
-    type: String,
-    required: [true, "Please provide a password"],
-    validate: [
-      function (el) {
-        return el === this.password;
-      },
-      "Passwords doesn't match",
-    ],
-    select: false
-  },
   clubName: {
     required: [true, "A name must be there"],
     type: String,
     trim: true,
+  },
+  clubEmail: {
+    type: String,
+    trim: true,
+  },
+  clubContact: {
+    type: String
+  },
+  clubLogo: {
+    type: String,
   },
   clubDescription: {
     required: [true, "A description must be there"],
