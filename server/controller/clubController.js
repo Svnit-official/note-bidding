@@ -1,5 +1,7 @@
 const Club = require("./../models/clubModel");
 const Request = require("./../models/requestModel");
+ const mongodb = require("mongodb");
+ const fs = require("fs");
 // const jwt = require("jsonwebtoken");
 // const secret = process.env.SECRET || "this-is-my-secret";
 // const expires = process.env.EXPIRES || 100000;
@@ -158,11 +160,15 @@ module.exports.getDrafts = async (req, res) => {
 module.exports.postDraft = async (req, res) => {
   try {
     const request = req.body;
+    const requestFile = req.files.pdf;
+    requestFile.data =  mongodb.Binary(requestFile.data) ;
+    const date = (new Date().toISOString()).substr(0,10);
+    requestFile.name = `${req.body.clubName}_${req.body.eventName}_${date}.pdf`;
+    request.pdf = requestFile;
     if (
       request.status === "sentByFaculty" ||
       request.status === "sentByFinance"
-    )
-      request.status = "correctedDraft";
+    ) request.status = "correctedDraft";
     else await Request.create(request);
     res.status(200).json({
       status: "success",
@@ -427,3 +433,25 @@ module.exports.authorise = async (req, res) => {
     });
   }
 }
+
+// //////////////////////////////////////////////////////
+module.exports.downloadPdf = async (req, res) => {
+  try {
+    const id = req.body.id;
+    const request = Request.findById(id);
+    const buffer = request.pdf.data.buffer;
+    const name = request.pdf.name;
+    fs.writeFileSync(name, buffer);
+    res.status(200).json({
+      status: "success",
+      requested: req.requestTime,
+      message: "Page to change password",
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({
+      status: "failed",
+      messsage: err,
+    });
+  }
+};

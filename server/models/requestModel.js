@@ -43,7 +43,7 @@ const requestSchema = new mongoose.Schema({
     type: Date,
   },
   pdf: {
-    type: String,
+    type: Object,
   },
   status: {
     type: String,

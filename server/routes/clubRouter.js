@@ -28,6 +28,10 @@ router
   .patch(isClubLoggedIn, clubController.authorise);
 
 router
+  .route("/downloadPdf")
+  .post(isClubLoggedIn, clubController.downloadPdf)
+
+router
   .route("/req")
   .get(isClubLoggedIn, clubController.newRequest) // 'New Request' or '+' button on dashboard
   .delete(isClubLoggedIn, clubController.deleteRequest); // 'Delete' button on 'Request'
