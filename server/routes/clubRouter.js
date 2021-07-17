@@ -14,9 +14,10 @@ router
   .get(clubController.login)
   .post(clubController.authentication);
 
-router.route("/")
-  .get(isClubLoggedIn, clubController.dashboard); //
-
+router.route("/").get(isClubLoggedIn, clubController.dashboard); //
+router.get("/trial/test", isClubLoggedIn, function (req, res) {
+  res.send(hi);
+});
 router
   .route("/clubDetails")
   .get(isClubLoggedIn, clubController.getDetailsById) // 'Club Details' button on dashboard
@@ -27,9 +28,7 @@ router
   .get(isClubLoggedIn, clubController.changePassword)
   .patch(isClubLoggedIn, clubController.authorise);
 
-router
-  .route("/downloadPdf")
-  .post(isClubLoggedIn, clubController.downloadPdf)
+router.route("/downloadPdf").post(isClubLoggedIn, clubController.downloadPdf);
 
 router
   .route("/req")
@@ -50,8 +49,6 @@ router
   .route("/receivedRequests")
   .get(isClubLoggedIn, clubController.getReceivedRequests); // 'Received for Correction' button on dashboard
 
-router
-  .route("/logout")
-  .get(isClubLoggedIn, clubController.logout);
+router.route("/logout").get(isClubLoggedIn, clubController.logout);
 
 module.exports = router;

@@ -15,6 +15,7 @@ const SubmitForm = () => {
     eventDate: "",
     comments: "",
     pdf: "",
+    user: sessionStorage.getItem("user"),
   });
   const handleChange = (e) => {
     setPostData({ ...postData, [e.target.name]: e.target.value });

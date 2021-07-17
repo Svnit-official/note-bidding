@@ -1,7 +1,7 @@
 const Club = require("./../models/clubModel");
 const Request = require("./../models/requestModel");
- const mongodb = require("mongodb");
- const fs = require("fs");
+const mongodb = require("mongodb");
+const fs = require("fs");
 // const jwt = require("jsonwebtoken");
 // const secret = process.env.SECRET || "this-is-my-secret";
 // const expires = process.env.EXPIRES || 100000;
@@ -39,12 +39,13 @@ module.exports.authentication = async (req, res) => {
         message: "please provied username and password",
       });
     }
-    const foundClub = await Club.findOne({ username }).select('+password');
+    const foundClub = await Club.findOne({ username }).select("+password");
     const flag = await foundClub.correctPassword(password, foundClub.password);
+    req.session.user_id = foundClub._id;
     if (flag == true) {
-      req.session.user_id = foundClub._id;
       console.log("loggedIn, sent from clubController");
       res.status(200).json({
+        user: foundClub,
         status: "success",
         requested: req.time,
         message: "authorised",
@@ -60,9 +61,9 @@ module.exports.authentication = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(404).json({
-      status: 'failed',
+      status: "failed",
       message: err,
-    })
+    });
   }
 };
 
@@ -161,14 +162,15 @@ module.exports.postDraft = async (req, res) => {
   try {
     const request = req.body;
     const requestFile = req.files.pdf;
-    requestFile.data =  mongodb.Binary(requestFile.data) ;
-    const date = (new Date().toISOString()).substr(0,10);
+    requestFile.data = mongodb.Binary(requestFile.data);
+    const date = new Date().toISOString().substr(0, 10);
     requestFile.name = `${req.body.clubName}_${req.body.eventName}_${date}.pdf`;
     request.pdf = requestFile;
     if (
       request.status === "sentByFaculty" ||
       request.status === "sentByFinance"
-    ) request.status = "correctedDraft";
+    )
+      request.status = "correctedDraft";
     else await Request.create(request);
     res.status(200).json({
       status: "success",
@@ -256,8 +258,11 @@ module.exports.sendRequest = async (req, res) => {
   //     sentRequests.push(request);
   //     await Club.findByIdAndUpdate(req.session.user_id, { sentRequests });
   //   }
-  const { headName, eventName, eventDate, comments, pdf } = req.body;
-  const clubDetails = await Club.findById(req.session.user_id);
+  console.log("entered");
+  console.log(req.session);
+  const { headName, eventName, eventDate, comments, pdf, user } = req.body;
+  console.log(user);
+  const clubDetails = await Club.findById(user);
   const newRequest = new Request({
     clubName: clubDetails.clubName,
     headName,
@@ -277,14 +282,14 @@ module.exports.sendRequest = async (req, res) => {
       message: "flash of message sent, redirect to /sentRequests",
     },
   });
-}
-  // } catch (err) {
-  //   console.log(err);
-  //   res.status(404).json({
-  //     status: "failed",
-  //     messsage: err,
-  //   });
-  // }
+};
+// } catch (err) {
+//   console.log(err);
+//   res.status(404).json({
+//     status: "failed",
+//     messsage: err,
+//   });
+// }
 //};
 
 // /////////////////////////////////////////////////////////////////////////////ROUTE: /receivedRequests
@@ -364,11 +369,11 @@ module.exports.logout = (req, res) => {
   req.session.user_id = null;
   console.log("logged out");
   res.status(200).json({
-    status: 'success',
+    status: "success",
     requested: req.requestTime,
-    messaage: "logged out, redirect to home"
-  })
-}
+    messaage: "logged out, redirect to home",
+  });
+};
 
 ////////////////////////////////////////////////////////////////////ROUTE: /changePassword
 module.exports.changePassword = async (req, res) => {
@@ -385,7 +390,7 @@ module.exports.changePassword = async (req, res) => {
       messsage: err,
     });
   }
-}
+};
 
 module.exports.authorise = async (req, res) => {
   try {
@@ -432,7 +437,7 @@ module.exports.authorise = async (req, res) => {
       messsage: err,
     });
   }
-}
+};
 
 // //////////////////////////////////////////////////////
 module.exports.downloadPdf = async (req, res) => {
