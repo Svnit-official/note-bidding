@@ -1,7 +1,7 @@
 const Club = require("./../models/clubModel");
 const Request = require("./../models/requestModel");
- const mongodb = require("mongodb");
- const fs = require("fs");
+const mongodb = require("mongodb");
+const fs = require("fs");
 // const jwt = require("jsonwebtoken");
 // const secret = process.env.SECRET || "this-is-my-secret";
 // const expires = process.env.EXPIRES || 100000;
@@ -106,9 +106,22 @@ module.exports.getDetailsById = async (req, res) => {
 module.exports.updateDetailsById = async (req, res) => {
   try {
     const clubDetailsOld = await Club.findById(req.session.user_id);
-    const clubDetailsNew = await Club.findByIdAndUpdate(
+    const clubDetailsNew = req.body;
+    if (req.files.clubLogo) {
+      clubDetailsNew.clubLogo = req.files.clubLogo;
+      clubDetailsNew.clubLogo.data = mongodb.Binary(
+        clubDetailsNew.clubLogo.data
+      );
+    }
+    if (req.files.signature) {
+      clubDetailsNew.signature = req.files.signature;
+      clubDetailsNew.signature = mongodb.Binary(
+        clubDetailsNew.signature.data
+      );
+    }
+    await Club.findByIdAndUpdate(
       req.session.user_id,
-      req.body,
+      clubDetailsNew,
       {
         new: true,
         runValidators: true,
@@ -161,8 +174,14 @@ module.exports.postDraft = async (req, res) => {
   try {
     const request = req.body;
     const requestFile = req.files.pdf;
-    requestFile.data =  mongodb.Binary(requestFile.data) ;
-    const date = (new Date().toISOString()).substr(0,10);
+    requestFile.data = mongodb.Binary(requestFile.data);
+    
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, "0");
+    const mm = String(today.getMonth() + 1).padStart(2, "0"); 
+    const yyyy = today.getFullYear();
+    const date = dd + "/" + mm + "/" + yyyy;
+
     requestFile.name = `${req.body.clubName}_${req.body.eventName}_${date}.pdf`;
     request.pdf = requestFile;
     if (

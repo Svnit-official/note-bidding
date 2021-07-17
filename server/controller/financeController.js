@@ -1,5 +1,7 @@
 const Request = require("./../models/requestModel");
 const Finance = require("../models/financeModel");
+const mongodb = require("mongodb");
+// const fs = require("fs");
 // const jwt = require("jsonwebtoken");
 // const secret = process.env.SECRET || "this-is-my-finance-secret";
 // const expires = process.env.EXPIRES || 1000;
@@ -109,7 +111,20 @@ module.exports.getDetailsById = async (req, res) => {
 module.exports.updateDetailsById = async (req, res) => {
   try {
     const financeDetailsOld = await Finance.findById(req.session.user_id);
-    const financeDetailsNew = await Finance.findByIdAndUpdate(
+    const financeDetailsNew = req.body;
+    if (req.files.financePic) {
+      financeDetailsNew.financePic = req.files.financePic;
+      financeDetailsNew.financePic.data = mongodb.Binary(
+        financeDetailsNew.financePic.data
+      );
+    }
+    if (req.files.signature) {
+      financeDetailsNew.signature = req.files.signature;
+      financeDetailsNew.signature = mongodb.Binary(
+        financeDetailsNew.signature.data
+      );
+    }
+      await Finance.findByIdAndUpdate(
       req.session.user_id,
       req.body,
       {
