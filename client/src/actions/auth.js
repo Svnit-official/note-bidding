@@ -12,8 +12,11 @@ export const deansignin = (formdata, router) => async (dispatch) => {
 export const clubsignin = (formdata, router) => async (dispatch) => {
   try {
     const { data } = await api.clubLogin(formdata);
+    console.log(data);
+    sessionStorage.setItem("user", data.clubID);
     dispatch({ type: "CLUB_LOGIN", data });
     console.log("loggedIn");
+    sessionStorage.getItem("user");
     router.push("/club/submit");
   } catch (e) {
     console.log(e);

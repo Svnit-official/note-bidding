@@ -3,7 +3,7 @@ import FileBase from "react-file-base64";
 import { TextField, Button, Typography, Paper } from "@material-ui/core";
 import useStyles from "./styles";
 import { useDispatch } from "react-redux";
-import { clubFormSubmit } from "../../api/index.js";
+import { clubFormSubmit } from "../../actions/auth";
 import { useHistory } from "react-router-dom";
 const SubmitForm = () => {
   const history = useHistory();
@@ -15,6 +15,7 @@ const SubmitForm = () => {
     eventDate: "",
     comments: "",
     pdf: "",
+    user: sessionStorage.getItem("user"),
   });
   const handleChange = (e) => {
     setPostData({ ...postData, [e.target.name]: e.target.value });
