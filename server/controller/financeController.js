@@ -1,12 +1,13 @@
 const Request = require("./../models/requestModel");
-const Finance = require("../models/financeModel");
+const Finance = require("../models/financeHead");
+
 const mongodb = require("mongodb");
 // const fs = require("fs");
 // const jwt = require("jsonwebtoken");
 // const secret = process.env.SECRET || "this-is-my-finance-secret";
 // const expires = process.env.EXPIRES || 1000;
 // // const Faculty = require('./../models/facultyModel');
-// const bcrypt = require("bcryptjs");
+const bcrypt = require("bcryptjs");
 // const signToken = function (id) {
 //   return jwt.sign({ id }, secret, { expiresIn: expires });
 // };
@@ -39,13 +40,10 @@ module.exports.authentication = async (req, res) => {
         message: "please provied username and password",
       });
     }
-    const foundFinance = await Finance.findOne({ username }).select(
-      "+password"
-    );
-    const flag = await foundFinance.correctPassword(
-      password,
-      foundFinance.password
-    );
+    const foundFinance = await Finance.findOne({ username });
+    console.log(foundFinance);
+
+    const flag = await bcrypt.compare(password, foundFinance.password);
     if (flag == true) {
       req.session.user_id = foundFinance._id;
       console.log("loggedIn");
@@ -53,7 +51,7 @@ module.exports.authentication = async (req, res) => {
         status: "success",
         requested: req.time,
         message: "authorised",
-        clubID: foundFinance._id,
+        financeID: foundFinance._id,
       });
     } else {
       res.status(401).json({
@@ -91,7 +89,8 @@ module.exports.dashboard = async (req, res) => {
 ///////////////////////////////////////////////////////////////////ROUTE: /financeDetails
 module.exports.getDetailsById = async (req, res) => {
   try {
-    const financeDetails = await Finance.findById(req.session.user_id);
+    const { id } = req.params;
+    const financeDetails = await Finance.findById(id);
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
@@ -124,14 +123,10 @@ module.exports.updateDetailsById = async (req, res) => {
         financeDetailsNew.signature.data
       );
     }
-      await Finance.findByIdAndUpdate(
-      req.session.user_id,
-      req.body,
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
+    await Finance.findByIdAndUpdate(req.session.user_id, req.body, {
+      new: true,
+      runValidators: true,
+    });
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
@@ -338,7 +333,9 @@ module.exports.authorise = async (req, res) => {
       });
       return;
     }
-    const finance = await Finance.findById(req.session.user_id).select("+password");
+    const finance = await Finance.findById(req.session.user_id).select(
+      "+password"
+    );
     if (await finance.correctPassword(oldPassword, finance.password)) {
       if (newPassword === confirmPassword) {
         await Finance.findByIdAndUpdate(req.session.user_id, { newPassword });
@@ -371,5 +368,5 @@ module.exports.authorise = async (req, res) => {
       status: "failed",
       messsage: err,
     });
-  } 
+  }
 };

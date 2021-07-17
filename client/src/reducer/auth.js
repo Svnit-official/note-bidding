@@ -1,21 +1,21 @@
-import {
-  deansignin,
-  clubsignin,
-  financesignin,
-  facultysignin,
-} from "../actions/auth";
-const authReducer = (state = { authData: null }, action) => {
+const authReducer = (state = { authData: null, deanDetail: null }, action) => {
   switch (action.type) {
-    case deansignin.DEAN_LOGIN:
+    case "DEAN_LOGIN":
       localStorage.setItem("profile", JSON.stringify({ ...action?.data }));
       return { ...state, authData: action.data, errors: null };
-    case clubsignin.CLUB_LOGIN:
+    case "DEAN_DETAILS":
+      return { ...state, deanDetail: action.payload };
+    case "FACULTY_DETAILS":
+      return { ...state, facultyDetail: action.payload };
+    case "FINANCE_DETAILS":
+      return { ...state, financeDetail: action.payload };
+    case "CLUB_LOGIN":
       localStorage.setItem("profile", JSON.stringify({ ...action?.data }));
       return { ...state, authData: action.data, errors: null };
-    case financesignin.FIN_LOGIN:
+    case "FIN_LOGIN":
       localStorage.setItem("profile", JSON.stringify({ ...action?.data }));
       return { ...state, authData: action.data, errors: null };
-    case facultysignin.FAC_LOGIN:
+    case "FAC_LOGIN":
       localStorage.setItem("profile", JSON.stringify({ ...action?.data }));
       return { ...state, authData: action.data, errors: null };
     default:

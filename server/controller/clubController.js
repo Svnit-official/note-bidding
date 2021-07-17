@@ -3,14 +3,14 @@ const Request = require("./../models/requestModel");
 const mongodb = require("mongodb");
 const fs = require("fs");
 
-const getDate = function() {
+const getDate = function () {
   const today = new Date();
   const dd = String(today.getDate()).padStart(2, "0");
-  const mm = String(today.getMonth() + 1).padStart(2, "0"); 
+  const mm = String(today.getMonth() + 1).padStart(2, "0");
   const yyyy = today.getFullYear();
   const date = dd + "/" + mm + "/" + yyyy;
   return date;
-}
+};
 // const jwt = require("jsonwebtoken");
 // const secret = process.env.SECRET || "this-is-my-secret";
 // const expires = process.env.EXPIRES || 100000;
@@ -125,18 +125,12 @@ module.exports.updateDetailsById = async (req, res) => {
     }
     if (req.files.signature) {
       clubDetailsNew.signature = req.files.signature;
-      clubDetailsNew.signature = mongodb.Binary(
-        clubDetailsNew.signature.data
-      );
+      clubDetailsNew.signature = mongodb.Binary(clubDetailsNew.signature.data);
     }
-    await Club.findByIdAndUpdate(
-      req.session.user_id,
-      clubDetailsNew,
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
+    await Club.findByIdAndUpdate(req.session.user_id, clubDetailsNew, {
+      new: true,
+      runValidators: true,
+    });
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
@@ -183,7 +177,7 @@ module.exports.getDrafts = async (req, res) => {
 module.exports.postDraft = async (req, res) => {
   try {
     const request = req.body;
-    if(req.files){
+    if (req.files) {
       const requestFile = req.files.pdf;
       requestFile.data = mongodb.Binary(requestFile.data);
       const date = getDate();
@@ -195,10 +189,10 @@ module.exports.postDraft = async (req, res) => {
         request.status === "sentByFaculty" ||
         request.status === "sentByFinance" ||
         request.status === "correctedDraft"
-      ) request.status = "correctedDraft";
+      )
+        request.status = "correctedDraft";
       await Request.findByIdAndUpdate(request._id, request);
-    }
-    else {     
+    } else {
       await Request.create(request);
     }
     res.status(200).json({
@@ -271,33 +265,33 @@ module.exports.sendRequest = async (req, res) => {
   //req.body should contain _id if its an old request, status of the request
   try {
     const request = req.body;
-    const userId = request.user;
-    if(req.files){
+    const user = req.body.user;
+    if (req.files) {
       const requestFile = req.files.pdf;
       requestFile.data = mongodb.Binary(requestFile.data);
       const date = getDate();
       requestFile.name = `${req.body.clubName}_${req.body.eventName}_${date}.pdf`;
       request.pdf = requestFile;
     }
-    const clubDetails = await Club.findById(userId);
+    const clubDetails = await Club.findById(user);
     if (request._id) {
       if (
         request.status === "sentByFaculty" ||
         request.status === "sentByFinance" ||
-        request.status === "correctedDraft" ||
-      ) request.status = "receivedByFaculty";
+        request.status === "correctedDraft"
+      )
+        request.status = "receivedByFaculty";
       else {
         request.status = "sentByClub";
       }
       await Request.findByIdAndUpdate(request._id, request);
-    }
-    else {     
+    } else {
       await Request.create(request);
     }
 
     const sentRequests = clubDetails.sentRequests;
-    sentRequests.push(request);
-    await Club.findByIdAndUpdate(userId, { sentRequests });
+    sentRequests.push(request._id);
+    await Club.findByIdAndUpdate(user, { sentRequests });
 
     console.log("successful");
     res.status(200).json({
@@ -306,7 +300,7 @@ module.exports.sendRequest = async (req, res) => {
       data: {
         message: "flash of message sent, redirect to /sentRequests",
       },
-    });  
+    });
   } catch (err) {
     console.log(err);
     res.status(404).json({

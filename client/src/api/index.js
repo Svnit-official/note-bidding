@@ -9,3 +9,8 @@ export const facultyLogin = (formdata) =>
   API.post("/api/v1/faculty/login", formdata);
 export const clubFormSubmit = (formdata) =>
   API.post("/api/v1/club/sentRequests", formdata);
+export const getDeanDetails = (id) => API.get(`api/v1/dean/${id}/details`);
+export const getFacultyDetails = (id) =>
+  API.get(`api/v1/faculty/${id}/details`);
+export const getFinanceDetails = (id) =>
+  API.get(`api/v1/finance/${id}/details`);

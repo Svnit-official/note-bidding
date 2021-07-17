@@ -26,9 +26,9 @@ const App = () => {
         <Route path="/dean/login" component={DeanForm} />
         <Route path="/club/submit" component={SubmitForm} />
         <Route path="/club/home" component={Home} />
-        <Route path="/dean/dashboard" component={DeanDashboard} />
-        <Route path="/faculty/dashboard" component={FacultyDashboard} />
-        <Route path="/finance/dashboard" component={FinanceDashboard} />
+        <Route path="/dean/:id/details" component={DeanDashboard} />
+        <Route path="/faculty/:id/details" component={FacultyDashboard} />
+        <Route path="/finance/:id/details" component={FinanceDashboard} />
       </Switch>
     </BrowserRouter>
   );

@@ -1,7 +1,7 @@
 import { clubFormSubmit } from "../actions/auth";
 const formReducer = (state = { submittedForms: [] }, action) => {
   switch (action.type) {
-    case clubFormSubmit.CLUB_FORM_SUBMIT:
+    case "CLUB_FORM_SUBMIT":
       return {
         ...state,
         submittedForms: [...state.submittedForms, action.data],

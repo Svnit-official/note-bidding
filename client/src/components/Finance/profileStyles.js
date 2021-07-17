@@ -18,9 +18,11 @@ export default makeStyles((theme) => ({
   details: {
     paddingTop: theme.spacing(6),
     paddingBottom: theme.spacing(5),
+    height: "42vh",
   },
   image: {
     padding: theme.spacing(6),
+    height: "40vh",
   },
   form: {
     display: "flex",

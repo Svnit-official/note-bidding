@@ -11,12 +11,15 @@ const deanSchema = new mongoose.Schema({
   password: {
     required: [true, "A name must be there"],
     type: String,
-    select: false
+    select: false,
   },
   deanName: {
     required: [true, "A name must be there"],
     type: String,
     trim: true,
+  },
+  deanDesignation: {
+    type: String,
   },
   deanEmail: {
     type: String,
@@ -26,8 +29,8 @@ const deanSchema = new mongoose.Schema({
     type: String,
   },
   deanPic: {
-    type: String
-  },  
+    type: String,
+  },
   signature: {
     type: String,
     required: [true, "Signature must be there"],
@@ -37,7 +40,7 @@ const deanSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: "Request",
     },
-  ]
+  ],
 });
 
 deanSchema.pre("save", async function (next) {

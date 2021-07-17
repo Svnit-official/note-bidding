@@ -2,12 +2,20 @@ import * as api from "../api/index.js";
 export const deansignin = (formdata, router) => async (dispatch) => {
   try {
     const { data } = await api.deanLogin(formdata);
+    sessionStorage.setItem("dean", data.deanID);
+    console.log(sessionStorage.getItem("dean"));
     dispatch({ type: "DEAN_LOGIN", data });
     console.log("loggedIn");
-    router.push("/");
+    router.push(`/dean/${data.deanID}/details`);
   } catch (e) {
     console.log(e);
   }
+};
+export const deanDetails = (id) => async (dispatch) => {
+  console.log("hi");
+  const { data } = await api.getDeanDetails(id);
+  dispatch({ type: "DEAN_DETAILS", payload: data.data.deanDetails });
+  console.log(data.data.deanDetails);
 };
 export const clubsignin = (formdata, router) => async (dispatch) => {
   try {
@@ -25,22 +33,41 @@ export const clubsignin = (formdata, router) => async (dispatch) => {
 export const financesignin = (formdata, router) => async (dispatch) => {
   try {
     const { data } = await api.financeLogin(formdata);
+    console.log(data);
+    sessionStorage.setItem("finance", data.financeID);
+    console.log(sessionStorage.getItem("faculty"));
     dispatch({ type: "FIN_LOGIN", data: data });
     console.log("loggedIn");
-    router.push("/");
+    router.push(`/finance/${data.financeID}/details`);
   } catch (e) {
     console.log(e);
   }
 };
+export const financeDetails = (id) => async (dispatch) => {
+  console.log("hi");
+  const { data } = await api.getFinanceDetails(id);
+  console.log(data);
+  dispatch({ type: "FINANCE_DETAILS", payload: data.data.financeDetails });
+  console.log(data.data.financeDetails);
+};
 export const facultysignin = (formdata, router) => async (dispatch) => {
   try {
     const { data } = await api.facultyLogin(formdata);
+    console.log(data);
+    sessionStorage.setItem("faculty", data.facultyID);
+    console.log(sessionStorage.getItem("faculty"));
     dispatch({ type: "FAC_LOGIN", data });
     console.log("loggedIn");
-    router.push("/");
+    router.push(`/faculty/${data.facultyID}/details`);
   } catch (e) {
     console.log(e);
   }
+};
+export const facultyDetails = (id) => async (dispatch) => {
+  console.log("hi");
+  const { data } = await api.getFacultyDetails(id);
+  dispatch({ type: "FACULTY_DETAILS", payload: data.data.facultyDetails });
+  console.log(data.data.facultyDetails);
 };
 export const clubFormSubmit = (formdata, router) => async (dispatch) => {
   console.log(formdata);

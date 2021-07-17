@@ -13,7 +13,7 @@ const clubSchema = new mongoose.Schema({
     select: false
   },
   clubName: {
-    required: [true, "A name must be there"],
+    // required: [true, "A name must be there"],
     type: String,
     trim: true,
   },
