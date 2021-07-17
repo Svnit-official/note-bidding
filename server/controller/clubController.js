@@ -2,6 +2,7 @@ const Club = require("./../models/clubModel");
 const Request = require("./../models/requestModel");
  const mongodb = require("mongodb");
  const fs = require("fs");
+ const jwt = require("jsonwebtoken");
 // const jwt = require("jsonwebtoken");
 // const secret = process.env.SECRET || "this-is-my-secret";
 // const expires = process.env.EXPIRES || 100000;
@@ -42,13 +43,15 @@ module.exports.authentication = async (req, res) => {
     const foundClub = await Club.findOne({ username }).select('+password');
     const flag = await foundClub.correctPassword(password, foundClub.password);
     if (flag == true) {
-      req.session.user_id = foundClub._id;
+      // req.session.user_id = foundClub._id;
+      const token = jwt.sign({username : foundClub.username , id : foundClub._id},'test',{expiresIn : "2h"});
       console.log("loggedIn, sent from clubController");
       res.status(200).json({
         status: "success",
         requested: req.time,
         message: "authorised",
         clubID: foundClub._id,
+        token,
       });
     } else {
       res.status(401).json({
@@ -256,8 +259,9 @@ module.exports.sendRequest = async (req, res) => {
   //     sentRequests.push(request);
   //     await Club.findByIdAndUpdate(req.session.user_id, { sentRequests });
   //   }
-  const { headName, eventName, eventDate, comments, pdf } = req.body;
-  const clubDetails = await Club.findById(req.session.user_id);
+  const {headName, eventName, eventDate, comments, pdf,id } = req.body;
+  console.log(headName, eventName, eventDate, comments)
+  const clubDetails = await Club.findById(id);
   const newRequest = new Request({
     clubName: clubDetails.clubName,
     headName,

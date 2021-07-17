@@ -12,6 +12,9 @@ import FacultyDashboard from "./components/Faculty/Profile";
 import FinanceDashboard from "./components/Finance/Profile";
 
 const App = () => {
+
+  const user  = JSON.parse(localStorage.getItem('club_profile'));
+
   return (
     <BrowserRouter>
       <Switch>
@@ -25,7 +28,7 @@ const App = () => {
         <Route path="/faculty/login" component={FacultyForm} />
         <Route path="/dean/login" component={DeanForm} />
         <Route path="/club/submit" component={SubmitForm} />
-        <Route path="/club/home" component={Home} />
+        <Route path="/club/home" component={()=> !user ? <ClubForm /> : <Home />} />
         <Route path="/dean/dashboard" component={DeanDashboard} />
         <Route path="/faculty/dashboard" component={FacultyDashboard} />
         <Route path="/finance/dashboard" component={FinanceDashboard} />

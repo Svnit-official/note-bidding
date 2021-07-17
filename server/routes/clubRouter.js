@@ -43,8 +43,8 @@ router
 
 router
   .route("/sentRequests")
-  .get(isClubLoggedIn, clubController.getSentRequests) // 'Sent Requests' button on dashboard
-  .post(isClubLoggedIn, clubController.sendRequest); // 'Send' or 'Update and send' button on 'Request'
+  .get( clubController.getSentRequests) // 'Sent Requests' button on dashboard
+  .post( clubController.sendRequest); // 'Send' or 'Update and send' button on 'Request'
 
 router
   .route("/receivedRequests")

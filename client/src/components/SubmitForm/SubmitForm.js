@@ -5,10 +5,14 @@ import useStyles from "./styles";
 import { useDispatch } from "react-redux";
 import { clubFormSubmit } from "../../actions/auth";
 import { useHistory } from "react-router-dom";
+
 const SubmitForm = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const classes = useStyles();
+
+  const user = JSON.parse(localStorage.getItem('club_profile'))
+
   const [postData, setPostData] = useState({
     headName: "",
     eventName: "",
@@ -22,7 +26,7 @@ const SubmitForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(postData);
-    dispatch(clubFormSubmit(postData, history));
+    dispatch(clubFormSubmit({...postData , id : user?.clubID}, history));
   };
 
   return (

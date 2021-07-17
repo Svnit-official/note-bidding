@@ -19,7 +19,7 @@ module.exports.isDeanLoggedIn = async (req, res, next) => {
 
 module.exports.isClubLoggedIn = async (req, res, next) => {
   try {
-    if (req.session.user_id && (await Club.findById(req.session.user_id))) {
+    if (auth) {
       console.log('the route is authorised!')
       next();
     } else {
@@ -39,6 +39,12 @@ module.exports.isClubLoggedIn = async (req, res, next) => {
     );
   }
 };
+
+
+// const token = jwt.sign({email : existingUser.email , id : existingUser._id},'test',{expiresIn : "1h"});
+
+// res.status(200).json({result : existingUser , token});
+
 
 module.exports.isFacultyLoggedIn = async (req, res, next) => {
   if (req.session.user_id && (await Faculty.findById(req.session.user_id))) {
