@@ -22,20 +22,20 @@ const MongoStore = require("connect-mongo");
 app.use(express.json());
 app.use(cookieParser());
 app.use(flash());
-const sessionconfig = {
-  name: "session",
-  secret: "mysecret",
-  resave: false,
-  cacheLocation: "localStorage",
-  saveUninitialized: true,
-  cookie: {
-    httpOnly: true,
-    secure: true,
-    expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-    maxAge: 1000 * 60 * 60 * 24 * 7,
-  },
-};
-app.use(session(sessionconfig));
+// const sessionconfig = {
+//   name: "session",
+//   secret: "mysecret",
+//   resave: false,
+//   cacheLocation: "localStorage",
+//   saveUninitialized: true,
+//   cookie: {
+//     httpOnly: true,
+//     secure: true,
+//     expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+//     maxAge: 1000 * 60 * 60 * 24 * 7,
+//   },
+// };
+// app.use(session(sessionconfig));
 app.use((req, res, next) => {
   console.log("Hello from the index page middleware 👋");
   req.requestTime = new Date().toISOString();

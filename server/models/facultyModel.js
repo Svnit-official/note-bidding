@@ -18,6 +18,9 @@ const facultySchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
+  facultyDesignation: {
+    type: String,
+  },
   facultyEmail: {
     type: String,
     trim: true,
@@ -50,7 +53,10 @@ facultySchema.pre("save", async function (next) {
   next();
 });
 
-facultySchema.methods.correctPassword = async function (candidatePass, userPass) {
+facultySchema.methods.correctPassword = async function (
+  candidatePass,
+  userPass
+) {
   return await bcrypt.compare(candidatePass, userPass);
 };
 

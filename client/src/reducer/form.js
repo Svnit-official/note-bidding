@@ -1,4 +1,4 @@
-import { clubFormSubmit } from "../actions/auth";
+import { CLUB_FORM_SUBMIT } from "../constents/authActionTypes";
 const formReducer = (state = { submittedForms: [] }, action) => {
   switch (action.type) {
     case "CLUB_FORM_SUBMIT":

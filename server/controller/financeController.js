@@ -2,6 +2,7 @@ const Request = require("./../models/requestModel");
 const Finance = require("../models/financeHead");
 
 const mongodb = require("mongodb");
+const jwt = require("jsonwebtoken");
 // const fs = require("fs");
 // const jwt = require("jsonwebtoken");
 // const secret = process.env.SECRET || "this-is-my-finance-secret";
@@ -45,13 +46,17 @@ module.exports.authentication = async (req, res) => {
 
     const flag = await bcrypt.compare(password, foundFinance.password);
     if (flag == true) {
-      req.session.user_id = foundFinance._id;
+      // req.session.user_id = foundFinance._id;
+      const token = jwt.sign({ id: foundFinance._id }, "finance", {
+        expiresIn: "2h",
+      });
       console.log("loggedIn");
       res.status(200).json({
         status: "success",
         requested: req.time,
         message: "authorised",
         financeID: foundFinance._id,
+        token,
       });
     } else {
       res.status(401).json({

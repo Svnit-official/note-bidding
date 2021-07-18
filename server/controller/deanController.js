@@ -1,6 +1,7 @@
 const Dean = require("./../models/deanModel");
 const Request = require("./../models/requestModel");
 const mongodb = require("mongodb");
+const jwt = require("jsonwebtoken");
 // const fs = require("fs");
 // const jwt = require("jsonwebtoken");
 // const secret = process.env.SECRET || "this-is-my-dean-secret";
@@ -40,13 +41,17 @@ module.exports.authentication = async (req, res) => {
     const foundDean = await Dean.findOne({ username }).select("+password");
     const flag = await foundDean.correctPassword(password, foundDean.password);
     if (flag == true) {
-      req.session.user_id = foundDean._id;
+      // req.session.user_id = foundDean._id;
+      const token = jwt.sign({ id: foundDean._id }, "dean", {
+        expiresIn: "2h",
+      });
       console.log("loggedIn");
       res.status(200).json({
         status: "success",
         requested: req.time,
         message: "authorised",
         deanID: foundDean._id,
+        token,
       });
     } else {
       res.status(401).json({

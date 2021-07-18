@@ -1,5 +1,6 @@
 const Club = require("./../models/clubModel");
 const Request = require("./../models/requestModel");
+ const jwt = require("jsonwebtoken");
 const mongodb = require("mongodb");
 const fs = require("fs");
 
@@ -50,8 +51,8 @@ module.exports.authentication = async (req, res) => {
     }
     const foundClub = await Club.findOne({ username }).select("+password");
     const flag = await foundClub.correctPassword(password, foundClub.password);
-    req.session.user_id = foundClub._id;
     if (flag == true) {
+      const token = jwt.sign({id : foundClub._id},'club',{expiresIn : "2h"});
       console.log("loggedIn, sent from clubController");
       res.status(200).json({
         user: foundClub,
@@ -59,6 +60,7 @@ module.exports.authentication = async (req, res) => {
         requested: req.time,
         message: "authorised",
         clubID: foundClub._id,
+        token,
       });
     } else {
       res.status(401).json({
@@ -264,23 +266,26 @@ module.exports.getSentRequests = async (req, res) => {
 module.exports.sendRequest = async (req, res) => {
   //req.body should contain _id if its an old request, status of the request
   try {
+    console.log("kch kehna hai");
     const request = req.body;
-    const user = req.body.user;
-    if (req.files) {
-      const requestFile = req.files.pdf;
-      requestFile.data = mongodb.Binary(requestFile.data);
-      const date = getDate();
-      requestFile.name = `${req.body.clubName}_${req.body.eventName}_${date}.pdf`;
-      request.pdf = requestFile;
-    }
-    const clubDetails = await Club.findById(user);
+    // console.log(request);
+    const clubDetails = await Club.findById(request.club_id);
+    request.clubName = clubDetails.clubName;
+    console.log(request.pdf);
+    // if(request.pdf){
+    //   const requestFile = request.pdf;
+    //   requestFile.data = mongodb.Binary(requestFile.data);
+    //   const date = getDate();
+    //   requestFile.name = `${request.clubName}_${request.eventName}_${date}.pdf`;
+    //   request.pdf = requestFile;
+    // }
+
     if (request._id) {
       if (
         request.status === "sentByFaculty" ||
         request.status === "sentByFinance" ||
-        request.status === "correctedDraft"
-      )
-        request.status = "receivedByFaculty";
+        request.status === "correctedDraft" ) 
+              request.status = "receivedByFaculty";
       else {
         request.status = "sentByClub";
       }
@@ -291,7 +296,7 @@ module.exports.sendRequest = async (req, res) => {
 
     const sentRequests = clubDetails.sentRequests;
     sentRequests.push(request._id);
-    await Club.findByIdAndUpdate(user, { sentRequests });
+    await Club.findByIdAndUpdate(request.club_id, { sentRequests });
 
     console.log("successful");
     res.status(200).json({

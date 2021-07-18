@@ -14,6 +14,7 @@ export const deansignin = (formdata, router) => async (dispatch) => {
 export const deanDetails = (id) => async (dispatch) => {
   console.log("hi");
   const { data } = await api.getDeanDetails(id);
+  console.log(data);
   dispatch({ type: "DEAN_DETAILS", payload: data.data.deanDetails });
   console.log(data.data.deanDetails);
 };
@@ -27,11 +28,10 @@ export const clubsignin = (formdata, router) => async (dispatch) => {
   try {
     const { data } = await api.clubLogin(formdata);
     console.log(data);
-    sessionStorage.setItem("user", data.clubID);
     dispatch({ type: "CLUB_LOGIN", data });
     console.log("loggedIn");
     sessionStorage.getItem("user");
-    router.push("/club/submit");
+    router.push("/club/home");
   } catch (e) {
     console.log(e);
   }

@@ -1,15 +1,35 @@
 import axios from "axios";
-const API = axios.create({ baseURL: "http://localhost:8000" });
+const API = axios.create({ baseURL: "http://localhost:8000/api/v1" });
 
-export const deanLogin = (formdata) => API.post("/api/v1/dean/login", formdata);
-export const clubLogin = (formdata) => API.post("/api/v1/club/login", formdata);
-export const financeLogin = (formdata) =>
-  API.post("/api/v1/finance/login", formdata);
-export const facultyLogin = (formdata) =>
-  API.post("/api/v1/faculty/login", formdata);
+API.interceptors.request.use((req) => {
+  if (localStorage.getItem("club_profile")) {
+    req.headers.authorization = `Bearer ${
+      JSON.parse(localStorage.getItem("club_profile")).token
+    }`;
+  } else if (localStorage.getItem("dean_profile")) {
+    req.headers.authorization = `Bearer ${
+      JSON.parse(localStorage.getItem("dean_profile")).token
+    }`;
+  } else if (localStorage.getItem("fac_profile")) {
+    req.headers.authorization = `Bearer ${
+      JSON.parse(localStorage.getItem("fac_profile")).token
+    }`;
+  } else if (localStorage.getItem("fin_profile")) {
+    req.headers.authorization = `Bearer ${
+      JSON.parse(localStorage.getItem("fin_profile")).token
+    }`;
+  }
+
+  return req;
+});
+
+export const deanLogin = (formdata) => API.post("/dean/login", formdata);
+export const clubLogin = (formdata) => API.post("/club/login", formdata);
+export const financeLogin = (formdata) => API.post("/finance/login", formdata);
+export const facultyLogin = (formdata) => API.post("/faculty/login", formdata);
 export const clubFormSubmit = (formdata) =>
   API.post("/api/v1/club/sentRequests", formdata);
-export const getDeanDetails = (id) => API.get(`api/v1/dean/${id}/details`);
+export const getDeanDetails = (id) => API.get(`/dean/${id}/details`);
 export const getFacultyDetails = (id) =>
   API.get(`api/v1/faculty/${id}/details`);
 export const getFinanceDetails = (id) =>

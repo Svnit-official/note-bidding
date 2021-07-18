@@ -3,18 +3,23 @@ import FileBase from "react-file-base64";
 import { TextField, Button, Typography, Paper } from "@material-ui/core";
 import useStyles from "./styles";
 import { useDispatch } from "react-redux";
-import { clubFormSubmit } from "../../actions/auth";
+import { clubFormSubmit } from "../../actions/clubActions";
 import { useHistory } from "react-router-dom";
+
 const SubmitForm = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const classes = useStyles();
+
+  const user = JSON.parse(localStorage.getItem('club_profile'))
+
   const [postData, setPostData] = useState({
     headName: "",
     eventName: "",
     eventDate: "",
     comments: "",
     pdf: "",
+    clubName : "",
     user: sessionStorage.getItem("user"),
   });
   const handleChange = (e) => {
@@ -23,7 +28,7 @@ const SubmitForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(postData);
-    dispatch(clubFormSubmit(postData, history));
+    dispatch(clubFormSubmit({...postData , club_id : user?.clubID}, history));
   };
 
   return (

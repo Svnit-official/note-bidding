@@ -18,6 +18,9 @@ const financeHeadSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
+  financeDesignation: {
+    type: String,
+  },
   financeContact: {
     type: String,
   },
