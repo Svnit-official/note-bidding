@@ -2,7 +2,8 @@ const fs = require("fs");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const Club = require(`${__dirname}/../models/clubModel`);
-const Finance = require(`${__dirname}/../models/financeModel`);
+//const Finance = require(`${__dirname}/../models/financeModel`);
+const Finance = require(`${__dirname}/../models/financeHead`);
 const Faculty = require(`${__dirname}/../models/facultyModel`);
 const Dean = require(`${__dirname}/../models/deanModel`);
 
