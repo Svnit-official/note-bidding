@@ -39,17 +39,24 @@ module.exports.authentication = async (req, res) => {
         message: "please provied username and password",
       });
     }
-    const foundFaculty = await Faculty.findOne({ username }).select("+password");
-    const flag = await foundFaculty.correctPassword(password, foundFaculty.password);
+    const foundFaculty = await Faculty.findOne({ username }).select(
+      "+password"
+    );
+    const flag = await foundFaculty.correctPassword(
+      password,
+      foundFaculty.password
+    );
     if (flag == true) {
       // req.session.user_id = foundFaculty._id;
-      const token = jwt.sign({ id : foundFaculty._id},'faculty',{expiresIn : "2h"});
+      const token = jwt.sign({ id: foundFaculty._id }, "faculty", {
+        expiresIn: "2h",
+      });
       console.log("loggedIn");
       res.status(200).json({
         status: "success",
         requested: req.time,
         message: "authorised",
-        clubID: foundFaculty._id,
+        facultyID: foundFaculty._id,
         token,
       });
     } else {
@@ -88,7 +95,8 @@ module.exports.dashboard = async (req, res) => {
 ///////////////////////////////////////////////////////////////////ROUTE: /facultyDetails
 module.exports.getDetailsById = async (req, res) => {
   try {
-    const facultyDetails = await Faculty.findById(req.session.user_id);
+    const { id } = req.params;
+    const facultyDetails = await Faculty.findById(id);
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
@@ -107,28 +115,13 @@ module.exports.getDetailsById = async (req, res) => {
 
 module.exports.updateDetailsById = async (req, res) => {
   try {
-    const facultyDetailsOld = await Faculty.findById(req.session.user_id);
+    const { id } = req.params;
+    const facultyDetailsOld = await Faculty.findById(id);
     const facultyDetailsNew = req.body;
-    if (req.files.facultyPic) {
-      facultyDetailsNew.facultyPic = req.files.facultyPic;
-      facultyDetailsNew.facultyPic.data = mongodb.Binary(
-        facultyDetailsNew.facultyPic.data
-      );
-    }
-    if (req.files.signature) {
-      facultyDetailsNew.signature = req.files.signature;
-      facultyDetailsNew.signature = mongodb.Binary(
-        facultyDetailsNew.signature.data
-      );
-    }
-    await Faculty.findByIdAndUpdate(
-      req.session.user_id,
-      facultyDetailsNew,
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
+    await Faculty.findByIdAndUpdate(id, facultyDetailsNew, {
+      new: true,
+      runValidators: true,
+    });
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
@@ -172,13 +165,16 @@ module.exports.getPendingRequests = async (req, res) => {
 
 module.exports.sendBackPendingRequest = async (req, res) => {
   try {
+    const {id } = req.params;
     const request = await Request.findById(req.body._id);
     const comments = req.body.comments;
     if (request.status === "sentByClub") {
-      const faculty = await Faculty.findById(req.session.user_id);
+      const faculty = await Faculty.findById(id);
       const respondedRequests = faculty.respondedRequests;
       respondedRequests.push(request);
-      await Faculty.findByIdAndUpdate(req.session.user_id, { respondedRequests });
+      await Faculty.findByIdAndUpdate(id, {
+        respondedRequests,
+      });
     }
     await Request.findByIdAndUpdate(req.body._id, {
       status: "sentByFaculty",
@@ -204,13 +200,16 @@ module.exports.sendBackPendingRequest = async (req, res) => {
 
 module.exports.approvePendingRequest = async (req, res) => {
   try {
+    const {id } = req.params;
     const request = await Request.findById(req.body._id);
     const comments = req.body.comments;
     if (request.status === "sentByClub") {
-      const faculty = await Faculty.findById(req.session.user_id);
+      const faculty = await Faculty.findById(id);
       const respondedRequests = faculty.respondedRequests;
       respondedRequests.push(request);
-      await Faculty.findByIdAndUpdate(req.session.user_id, { respondedRequests });
+      await Faculty.findByIdAndUpdate(id, {
+        respondedRequests,
+      });
     }
     await Request.findByIdAndUpdate(req.body._id, {
       status: "approvedByFaculty",
@@ -235,13 +234,16 @@ module.exports.approvePendingRequest = async (req, res) => {
 };
 module.exports.rejectPendingRequest = async (req, res) => {
   try {
+    const {id } = req.params;
     const request = await Request.findById(req.body._id);
     const comments = req.body.comments;
     if (request.status === "sentByClub") {
-      const faculty = await Faculty.findById(req.session.user_id);
+      const faculty = await Faculty.findById(id);
       const respondedRequests = faculty.respondedRequests;
       respondedRequests.push(request);
-      await Faculty.findByIdAndUpdate(req.session.user_id, { respondedRequests });
+      await Faculty.findByIdAndUpdate(id, {
+        respondedRequests,
+      });
     }
     await Request.findByIdAndUpdate(req.body._id, {
       status: "rejectedByFaculty",
@@ -268,7 +270,8 @@ module.exports.rejectPendingRequest = async (req, res) => {
 /////////////////////////////////////////////////////////////////////////ROUTE: /respondedRequests
 module.exports.getRespondedRequests = async (req, res) => {
   try {
-    const faculty = await Faculty.findById(req.session.user_id);
+    const {id} = req.params;
+    const faculty = await Faculty.findById(id);
     const requestIds = faculty.respondedRequests;
     const requests = await Request.find({ _id: [...requestIds] });
     res.status(200).json({
@@ -293,15 +296,14 @@ module.exports.getRespondedRequests = async (req, res) => {
 
 //////////////////////////////////////////////////////////////////////ROUTE: /logout/
 module.exports.logout = async (req, res) => {
-  req.session.user_id= null;
   console.log("logged out");
   res.status(200).json({
-    status: 'success',
+    status: "success",
     requested: req.requestTime,
-    messaage: "logged out, redirect to home"
-  })
+    messaage: "logged out, redirect to home",
+  });
   res.send("logged out");
-}
+};
 
 ////////////////////////////////////////////////////////////////////ROUTE: /changePassword
 module.exports.changePassword = async (req, res) => {
@@ -318,7 +320,7 @@ module.exports.changePassword = async (req, res) => {
       messsage: err,
     });
   }
-}
+};
 
 module.exports.authorise = async (req, res) => {
   try {
@@ -331,7 +333,9 @@ module.exports.authorise = async (req, res) => {
       });
       return;
     }
-    const faculty = await Faculty.findById(req.session.user_id).select("+password");
+    const faculty = await Faculty.findById(req.session.user_id).select(
+      "+password"
+    );
     if (await Faculty.correctPassword(oldPassword, faculty.password)) {
       if (newPassword === confirmPassword) {
         await Faculty.findByIdAndUpdate(req.session.user_id, { newPassword });
@@ -364,5 +368,5 @@ module.exports.authorise = async (req, res) => {
       status: "failed",
       messsage: err,
     });
-  } 
-}
+  }
+};

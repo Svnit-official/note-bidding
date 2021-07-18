@@ -8,17 +8,18 @@ import SubmitForm from "../SubmitForm/SubmitForm";
 import IconButton from "@material-ui/core/IconButton";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import SwipeableTemporaryDrawer from "../NavBar/SwipableMenu/SwipableMenu";
-import {useDispatch} from "react-redux";
-import { getRequest } from "../../actions/clubActions";
+import {useDispatch,useSelector} from "react-redux";
+import {getRequest , getDraftRequest} from "../../actions/clubActions";
 
 const Home = () => {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
 
   const user = JSON.parse(localStorage.getItem('club_profile'))
-  console.log(typeof (user.clubID));
+  console.log(user.clubID);
   useEffect(()=>{
-    dispatch(getRequest(user.clubID));
+    dispatch(getDraftRequest(user.clubID) );
+    dispatch(getRequest(user.clubID) );
   }
     ,[]);
 
@@ -36,8 +37,6 @@ const Home = () => {
       <IconButton aria-label="Add" onClick={handleClickOpen}>
         <AddCircleOutlineIcon color="primary" />
       </IconButton>
-      <Card progress={3} />
-      <Card progress={2} />
 
       <Dialog
         open={open}

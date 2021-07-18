@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const allowedStatus = [
   "draft", // types of status of requests:
@@ -26,12 +26,12 @@ const requestSchema = new mongoose.Schema({
   },
   clubName: {
     type: String,
-    required: [true, "A name must be there"],
+    // required: [true, "A name must be there"],
     sparse: true,
     unique: false,
   },
   headName: {
-    required: [true, "A name must be there"],
+    // required: [true, "A name must be there"],
     type: String,
     trim: true,
   },
@@ -43,7 +43,7 @@ const requestSchema = new mongoose.Schema({
     type: Date,
   },
   pdf: {
-    type: Object,
+    type: String,
   },
   status: {
     type: String,

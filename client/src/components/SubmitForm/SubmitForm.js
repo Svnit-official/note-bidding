@@ -3,33 +3,34 @@ import FileBase from "react-file-base64";
 import { TextField, Button, Typography, Paper } from "@material-ui/core";
 import useStyles from "./styles";
 import { useDispatch } from "react-redux";
-import { clubFormSubmit } from "../../actions/clubActions";
+import { clubFormSubmit , clubFormDraft } from "../../actions/clubActions";
 import { useHistory } from "react-router-dom";
 
 const SubmitForm = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const classes = useStyles();
-
-  const user = JSON.parse(localStorage.getItem('club_profile'))
-
+  const user = JSON.parse(localStorage.getItem("club_profile"));
+  const clubID = user?.clubID;
   const [postData, setPostData] = useState({
     headName: "",
     eventName: "",
     eventDate: "",
     comments: "",
     pdf: "",
-    clubName : "",
-    user: sessionStorage.getItem("user"),
+    clubName: "",
   });
   const handleChange = (e) => {
     setPostData({ ...postData, [e.target.name]: e.target.value });
   };
   const handleSubmit = (e) => {
-    e.preventDefault();
     console.log(postData);
-    dispatch(clubFormSubmit({...postData , club_id : user?.clubID}, history));
+    dispatch(clubFormSubmit({ ...postData },clubID, history));
   };
+
+  const saveDraft = (e) => {
+    dispatch(clubFormDraft({...postData} , clubID , history));
+  }
 
   return (
     <Paper className={classes.paper} elevation={6}>
@@ -37,7 +38,6 @@ const SubmitForm = () => {
         autoComplete="off"
         noValidate
         className={`${classes.root} ${classes.form}`}
-        onSubmit={handleSubmit}
       >
         <Typography variant="h6">Create an Event</Typography>
         <TextField
@@ -76,9 +76,7 @@ const SubmitForm = () => {
           <FileBase
             type="file"
             multiple={false}
-            onDone={({ base64 }) =>
-              setPostData({ ...postData, pdf : base64 })
-            }
+            onDone={({ base64 }) => setPostData({ ...postData, pdf: base64 })}
           />
         </div>
         <Button
@@ -87,7 +85,8 @@ const SubmitForm = () => {
           variant="contained"
           color="primary"
           size="large"
-          type="submit"
+          // type="submit"
+          onClick={handleSubmit}
         >
           Submit
         </Button>
@@ -97,7 +96,8 @@ const SubmitForm = () => {
           variant="contained"
           color="primary"
           size="large"
-          type="submit"
+          // type="submit"
+          onClick={saveDraft}
         >
           Save as Draft
         </Button>

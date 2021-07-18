@@ -42,14 +42,16 @@ module.exports.authentication = async (req, res) => {
     const flag = await foundDean.correctPassword(password, foundDean.password);
     if (flag == true) {
       // req.session.user_id = foundDean._id;
-      const token = jwt.sign({ id : foundDean._id},'dean',{expiresIn : "2h"});
+      const token = jwt.sign({ id: foundDean._id }, "dean", {
+        expiresIn: "2h",
+      });
       console.log("loggedIn");
       res.status(200).json({
         status: "success",
         requested: req.time,
         message: "authorised",
-        clubID: foundDean._id,
-        token
+        deanID: foundDean._id,
+        token,
       });
     } else {
       res.status(401).json({
@@ -88,7 +90,9 @@ module.exports.dashboard = async (req, res) => {
 module.exports.getDetailsById = async (req, res) => {
   try {
     console.log("hello");
-    const deanDetails = await Dean.findById(req.session.user_id);
+    const { id } = req.params;
+    const deanDetails = await Dean.findById(id);
+    console.log(deanDetails);
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
@@ -107,28 +111,10 @@ module.exports.getDetailsById = async (req, res) => {
 
 module.exports.updateDetailsById = async (req, res) => {
   try {
-    const deanDetailsOld = await Dean.findById(req.session.user_id);
+    const { id } = req.params;
+    const deanDetailsOld = await Dean.findById(id);
     const deanDetailsNew = req.body;
-    if (req.files.deanPic) {
-      deanDetailsNew.deanPic = req.files.deanPic;
-      deanDetailsNew.deanPic.data = mongodb.Binary(
-        deanDetailsNew.deanPic.data
-      );
-    }
-    if (req.files.signature) {
-      deanDetailsNew.signature = req.files.signature;
-      deanDetailsNew.signature = mongodb.Binary(
-        deanDetailsNew.signature.data
-      );
-    }  
-    await Dean.findByIdAndUpdate(
-      req.session.user_id,
-      deanDetailsNew,
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
+    await Dean.findByIdAndUpdate(id, deanDetailsNew);
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
@@ -255,19 +241,19 @@ module.exports.getRespondedRequests = async (req, res) => {
 
 //////////////////////////////////////////////////////////////////////ROUTE: /logout
 module.exports.logout = async (req, res) => {
-  req.session.user_id= null;
+  req.session.user_id = null;
   console.log("logged out");
   res.status(200).json({
-    status: 'success',
+    status: "success",
     requested: req.requestTime,
-    messaage: "logged out, redirect to home"
-  })
+    messaage: "logged out, redirect to home",
+  });
   res.send("logged out");
-}
+};
 
 ////////////////////////////////////////////////////////////////////ROUTE: /changePassword
 module.exports.changePassword = async (req, res) => {
- try {
+  try {
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
@@ -280,7 +266,7 @@ module.exports.changePassword = async (req, res) => {
       messsage: err,
     });
   }
-}
+};
 
 module.exports.authorise = async (req, res) => {
   try {
@@ -326,5 +312,5 @@ module.exports.authorise = async (req, res) => {
       status: "failed",
       messsage: err,
     });
-  } 
-}
+  }
+};

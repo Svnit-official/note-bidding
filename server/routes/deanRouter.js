@@ -13,18 +13,17 @@ router
   .get(deanController.login)
   .post(deanController.authentication);
 
-router.route("/")
-  .get(deanAuth, deanController.dashboard);
+router.route("/").get(isDeanLoggedIn, deanController.dashboard);
 
 router
-  .route("/deanDetails")
-  .get(deanAuth, deanController.getDetailsById) // 'Dean Details' button on dashboard
-  .patch(deanAuth, deanController.updateDetailsById); // 'Update' button on dean details page
+  .route("/:id/details")
+  .get(deanController.getDetailsById) // 'Dean Details' button on dashboard
+  .patch(deanController.updateDetailsById); // 'Update' button on dean details page
 
 router
   .route("/changePassword")
-  .get(deanAuth, deanController.changePassword)
-  .patch(deanAuth, deanController.authorise)
+  .get(isDeanLoggedIn, deanController.changePassword)
+  .patch(isDeanLoggedIn, deanController.authorise);
 
 router
   .route("/pendingRequests")

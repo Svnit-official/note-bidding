@@ -18,38 +18,35 @@ router.route("/").get(isClubLoggedIn, clubController.dashboard); //
 
 router
   .route("/clubDetails")
-  .get( clubController.getDetailsById) // 'Club Details' button on dashboard
-  .patch( clubController.updateDetailsById); // 'Update' button on club details page
+  .get(auth, clubController.getDetailsById) // 'Club Details' button on dashboard
+  .patch( auth, clubController.updateDetailsById); // 'Update' button on club details page
 
 router
   .route("/changePassword")
-  .get( clubController.changePassword)
-  .patch( clubController.authorise);
+  .get(auth, clubController.changePassword)
+  .patch(auth, clubController.authorise);
 
 router.route("/downloadPdf").post(isClubLoggedIn, clubController.downloadPdf);
 
 router
   .route("/req")
-  .get( clubController.newRequest) // 'New Request' or '+' button on dashboard
-  .delete( clubController.deleteRequest); // 'Delete' button on 'Request'
+  .get( auth, clubController.newRequest) // 'New Request' or '+' button on dashboard
+  .delete(auth, clubController.deleteRequest); // 'Delete' button on 'Request'
 
 router
-  .route("/drafts")
-  .get( clubController.getDrafts) // 'Drafts' button on dashboard
-  .post( clubController.postDraft); // 'Save as Draft' or 'Update and save as draft' button on 'Request'
+  .route("/:id/drafts")
+  .get( auth, clubController.getDrafts) // 'Drafts' button on dashboard
+  .post(auth, clubController.postDraft); // 'Save as Draft' or 'Update and save as draft' button on 'Request'
 
 router
-   .route("/sentRequests")
-   .get( clubController.getSentRequests)
-   .post( clubController.sendRequest); // 'Send' or 'Update and send' button on 'Request'
+  .route("/:id/sentRequests")
+  .post( auth,clubController.sendRequest)
+  .get( auth,clubController.getSentRequests); // 'Sent Requests' button on dashboard
 
-router
-  .route("/sentRequests/:id")
-  .get( clubController.getSentRequests); // 'Sent Requests' button on dashboard
 router
   .route("/receivedRequests")
-  .get( clubController.getReceivedRequests); // 'Received for Correction' button on dashboard
+  .get( auth, clubController.getReceivedRequests); // 'Received for Correction' button on dashboard
 
-router.route("/logout").get( clubController.logout);
+router.route("/logout").get( auth, clubController.logout);
 
 module.exports = router;
