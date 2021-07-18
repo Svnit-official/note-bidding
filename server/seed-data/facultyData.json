@@ -1,9 +1,35 @@
 [
   {
-    "username": "samplefaculty",
+    "username": "sampleFaculty",
     "password": "samplePass",
+    "facultyDesignation": "Nalla",
     "facultyName": "samplefacultyName",
-    "signature": "sampleSignature",
+    "signature": "https://images.unsplash.com/photo-1626432018525-964f683f2ed0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80",
+    "facultyPic": "https://images.unsplash.com/photo-1626432018525-964f683f2ed0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80",
+    "facultyEmail": "sampleFaculty@gmail.com",
+    "facultyContact": "998989",
+    "respondedRequests": []
+  },
+  {
+    "username": "sampleFaculty2",
+    "password": "samplePass2",
+    "facultyName": "samplefacultyName2",
+    "facultyDesignation": "Nalla",
+    "signature": "https://images.unsplash.com/photo-1626432018525-964f683f2ed0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80",
+    "facultyPic": "https://images.unsplash.com/photo-1626432018525-964f683f2ed0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80",
+    "facultyEmail": "sampleFaculty2@gmail.com",
+    "facultyContact": "998989",
+    "respondedRequests": []
+  },
+  {
+    "username": "sampleFaculty3",
+    "password": "samplePass3",
+    "facultyName": "samplefacultyName3",
+    "facultyDesignation": "Nalla",
+    "signature": "https://images.unsplash.com/photo-1626432018525-964f683f2ed0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80",
+    "facultyPic": "https://images.unsplash.com/photo-1626432018525-964f683f2ed0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80",
+    "facultyEmail": "sampleFacult3y@gmail.com",
+    "facultyContact": "998989",
     "respondedRequests": []
   }
 ]

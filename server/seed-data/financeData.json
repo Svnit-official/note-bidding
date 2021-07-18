@@ -1,9 +1,35 @@
 [
   {
-    "username": "samplefinance",
+    "username": "sampleFinance",
     "password": "samplePass",
     "financeName": "samplefinanceName",
-    "signature": "sampleSignature",
+    "financeDesignation": "Nalla",
+    "signature": "https://images.unsplash.com/photo-1626432018525-964f683f2ed0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80",
+    "financePic": "https://images.unsplash.com/photo-1626432018525-964f683f2ed0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80",
+    "financeEmail": "samplefinance@gmail.com",
+    "financeContact": "998989",
+    "respondedRequests": []
+  },
+  {
+    "username": "sampleFinance2",
+    "password": "samplePass2",
+    "financeDesignation": "Nalla",
+    "financeName": "samplefinanceName2",
+    "signature": "https://images.unsplash.com/photo-1626432018525-964f683f2ed0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80",
+    "financePic": "https://images.unsplash.com/photo-1626432018525-964f683f2ed0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80",
+    "financeEmail": "samplefinance2@gmail.com",
+    "financeContact": "998989",
+    "respondedRequests": []
+  },
+  {
+    "username": "sampleFinance3",
+    "password": "samplePass3",
+    "financeDesignation": "Nalla",
+    "financeName": "samplefinanceName3",
+    "signature": "https://images.unsplash.com/photo-1626432018525-964f683f2ed0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80",
+    "financePic": "https://images.unsplash.com/photo-1626432018525-964f683f2ed0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80",
+    "financeEmail": "sampleFacult3y@gmail.com",
+    "financeContact": "998989",
     "respondedRequests": []
   }
 ]
