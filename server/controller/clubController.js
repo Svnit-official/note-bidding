@@ -1,8 +1,17 @@
 const Club = require("./../models/clubModel");
 const Request = require("./../models/requestModel");
- const mongodb = require("mongodb");
- const fs = require("fs");
  const jwt = require("jsonwebtoken");
+const mongodb = require("mongodb");
+const fs = require("fs");
+
+const getDate = function() {
+  const today = new Date();
+  const dd = String(today.getDate()).padStart(2, "0");
+  const mm = String(today.getMonth() + 1).padStart(2, "0"); 
+  const yyyy = today.getFullYear();
+  const date = dd + "/" + mm + "/" + yyyy;
+  return date;
+}
 // const jwt = require("jsonwebtoken");
 // const secret = process.env.SECRET || "this-is-my-secret";
 // const expires = process.env.EXPIRES || 100000;
@@ -40,13 +49,13 @@ module.exports.authentication = async (req, res) => {
         message: "please provied username and password",
       });
     }
-    const foundClub = await Club.findOne({ username }).select('+password');
+    const foundClub = await Club.findOne({ username }).select("+password");
     const flag = await foundClub.correctPassword(password, foundClub.password);
     if (flag == true) {
-      // req.session.user_id = foundClub._id;
-      const token = jwt.sign({username : foundClub.username , id : foundClub._id},'test',{expiresIn : "2h"});
+      const token = jwt.sign({id : foundClub._id},'club',{expiresIn : "2h"});
       console.log("loggedIn, sent from clubController");
       res.status(200).json({
+        user: foundClub,
         status: "success",
         requested: req.time,
         message: "authorised",
@@ -63,9 +72,9 @@ module.exports.authentication = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(404).json({
-      status: 'failed',
+      status: "failed",
       message: err,
-    })
+    });
   }
 };
 
@@ -109,9 +118,22 @@ module.exports.getDetailsById = async (req, res) => {
 module.exports.updateDetailsById = async (req, res) => {
   try {
     const clubDetailsOld = await Club.findById(req.session.user_id);
-    const clubDetailsNew = await Club.findByIdAndUpdate(
+    const clubDetailsNew = req.body;
+    if (req.files.clubLogo) {
+      clubDetailsNew.clubLogo = req.files.clubLogo;
+      clubDetailsNew.clubLogo.data = mongodb.Binary(
+        clubDetailsNew.clubLogo.data
+      );
+    }
+    if (req.files.signature) {
+      clubDetailsNew.signature = req.files.signature;
+      clubDetailsNew.signature = mongodb.Binary(
+        clubDetailsNew.signature.data
+      );
+    }
+    await Club.findByIdAndUpdate(
       req.session.user_id,
-      req.body,
+      clubDetailsNew,
       {
         new: true,
         runValidators: true,
@@ -163,16 +185,24 @@ module.exports.getDrafts = async (req, res) => {
 module.exports.postDraft = async (req, res) => {
   try {
     const request = req.body;
-    const requestFile = req.files.pdf;
-    requestFile.data =  mongodb.Binary(requestFile.data) ;
-    const date = (new Date().toISOString()).substr(0,10);
-    requestFile.name = `${req.body.clubName}_${req.body.eventName}_${date}.pdf`;
-    request.pdf = requestFile;
-    if (
-      request.status === "sentByFaculty" ||
-      request.status === "sentByFinance"
-    ) request.status = "correctedDraft";
-    else await Request.create(request);
+    if(req.files){
+      const requestFile = req.files.pdf;
+      requestFile.data = mongodb.Binary(requestFile.data);
+      const date = getDate();
+      requestFile.name = `${req.body.clubName}_${req.body.eventName}_${date}.pdf`;
+      request.pdf = requestFile;
+    }
+    if (request._id) {
+      if (
+        request.status === "sentByFaculty" ||
+        request.status === "sentByFinance" ||
+        request.status === "correctedDraft"
+      ) request.status = "correctedDraft";
+      await Request.findByIdAndUpdate(request._id, request);
+    }
+    else {     
+      await Request.create(request);
+    }
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
@@ -240,56 +270,57 @@ module.exports.getSentRequests = async (req, res) => {
 };
 
 module.exports.sendRequest = async (req, res) => {
-  // try {
-  //   const request = req.body;
-  //   const clubDetails = await Club.findById(req.session.user_id);
-  //   if (
-  //     request.status === "sentByFaculty" ||
-  //     request.status === "sentByFinance" ||
-  //     request.status === "correctedDraft"
-  //   ) {
-  //     await Request.findByIdAndUpdate(request._id, {
-  //       status: "receivedByFaculty",
-  //     });
-  //   } else {
-  //     await Request.findByIdAndUpdate(request._id, {
-  //       status: "sentByClub",
-  //     });
-  //     const sentRequests = clubDetails.sentRequests;
-  //     sentRequests.push(request);
-  //     await Club.findByIdAndUpdate(req.session.user_id, { sentRequests });
-  //   }
-  const {headName, eventName, eventDate, comments, pdf,id } = req.body;
-  console.log(headName, eventName, eventDate, comments)
-  const clubDetails = await Club.findById(id);
-  const newRequest = new Request({
-    clubName: clubDetails.clubName,
-    headName,
-    eventName,
-    eventDate,
-    comments,
-    pdf,
-  });
-  await newRequest.save();
-  clubDetails.sentRequests.push(newRequest._id);
-  await clubDetails.save();
-  console.log("successful");
-  res.status(200).json({
-    status: "success",
-    requested: req.requestTime,
-    data: {
-      message: "flash of message sent, redirect to /sentRequests",
-    },
-  });
-}
-  // } catch (err) {
-  //   console.log(err);
-  //   res.status(404).json({
-  //     status: "failed",
-  //     messsage: err,
-  //   });
-  // }
-//};
+  //req.body should contain _id if its an old request, status of the request
+  try {
+    console.log("kch kehna hai");
+    const request = req.body;
+    // console.log(request);
+    const clubDetails = await Club.findById(request.club_id);
+    request.clubName = clubDetails.clubName;
+    console.log(request.pdf);
+    // if(request.pdf){
+    //   const requestFile = request.pdf;
+    //   requestFile.data = mongodb.Binary(requestFile.data);
+    //   const date = getDate();
+    //   requestFile.name = `${request.clubName}_${request.eventName}_${date}.pdf`;
+    //   request.pdf = requestFile;
+    // }
+
+    if (request._id) {
+      if (
+        request.status === "sentByFaculty" ||
+        request.status === "sentByFinance" ||
+        request.status === "correctedDraft" ) 
+              request.status = "receivedByFaculty";
+      else {
+        request.status = "sentByClub";
+      }
+      await Request.findByIdAndUpdate(request._id, request);
+    }
+    else {     
+      await Request.create(request);
+    }
+
+    const sentRequests = clubDetails.sentRequests;
+    sentRequests.push(request._id);
+    await Club.findByIdAndUpdate(request.club_id, { sentRequests });
+
+    console.log("successful");
+    res.status(200).json({
+      status: "success",
+      requested: req.requestTime,
+      data: {
+        message: "flash of message sent, redirect to /sentRequests",
+      },
+    });  
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({
+      status: "failed",
+      messsage: err,
+    });
+  }
+};
 
 // /////////////////////////////////////////////////////////////////////////////ROUTE: /receivedRequests
 module.exports.getReceivedRequests = async (req, res) => {
@@ -368,11 +399,11 @@ module.exports.logout = (req, res) => {
   req.session.user_id = null;
   console.log("logged out");
   res.status(200).json({
-    status: 'success',
+    status: "success",
     requested: req.requestTime,
-    messaage: "logged out, redirect to home"
-  })
-}
+    messaage: "logged out, redirect to home",
+  });
+};
 
 ////////////////////////////////////////////////////////////////////ROUTE: /changePassword
 module.exports.changePassword = async (req, res) => {
@@ -389,7 +420,7 @@ module.exports.changePassword = async (req, res) => {
       messsage: err,
     });
   }
-}
+};
 
 module.exports.authorise = async (req, res) => {
   try {
@@ -436,7 +467,7 @@ module.exports.authorise = async (req, res) => {
       messsage: err,
     });
   }
-}
+};
 
 // //////////////////////////////////////////////////////
 module.exports.downloadPdf = async (req, res) => {

@@ -3,7 +3,7 @@ import FileBase from "react-file-base64";
 import { TextField, Button, Typography, Paper } from "@material-ui/core";
 import useStyles from "./styles";
 import { useDispatch } from "react-redux";
-import { clubFormSubmit } from "../../actions/auth";
+import { clubFormSubmit } from "../../actions/clubActions";
 import { useHistory } from "react-router-dom";
 
 const SubmitForm = () => {
@@ -19,6 +19,8 @@ const SubmitForm = () => {
     eventDate: "",
     comments: "",
     pdf: "",
+    clubName : "",
+    user: sessionStorage.getItem("user"),
   });
   const handleChange = (e) => {
     setPostData({ ...postData, [e.target.name]: e.target.value });
@@ -26,7 +28,7 @@ const SubmitForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(postData);
-    dispatch(clubFormSubmit({...postData , id : user?.clubID}, history));
+    dispatch(clubFormSubmit({...postData , club_id : user?.clubID}, history));
   };
 
   return (
@@ -75,7 +77,7 @@ const SubmitForm = () => {
             type="file"
             multiple={false}
             onDone={({ base64 }) =>
-              setPostData({ ...postData, selectedFile: base64 })
+              setPostData({ ...postData, pdf : base64 })
             }
           />
         </div>

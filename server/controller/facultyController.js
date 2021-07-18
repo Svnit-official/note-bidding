@@ -1,5 +1,8 @@
 const Faculty = require("./../models/facultyModel");
 const Request = require("./../models/requestModel");
+const mongodb = require("mongodb");
+const jwt = require("jsonwebtoken");
+// const fs = require("fs");
 // const jwt = require("jsonwebtoken");
 // const secret = process.env.SECRET || "this-is-my-faculty-secret";
 // const expires = process.env.EXPIRES || 1000;
@@ -39,13 +42,15 @@ module.exports.authentication = async (req, res) => {
     const foundFaculty = await Faculty.findOne({ username }).select("+password");
     const flag = await foundFaculty.correctPassword(password, foundFaculty.password);
     if (flag == true) {
-      req.session.user_id = foundFaculty._id;
+      // req.session.user_id = foundFaculty._id;
+      const token = jwt.sign({ id : foundFaculty._id},'faculty',{expiresIn : "2h"});
       console.log("loggedIn");
       res.status(200).json({
         status: "success",
         requested: req.time,
         message: "authorised",
         clubID: foundFaculty._id,
+        token,
       });
     } else {
       res.status(401).json({
@@ -103,9 +108,22 @@ module.exports.getDetailsById = async (req, res) => {
 module.exports.updateDetailsById = async (req, res) => {
   try {
     const facultyDetailsOld = await Faculty.findById(req.session.user_id);
-    const facultyDetailsNew = await Faculty.findByIdAndUpdate(
+    const facultyDetailsNew = req.body;
+    if (req.files.facultyPic) {
+      facultyDetailsNew.facultyPic = req.files.facultyPic;
+      facultyDetailsNew.facultyPic.data = mongodb.Binary(
+        facultyDetailsNew.facultyPic.data
+      );
+    }
+    if (req.files.signature) {
+      facultyDetailsNew.signature = req.files.signature;
+      facultyDetailsNew.signature = mongodb.Binary(
+        facultyDetailsNew.signature.data
+      );
+    }
+    await Faculty.findByIdAndUpdate(
       req.session.user_id,
-      req.body,
+      facultyDetailsNew,
       {
         new: true,
         runValidators: true,

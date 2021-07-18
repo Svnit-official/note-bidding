@@ -18,19 +18,24 @@ const facultyRouter = require("./routes/facultyRouter");
 const financeRouter = require("./routes/financeRouter");
 const deanRouter = require("./routes/deanRouter");
 const cookieParser = require("cookie-parser");
+const MongoStore = require("connect-mongo");
 app.use(express.json());
+app.use(cookieParser());
 app.use(flash());
-const sessionconfig = {
-  name: "session",
-  secret: "mysecret",
-  resave: false,
-  saveUninitialized: true,
-  cookie: {
-    expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-    maxAge: 1000 * 60 * 60 * 24 * 7,
-  },
-};
-app.use(session(sessionconfig));
+// const sessionconfig = {
+//   name: "session",
+//   secret: "mysecret",
+//   resave: false,
+//   cacheLocation: "localStorage",
+//   saveUninitialized: true,
+//   cookie: {
+//     httpOnly: true,
+//     secure: true,
+//     expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+//     maxAge: 1000 * 60 * 60 * 24 * 7,
+//   },
+// };
+// app.use(session(sessionconfig));
 app.use((req, res, next) => {
   console.log("Hello from the index page middleware 👋");
   req.requestTime = new Date().toISOString();
@@ -44,7 +49,6 @@ app.use(function (req, res, next) {
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
-app.use(cookieParser());
 app.use("/api/v1/club", clubRouter);
 app.use("/api/v1/faculty", facultyRouter);
 app.use("/api/v1/finance", financeRouter);

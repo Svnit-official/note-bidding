@@ -1,6 +1,7 @@
 const express = require("express");
 const deanController = require("./../controller/deanController");
 const { isDeanLoggedIn } = require("./../controller/authController");
+const deanAuth = require("../middleware/deanAuth");
 
 const router = express.Router();
 
@@ -13,31 +14,31 @@ router
   .post(deanController.authentication);
 
 router.route("/")
-  .get(isDeanLoggedIn, deanController.dashboard);
+  .get(deanAuth, deanController.dashboard);
 
 router
   .route("/deanDetails")
-  .get(isDeanLoggedIn, deanController.getDetailsById) // 'Dean Details' button on dashboard
-  .patch(isDeanLoggedIn, deanController.updateDetailsById); // 'Update' button on dean details page
+  .get(deanAuth, deanController.getDetailsById) // 'Dean Details' button on dashboard
+  .patch(deanAuth, deanController.updateDetailsById); // 'Update' button on dean details page
 
 router
   .route("/changePassword")
-  .get(isDeanLoggedIn, deanController.changePassword)
-  .patch(isDeanLoggedIn, deanController.authorise)
+  .get(deanAuth, deanController.changePassword)
+  .patch(deanAuth, deanController.authorise)
 
 router
   .route("/pendingRequests")
-  .get(isDeanLoggedIn, deanController.getPendingRequests) // 'Pending Requests' button on dashboard
-  .post(isDeanLoggedIn, deanController.approvePendingRequest) // 'Approve' button on request (after adding comments)
-  .put(isDeanLoggedIn, deanController.rejectPendingRequest); // 'Reject' button on request (after adding comments)
+  .get(deanAuth, deanController.getPendingRequests) // 'Pending Requests' button on dashboard
+  .post(deanAuth, deanController.approvePendingRequest) // 'Approve' button on request (after adding comments)
+  .put(deanAuth, deanController.rejectPendingRequest); // 'Reject' button on request (after adding comments)
 
 router
   .route("/respondedRequests")
-  .get(isDeanLoggedIn, deanController.getRespondedRequests); // 'Responded Requests' button on dashboard
+  .get(deanAuth, deanController.getRespondedRequests); // 'Responded Requests' button on dashboard
 //  .delete(financeController.deleteSentRequests);
 
 router
   .route("/logout")
-  .get(isDeanLoggedIn, deanController.logout);
+  .get(deanAuth, deanController.logout);
 
 module.exports = router;

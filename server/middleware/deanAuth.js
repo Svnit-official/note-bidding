@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-const auth = async (req,res,next) => {
+const deanAuth = async (req,res,next) => {
     try {
         const token = req.headers.authorization.split(" ")[1];
         
@@ -9,7 +9,7 @@ const auth = async (req,res,next) => {
 
         let decodedData ;
         if(token && isCustomAuth){
-            decodedData = jwt.verify(token,'club');
+            decodedData = jwt.verify(token,'dean');
             req.userId = decodedData?.id;
             console.log("auth done")
         }else{
@@ -24,4 +24,4 @@ const auth = async (req,res,next) => {
     }
 }
 
-module.exports = auth
+module.exports = deanAuth

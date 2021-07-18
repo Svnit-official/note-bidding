@@ -1,5 +1,8 @@
 const Dean = require("./../models/deanModel");
 const Request = require("./../models/requestModel");
+const mongodb = require("mongodb");
+const jwt = require("jsonwebtoken");
+// const fs = require("fs");
 // const jwt = require("jsonwebtoken");
 // const secret = process.env.SECRET || "this-is-my-dean-secret";
 // const expires = process.env.EXPIRES || 1000;
@@ -38,13 +41,15 @@ module.exports.authentication = async (req, res) => {
     const foundDean = await Dean.findOne({ username }).select("+password");
     const flag = await foundDean.correctPassword(password, foundDean.password);
     if (flag == true) {
-      req.session.user_id = foundDean._id;
+      // req.session.user_id = foundDean._id;
+      const token = jwt.sign({ id : foundDean._id},'dean',{expiresIn : "2h"});
       console.log("loggedIn");
       res.status(200).json({
         status: "success",
         requested: req.time,
         message: "authorised",
         clubID: foundDean._id,
+        token
       });
     } else {
       res.status(401).json({
@@ -103,9 +108,22 @@ module.exports.getDetailsById = async (req, res) => {
 module.exports.updateDetailsById = async (req, res) => {
   try {
     const deanDetailsOld = await Dean.findById(req.session.user_id);
-    const deanDetailsNew = await Dean.findByIdAndUpdate(
+    const deanDetailsNew = req.body;
+    if (req.files.deanPic) {
+      deanDetailsNew.deanPic = req.files.deanPic;
+      deanDetailsNew.deanPic.data = mongodb.Binary(
+        deanDetailsNew.deanPic.data
+      );
+    }
+    if (req.files.signature) {
+      deanDetailsNew.signature = req.files.signature;
+      deanDetailsNew.signature = mongodb.Binary(
+        deanDetailsNew.signature.data
+      );
+    }  
+    await Dean.findByIdAndUpdate(
       req.session.user_id,
-      req.body,
+      deanDetailsNew,
       {
         new: true,
         runValidators: true,
