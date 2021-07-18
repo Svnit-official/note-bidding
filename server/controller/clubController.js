@@ -273,7 +273,6 @@ module.exports.sendRequest = async (req, res) => {
     console.log(request);
     const clubDetails = await Club.findById(request.club_id);
     request.clubName = clubDetails.clubName;
-    console.log(request.pdf);
     // if(request.pdf){
     //   const requestFile = request.pdf;
     //   requestFile.data = mongodb.Binary(requestFile.data);
@@ -281,7 +280,7 @@ module.exports.sendRequest = async (req, res) => {
     //   requestFile.name = `${request.clubName}_${request.eventName}_${date}.pdf`;
     //   request.pdf = requestFile;
     // }
-
+    let newRequest = null;
     if (request._id) {
       if (
         request.status === "sentByFaculty" ||
@@ -294,13 +293,13 @@ module.exports.sendRequest = async (req, res) => {
       }
       await Request.findByIdAndUpdate(request._id, request);
     } else {
-      await Request.create(request);
+      newRequest = await Request.create(request);
+      await newRequest.save();
     }
-
+    console.log(newRequest);
     const sentRequests = clubDetails.sentRequests;
-    sentRequests.push(request._id);
-    await Club.findByIdAndUpdate(request.club_id, { sentRequests });
-
+    sentRequests.push(newRequest._id);
+    await clubDetails.save(); 
     console.log("successful");
     res.status(200).json({
       status: "success",

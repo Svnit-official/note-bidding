@@ -10,7 +10,6 @@ const SubmitForm = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const classes = useStyles();
-
   const user = JSON.parse(localStorage.getItem("club_profile"));
   console.log(user);
   const [postData, setPostData] = useState({
