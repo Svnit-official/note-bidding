@@ -28,3 +28,5 @@ export const facultyLogin = (formdata) =>
   API.post("/faculty/login", formdata);
 export const clubFormSubmit = (formdata) =>
   API.post("/club/sentRequests", formdata);
+
+export const clubRequest = (clubID) => API.get(`/club/sentRequests/${clubID}`,)

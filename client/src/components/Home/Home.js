@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Card from "../Card/Card";
 import NavBar from "../NavBar/NavBar";
 import BottomNav from "../BottomNav/BottomNav";
@@ -8,9 +8,19 @@ import SubmitForm from "../SubmitForm/SubmitForm";
 import IconButton from "@material-ui/core/IconButton";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import SwipeableTemporaryDrawer from "../NavBar/SwipableMenu/SwipableMenu";
+import {useDispatch} from "react-redux";
+import { getRequest } from "../../actions/clubActions";
 
 const Home = () => {
   const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
+
+  const user = JSON.parse(localStorage.getItem('club_profile'))
+  console.log(typeof (user.clubID));
+  useEffect(()=>{
+    dispatch(getRequest(user.clubID));
+  }
+    ,[]);
 
   const handleClickOpen = () => {
     setOpen(true);
