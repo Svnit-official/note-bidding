@@ -249,8 +249,11 @@ module.exports.deleteRequest = async (req, res) => {
 
 //////////////////////////////////////////////////////////////////////////////////ROUTE: /sentRequests
 module.exports.getSentRequests = async (req, res) => {
+   const {id}  = req.params;
+   console.log(id);
   try {
-    const clubDetails = await Club.findById(req.session.user_id);
+    const clubDetails = await Club.findById(id);
+    console.log(clubDetails)
     const requestIds = clubDetails.sentRequests;
     const requests = await Request.find({ _id: [...requestIds] });
     res.status(200).json({

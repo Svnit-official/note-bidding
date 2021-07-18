@@ -40,9 +40,12 @@ router
 
 router
    .route("/sentRequests")
-   .get( clubController.getSentRequests) // 'Sent Requests' button on dashboard
+   .get( clubController.getSentRequests)
    .post( clubController.sendRequest); // 'Send' or 'Update and send' button on 'Request'
 
+router
+  .route("/sentRequests/:id")
+  .get( clubController.getSentRequests); // 'Sent Requests' button on dashboard
 router
   .route("/receivedRequests")
   .get( clubController.getReceivedRequests); // 'Received for Correction' button on dashboard
