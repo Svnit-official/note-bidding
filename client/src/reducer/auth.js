@@ -5,6 +5,8 @@ const authReducer = (state = { authData: null, deanDetail: null }, action) => {
       return { ...state, authData: action.data, errors: null };
     case "DEAN_DETAILS":
       return { ...state, deanDetail: action.payload };
+    case "UPDATE_DEAN_DETAILS":
+      return { ...state, deanDetail: action.payload };
     case "FACULTY_DETAILS":
       return { ...state, facultyDetail: action.payload };
     case "FINANCE_DETAILS":

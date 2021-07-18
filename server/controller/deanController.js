@@ -106,17 +106,10 @@ module.exports.getDetailsById = async (req, res) => {
 
 module.exports.updateDetailsById = async (req, res) => {
   try {
-    const deanDetailsOld = await Dean.findById(req.session.user_id);
+    const { id } = req.params;
+    const deanDetailsOld = await Dean.findById(id);
     const deanDetailsNew = req.body;
-    if (req.files.deanPic) {
-      deanDetailsNew.deanPic = req.files.deanPic;
-      deanDetailsNew.deanPic.data = mongodb.Binary(deanDetailsNew.deanPic.data);
-    }
-    if (req.files.signature) {
-      deanDetailsNew.signature = req.files.signature;
-      deanDetailsNew.signature = mongodb.Binary(deanDetailsNew.signature.data);
-    }
-    await Dean.findByIdAndUpdate(req.session.user_id, deanDetailsNew, {
+    await Dean.findByIdAndUpdate(id, deanDetailsNew, {
       new: true,
       runValidators: true,
     });

@@ -17,6 +17,12 @@ export const deanDetails = (id) => async (dispatch) => {
   dispatch({ type: "DEAN_DETAILS", payload: data.data.deanDetails });
   console.log(data.data.deanDetails);
 };
+export const updateDeanDetails = (id, formdata, router) => async (dispatch) => {
+  const { data } = await api.updateDeanDetails(id, formdata);
+  console.log(data);
+  dispatch({ type: "UPDATE_DEAN_DETAILS", payload: data.data.deanDetailsNew });
+  router.push(`/dean/${id}/details`);
+};
 export const clubsignin = (formdata, router) => async (dispatch) => {
   try {
     const { data } = await api.clubLogin(formdata);

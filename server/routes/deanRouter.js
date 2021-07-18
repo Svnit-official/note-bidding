@@ -17,7 +17,7 @@ router.route("/").get(isDeanLoggedIn, deanController.dashboard);
 router
   .route("/:id/details")
   .get(deanController.getDetailsById) // 'Dean Details' button on dashboard
-  .patch(isDeanLoggedIn, deanController.updateDetailsById); // 'Update' button on dean details page
+  .patch(deanController.updateDetailsById); // 'Update' button on dean details page
 
 router
   .route("/changePassword")

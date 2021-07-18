@@ -14,3 +14,5 @@ export const getFacultyDetails = (id) =>
   API.get(`api/v1/faculty/${id}/details`);
 export const getFinanceDetails = (id) =>
   API.get(`api/v1/finance/${id}/details`);
+export const updateDeanDetails = (id, formdata) =>
+  API.post(`api/v1/dean/${id}/details`, formdata);
