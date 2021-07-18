@@ -114,10 +114,7 @@ module.exports.updateDetailsById = async (req, res) => {
     const { id } = req.params;
     const deanDetailsOld = await Dean.findById(id);
     const deanDetailsNew = req.body;
-    await Dean.findByIdAndUpdate(id, deanDetailsNew, {
-      new: true,
-      runValidators: true,
-    });
+    await Dean.findByIdAndUpdate(id, deanDetailsNew);
     res.status(200).json({
       status: "success",
       requested: req.requestTime,

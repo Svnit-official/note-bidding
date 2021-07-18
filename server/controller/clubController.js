@@ -1,6 +1,6 @@
 const Club = require("./../models/clubModel");
 const Request = require("./../models/requestModel");
- const jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 const mongodb = require("mongodb");
 const fs = require("fs");
 
@@ -52,7 +52,9 @@ module.exports.authentication = async (req, res) => {
     const foundClub = await Club.findOne({ username }).select("+password");
     const flag = await foundClub.correctPassword(password, foundClub.password);
     if (flag == true) {
-      const token = jwt.sign({id : foundClub._id},'club',{expiresIn : "2h"});
+      const token = jwt.sign({ id: foundClub._id }, "club", {
+        expiresIn: "2h",
+      });
       console.log("loggedIn, sent from clubController");
       res.status(200).json({
         user: foundClub,
@@ -268,7 +270,7 @@ module.exports.sendRequest = async (req, res) => {
   try {
     console.log("kch kehna hai");
     const request = req.body;
-    // console.log(request);
+    console.log(request);
     const clubDetails = await Club.findById(request.club_id);
     request.clubName = clubDetails.clubName;
     console.log(request.pdf);
@@ -284,8 +286,9 @@ module.exports.sendRequest = async (req, res) => {
       if (
         request.status === "sentByFaculty" ||
         request.status === "sentByFinance" ||
-        request.status === "correctedDraft" ) 
-              request.status = "receivedByFaculty";
+        request.status === "correctedDraft"
+      )
+        request.status = "receivedByFaculty";
       else {
         request.status = "sentByClub";
       }

@@ -28,11 +28,13 @@ export const clubLogin = (formdata) => API.post("/club/login", formdata);
 export const financeLogin = (formdata) => API.post("/finance/login", formdata);
 export const facultyLogin = (formdata) => API.post("/faculty/login", formdata);
 export const clubFormSubmit = (formdata) =>
-  API.post("/api/v1/club/sentRequests", formdata);
+  API.post("/club/sentRequests", formdata);
 export const getDeanDetails = (id) => API.get(`/dean/${id}/details`);
-export const getFacultyDetails = (id) =>
-  API.get(`api/v1/faculty/${id}/details`);
-export const getFinanceDetails = (id) =>
-  API.get(`api/v1/finance/${id}/details`);
+export const getFacultyDetails = (id) => API.get(`/faculty/${id}/details`);
+export const getFinanceDetails = (id) => API.get(`/finance/${id}/details`);
 export const updateDeanDetails = (id, formdata) =>
-  API.post(`api/v1/dean/${id}/details`, formdata);
+  API.patch(`/dean/${id}/details`, formdata);
+export const updateFacultyDetails = (id, formdata) =>
+  API.patch(`/faculty/${id}/details`, formdata);
+export const updateFinanceDetails = (id, formdata) =>
+  API.patch(`/finance/${id}/details`, formdata);

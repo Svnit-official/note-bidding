@@ -20,7 +20,6 @@ export const deanDetails = (id) => async (dispatch) => {
 };
 export const updateDeanDetails = (id, formdata, router) => async (dispatch) => {
   const { data } = await api.updateDeanDetails(id, formdata);
-  console.log(data);
   dispatch({ type: "UPDATE_DEAN_DETAILS", payload: data.data.deanDetailsNew });
   router.push(`/dean/${id}/details`);
 };
@@ -56,6 +55,16 @@ export const financeDetails = (id) => async (dispatch) => {
   dispatch({ type: "FINANCE_DETAILS", payload: data.data.financeDetails });
   console.log(data.data.financeDetails);
 };
+export const updateFinanceDetails =
+  (id, formdata, router) => async (dispatch) => {
+    const { data } = await api.updateFinanceDetails(id, formdata);
+    dispatch({
+      type: "UPDATE_FINANCE_DETAILS",
+      payload: data.data.financeDetailsNew,
+    });
+    console.log(data.data.financeDetailsNew);
+    router.push(`/finance/${id}/details`);
+  };
 export const facultysignin = (formdata, router) => async (dispatch) => {
   try {
     const { data } = await api.facultyLogin(formdata);
@@ -75,6 +84,15 @@ export const facultyDetails = (id) => async (dispatch) => {
   dispatch({ type: "FACULTY_DETAILS", payload: data.data.facultyDetails });
   console.log(data.data.facultyDetails);
 };
+export const updateFacultyDetails =
+  (id, formdata, router) => async (dispatch) => {
+    const { data } = await api.updateFacultyDetails(id, formdata);
+    dispatch({
+      type: "UPDATE_FACULTY_DETAILS",
+      payload: data.data.facultyDetailsNew,
+    });
+    router.push(`/faculty/${id}/details`);
+  };
 export const clubFormSubmit = (formdata, router) => async (dispatch) => {
   console.log(formdata);
   try {

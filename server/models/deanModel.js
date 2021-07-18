@@ -4,17 +4,14 @@ const bcrypt = require("bcrypt");
 const deanSchema = new mongoose.Schema({
   username: {
     type: String,
-    required: [true, "A name must be there"],
     unique: true,
     trim: true,
   },
   password: {
-    required: [true, "A name must be there"],
     type: String,
     select: false,
   },
   deanName: {
-    required: [true, "A name must be there"],
     type: String,
     trim: true,
   },
@@ -33,7 +30,6 @@ const deanSchema = new mongoose.Schema({
   },
   signature: {
     type: String,
-    required: [true, "Signature must be there"],
   },
   respondedRequests: [
     {

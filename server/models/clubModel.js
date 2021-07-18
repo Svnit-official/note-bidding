@@ -10,7 +10,7 @@ const clubSchema = new mongoose.Schema({
   password: {
     required: [true, "A name must be there"],
     type: String,
-    select: false
+    select: false,
   },
   clubName: {
     // required: [true, "A name must be there"],
@@ -22,7 +22,7 @@ const clubSchema = new mongoose.Schema({
     trim: true,
   },
   clubContact: {
-    type: String
+    type: String,
   },
   clubLogo: {
     type: String,
@@ -54,9 +54,9 @@ const clubSchema = new mongoose.Schema({
   },
 });
 
-clubSchema.pre("save", function (next) {
+clubSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
-  this.password = bcrypt.hash(this.password, 12);
+  this.password = await bcrypt.hash(this.password, 12);
   next();
 });
 

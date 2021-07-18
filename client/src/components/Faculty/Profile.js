@@ -64,7 +64,7 @@ const Dashboard = () => {
                   variant="body1"
                   style={{ marginBottom: "10px" }}
                 >
-                  <b>Designation</b> {d.facultyDesignation}
+                  <b>Designation :- </b> {d.facultyDesignation}
                 </Typography>
                 <Typography
                   gutterBottom={true}
@@ -72,7 +72,7 @@ const Dashboard = () => {
                   variant="body1"
                   style={{ marginBottom: "10px" }}
                 >
-                  <b>Email</b> : {d.facultyEmail}
+                  <b>Email :- </b> {d.facultyEmail}
                 </Typography>
                 <Typography
                   gutterBottom={true}
@@ -80,7 +80,7 @@ const Dashboard = () => {
                   variant="body1"
                   style={{ marginBottom: "10px" }}
                 >
-                  <b>Contact No</b>:- {d.facultyContact}
+                  <b>Contact No :-</b> {d.facultyContact}
                 </Typography>
                 <Typography
                   gutterBottom={true}
@@ -88,11 +88,11 @@ const Dashboard = () => {
                   variant="body1"
                   style={{ marginBottom: "5px" }}
                 >
-                  Signature:-{" "}
+                  <b>Signature:-</b> <br></br>
                   <img
-                    src="https://signaturely.com/wp-content/uploads/2020/04/unreadable-letters-signaturely.svg"
+                    src={d.signature}
                     alt="singn"
-                    style={{ width: "100%", height: "80px" }}
+                    style={{ width: "25%", height: "80px", marginTop: "10px" }}
                   ></img>
                 </Typography>
                 <Button

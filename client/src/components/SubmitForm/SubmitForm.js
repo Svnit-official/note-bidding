@@ -11,16 +11,15 @@ const SubmitForm = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
 
-  const user = JSON.parse(localStorage.getItem('club_profile'))
-
+  const user = JSON.parse(localStorage.getItem("club_profile"));
+  console.log(user);
   const [postData, setPostData] = useState({
     headName: "",
     eventName: "",
     eventDate: "",
     comments: "",
     pdf: "",
-    clubName : "",
-    user: sessionStorage.getItem("user"),
+    clubName: "",
   });
   const handleChange = (e) => {
     setPostData({ ...postData, [e.target.name]: e.target.value });
@@ -28,7 +27,7 @@ const SubmitForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(postData);
-    dispatch(clubFormSubmit({...postData , club_id : user?.clubID}, history));
+    dispatch(clubFormSubmit({ ...postData, club_id: user?.clubID }, history));
   };
 
   return (

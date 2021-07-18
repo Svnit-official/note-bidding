@@ -19,7 +19,7 @@ router.route("/").get(isFacultyLoggedIn, facultyController.dashboard);
 router
   .route("/:id/details")
   .get(facultyController.getDetailsById) // 'Faculty Details' button on dashboard
-  .patch(isFacultyLoggedIn, facultyController.updateDetailsById); // 'Update' button on faculty details page
+  .patch(facultyController.updateDetailsById); // 'Update' button on faculty details page
 
 router
   .route("/changePassword")

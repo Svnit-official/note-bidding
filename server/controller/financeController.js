@@ -114,21 +114,10 @@ module.exports.getDetailsById = async (req, res) => {
 
 module.exports.updateDetailsById = async (req, res) => {
   try {
-    const financeDetailsOld = await Finance.findById(req.session.user_id);
+    const { id } = req.params;
+    const financeDetailsOld = await Finance.findById(id);
     const financeDetailsNew = req.body;
-    if (req.files.financePic) {
-      financeDetailsNew.financePic = req.files.financePic;
-      financeDetailsNew.financePic.data = mongodb.Binary(
-        financeDetailsNew.financePic.data
-      );
-    }
-    if (req.files.signature) {
-      financeDetailsNew.signature = req.files.signature;
-      financeDetailsNew.signature = mongodb.Binary(
-        financeDetailsNew.signature.data
-      );
-    }
-    await Finance.findByIdAndUpdate(req.session.user_id, req.body, {
+    await Finance.findByIdAndUpdate(id, req.body, {
       new: true,
       runValidators: true,
     });

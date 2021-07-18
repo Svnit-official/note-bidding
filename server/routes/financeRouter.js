@@ -41,7 +41,7 @@ router.route("/").get(isFinanceLoggedIn, financeController.dashboard);
 router
   .route("/:id/details")
   .get(financeController.getDetailsById) // 'Finance Details' button on dashboard
-  .patch(isFinanceLoggedIn, financeController.updateDetailsById); // 'Update' button on finance details page
+  .patch(financeController.updateDetailsById); // 'Update' button on finance details page
 
 router
   .route("/changePassword")
