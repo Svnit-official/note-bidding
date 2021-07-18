@@ -143,9 +143,21 @@ module.exports.updateDetailsById = async (req, res) => {
 ////////////////////////////////////////////////////////////////ROUTE: /pendingRequests
 module.exports.getPendingRequests = async (req, res) => {
   try {
+    console.log("idhar hun main");
+    facultyId = req.params.id;
+    console.log(facultyId);
+    const faculty = await Faculty.findOne({_id: facultyId});
+    console.log(faculty)
+    //console.log(faculty, "hello");
+    const clubIds = faculty.facultyClubs;
+    console.log(clubIds);
     const requests = await Request.find({
-      $or: [{ status: "sentByClub" }, { status: "receivedByFaculty" }],
-    });
+       $and: [
+        { clubId  : {$in: clubIds }},
+        { $or: [{ status: "sentByClub" }, { status: "receivedByFaculty" }]},
+      ]
+     });
+    console.log(requests);
     res.status(200).json({
       status: "success",
       requested: req.requestTime,

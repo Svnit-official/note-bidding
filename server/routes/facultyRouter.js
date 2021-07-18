@@ -1,7 +1,7 @@
 const express = require("express");
 const facultyController = require("./../controller/facultyController");
 const { isFacultyLoggedIn } = require("./../controller/authController");
-
+const facAuth = require('../middleware/facultyAuth.js')
 const router = express.Router();
 
 //router.param('id', testController.checkId);
@@ -14,7 +14,7 @@ router
   .get(facultyController.login)
   .post(facultyController.authentication);
 
-router.route("/").get(isFacultyLoggedIn, facultyController.dashboard);
+router.route("/").get(facAuth, facultyController.dashboard);
 
 router
   .route("/:id/details")
@@ -23,21 +23,21 @@ router
 
 router
   .route("/:id/changePassword")
-  .get(isFacultyLoggedIn, facultyController.changePassword)
-  .patch(isFacultyLoggedIn, facultyController.authorise);
+  .get(facAuth, facultyController.changePassword)
+  .patch(facAuth, facultyController.authorise);
 
 router
   .route("/:id/pendingRequests")
-  .get(isFacultyLoggedIn, facultyController.getPendingRequests) // 'Pending Requests' button on dashboard
-  .patch(isFacultyLoggedIn, facultyController.sendBackPendingRequest) // 'Send back' button on request (after adding comments)
-  .post(isFacultyLoggedIn, facultyController.approvePendingRequest) // 'Approve' button on request (after adding comments)
-  .put(isFacultyLoggedIn, facultyController.rejectPendingRequest); // 'Reject' button on request (after adding comments)
+  .get(facAuth, facultyController.getPendingRequests) // 'Pending Requests' button on dashboard
+  .patch(facAuth, facultyController.sendBackPendingRequest) // 'Send back' button on request (after adding comments)
+  .post(facAuth, facultyController.approvePendingRequest) // 'Approve' button on request (after adding comments)
+  .put(facAuth, facultyController.rejectPendingRequest); // 'Reject' button on request (after adding comments)
 
 router
   .route("/:id/respondedRequests")
-  .get(isFacultyLoggedIn, facultyController.getRespondedRequests); // 'Responded Requests' button on dashboard
+  .get(facAuth, facultyController.getRespondedRequests); // 'Responded Requests' button on dashboard
 //  .delete(facultyController.deleteSentRequests);
 
-router.route("/logout").get(isFacultyLoggedIn, facultyController.logout);
+router.route("/logout").get(facAuth, facultyController.logout);
 
 module.exports = router;

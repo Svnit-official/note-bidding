@@ -7,6 +7,7 @@ const Finance = require(`${__dirname}/../models/financeHead`);
 const Faculty = require(`${__dirname}/../models/facultyModel`);
 const Dean = require(`${__dirname}/../models/deanModel`);
 
+
 dotenv.config({ path: `${__dirname}/../../config.env` });
 
 const db =
@@ -32,10 +33,12 @@ const read = async () => {
     const financeSeeds = JSON.parse(fs.readFileSync(`${__dirname}/financeData.json`));
     const facultySeeds = JSON.parse(fs.readFileSync(`${__dirname}/facultyData.json`));
     const deanSeeds = JSON.parse(fs.readFileSync(`${__dirname}/deanData.json`));
+    let id;
     //seeding clubs
   try {
       for (let club of clubSeeds) {
-        await Club.create(club);
+        const c = await Club.create(club);
+        id = c._id;
       }
       console.log("successfully seeded clubs!");
     } catch (err) {
@@ -45,7 +48,9 @@ const read = async () => {
     //seeding faculty
     try {
       for (let faculty of facultySeeds) {
-        await Faculty.create(faculty);
+        const f = await Faculty.create(faculty);
+        f.facultyClubs = [id];
+        f.save()
       }
       console.log("successfully seeded faculties!");
     } catch (err) {

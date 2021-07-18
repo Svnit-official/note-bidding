@@ -73,7 +73,7 @@ export const facultysignin = (formdata, router) => async (dispatch) => {
     console.log(sessionStorage.getItem("faculty"));
     dispatch({ type: "FAC_LOGIN", data });
     console.log("loggedIn");
-    router.push(`/faculty/${data.facultyID}/details`);
+    router.push("/faculty/pending");
   } catch (e) {
     console.log(e);
   }
@@ -93,6 +93,9 @@ export const updateFacultyDetails =
     });
     router.push(`/faculty/${id}/details`);
   };
+
+
+
 export const clubFormSubmit = (formdata, router) => async (dispatch) => {
   console.log(formdata);
   try {
@@ -105,3 +108,5 @@ export const clubFormSubmit = (formdata, router) => async (dispatch) => {
     console.log(e);
   }
 };
+
+

@@ -1,42 +1,22 @@
 const express = require("express");
 const financeController = require("./../controller/financeController");
 const { isFinanceLoggedIn } = require("./../controller/authController");
+const finAuth = require('../middleware/financeAuth.js')
+
 const financeHead = require("../models/financeHead");
 const router = express.Router();
-const bcrypt = require("bcryptjs");
+
 //router.param('id', testController.checkId);
 
 //buttons on request = reject, approve, send back, add comments
 //buttons on dashboard = Finance details, Pending Requests, Responded Requests
-// router.post("/register", async function (req, res) {
-//   const {
-//     username,
-//     password,
-//     financeName,
-//     financeEmail,
-//     financeContact,
-//     financePic,
-//     financeDesignation,
-//   } = req.body;
-//   const p = await bcrypt.hash(password, 12);
-//   const newFinance = new financeHead({
-//     username,
-//     password: p,
-//     financeName,
-//     financeEmail,
-//     financeContact,
-//     financePic,
-//     financeDesignation,
-//   });
-//   await newFinance.save();
-//   res.send("Successfully registered");
-// });
+
 router
   .route("/login")
   .get(financeController.login)
   .post(financeController.authentication);
 
-router.route("/").get(isFinanceLoggedIn, financeController.dashboard);
+router.route("/").get(finAuth, financeController.dashboard);
 
 router
   .route("/:id/details")
@@ -45,21 +25,21 @@ router
 
 router
   .route("/changePassword")
-  .get(isFinanceLoggedIn, financeController.changePassword)
-  .patch(isFinanceLoggedIn, financeController.authorise);
+  .get(finAuth, financeController.changePassword)
+  .patch(finAuth, financeController.authorise);
 
 router
   .route("/pendingRequests")
-  .get(isFinanceLoggedIn, financeController.getPendingRequests) // 'Pending Requests' button on dashboard
-  .patch(isFinanceLoggedIn, financeController.sendBackPendingRequest) // 'Send back' button on request (after adding comments)
-  .post(isFinanceLoggedIn, financeController.approvePendingRequest) // 'Approve' button on request (after adding comments)
-  .put(isFinanceLoggedIn, financeController.rejectPendingRequest); // 'Reject' button on request (after adding comments)
+  .get(finAuth, financeController.getPendingRequests) // 'Pending Requests' button on dashboard
+  .patch(finAuth, financeController.sendBackPendingRequest) // 'Send back' button on request (after adding comments)
+  .post(finAuth, financeController.approvePendingRequest) // 'Approve' button on request (after adding comments)
+  .put(finAuth, financeController.rejectPendingRequest); // 'Reject' button on request (after adding comments)
 
 router
   .route("/respondedRequests")
-  .get(isFinanceLoggedIn, financeController.getRespondedRequests); // 'Responded Requests' button on dashboard
+  .get(finAuth, financeController.getRespondedRequests); // 'Responded Requests' button on dashboard
 //  .delete(financeController.deleteSentRequests);
 
-router.route("/logout").get(isFinanceLoggedIn, financeController.logout);
+router.route("/logout").get(finAuth, financeController.logout);
 
 module.exports = router;
