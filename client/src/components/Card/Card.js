@@ -1,14 +1,33 @@
-import React,{useState} from "react";
-import {Card,CardActions,CardContent,Typography,Button,Accordion,AccordionSummary,AccordionDetails,Checkbox} from "@material-ui/core";
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+/* eslint-disable jsx-a11y/anchor-has-content */
+import React, { useState } from "react";
+import {
+  Card,
+  CardActions,
+  CardContent,
+  Typography,
+  Button,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Checkbox,
+} from "@material-ui/core";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MultiStepForm from "../MultiStepForm/MultiStepForm";
-import useStyles from './styles'
-import FileBase from 'react-file-base64';
+import useStyles from "./styles";
+import FileBase from "react-file-base64";
 
-export default function SimpleCard({progress}) {
+export default function SimpleCard({ progress, draft }) {
   const classes = useStyles();
   const [checked, setChecked] = useState(true);
+  const downloadPdf = () => {
+    const linkSource = `${draft.pdf}`;
+    const downloadLink = document.createElement("a");
+    const fileName = "Event.pdf";
 
+    downloadLink.href = linkSource;
+    downloadLink.download = fileName;
+    downloadLink.click();
+  };
   const handleChange = (event) => {
     setChecked(event.target.checked);
   };
@@ -25,16 +44,16 @@ export default function SimpleCard({progress}) {
           color="textSecondary"
           gutterBottom
         >
-          Club Name
+          {draft.clubName}
         </Typography>
         <Typography variant="h5" component="h2">
-          Event Name
+          {draft.eventName}
         </Typography>
         <Typography className={classes.pos} color="textSecondary">
-          Detail info about the event
+          {draft.message}
         </Typography>
         <Typography variant="body2" component="p">
-          Some more information
+          {draft.eventDate}
         </Typography>
       </CardContent>
       <CardActions>
@@ -51,6 +70,7 @@ export default function SimpleCard({progress}) {
           size="small"
           variant="contained"
           color="primary"
+          onClick={downloadPdf}
         >
           Download Pdf
         </Button>
@@ -73,30 +93,32 @@ export default function SimpleCard({progress}) {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-          <Checkbox
-        checked={checked}
-        onChange={handleChange}
-        inputProps={{ 'aria-label': 'primary checkbox' }}
-      />
-      checking following I agree to give concent for that event.
+            <Checkbox
+              checked={checked}
+              onChange={handleChange}
+              inputProps={{ "aria-label": "primary checkbox" }}
+            />
+            checking following I agree to give concent for that event.
           </Typography>
-          <FileBase  type="file" multiple={false} style={{color:'blue'}} />
+          <FileBase type="file" multiple={false} style={{ color: "blue" }} />
           <Button
-          className={classes.button}
-          size="small"
-          variant="contained"
-          color="primary"
-          disabled={!checked}
-        >Submit</Button>
+            className={classes.button}
+            size="small"
+            variant="contained"
+            color="primary"
+            disabled={!checked}
+          >
+            Submit
+          </Button>
 
-        <Button
-          className={classes.button}
-          size="small"
-          variant="contained"
-          color="secondary"
-        >
-          Edit Request
-        </Button>
+          <Button
+            className={classes.button}
+            size="small"
+            variant="contained"
+            color="secondary"
+          >
+            Edit Request
+          </Button>
         </AccordionDetails>
       </Accordion>
     </Card>

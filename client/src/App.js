@@ -10,7 +10,9 @@ import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import DeanDashboard from "./components/Dean/Profile";
 import FacultyDashboard from "./components/Faculty/Profile";
 import FinanceDashboard from "./components/Finance/Profile";
-
+import Drafts from "./components/Events/Drafts";
+import SentEvents from "./components/Events/SentRequests";
+import { withRouter } from "react-router-dom";
 const App = () => {
   const userClub = JSON.parse(localStorage.getItem("club_profile"));
   const userDean = JSON.parse(localStorage.getItem("dean_profile"));
@@ -41,6 +43,9 @@ const App = () => {
         <Route path="/dean/:id/details" component={DeanDashboard} />
         <Route path="/faculty/:id/details" component={FacultyDashboard} />
         <Route path="/finance/:id/details" component={FinanceDashboard} />
+        <Route path="/club/drafts" component={Drafts} />
+        <Route path="/club/sent" component={SentEvents} />
+
         {/* <Route path="/club/submit" component={authClub} /> */}
         {/*
         <Route path="/club/home" component={()=> !userClub ? <Redirect to="/club/login" /> : <Home />} />

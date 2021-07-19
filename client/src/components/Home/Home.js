@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Card from "../Card/Card";
 import NavBar from "../NavBar/NavBar";
 import BottomNav from "../BottomNav/BottomNav";
@@ -8,21 +8,20 @@ import SubmitForm from "../SubmitForm/SubmitForm";
 import IconButton from "@material-ui/core/IconButton";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import SwipeableTemporaryDrawer from "../NavBar/SwipableMenu/SwipableMenu";
-import {useDispatch,useSelector} from "react-redux";
-import {getRequest , getDraftRequest} from "../../actions/clubActions";
+import { useDispatch, useSelector } from "react-redux";
+import { getRequest, getDraftRequest } from "../../actions/clubActions";
 
 const Home = () => {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
-
-  const user = JSON.parse(localStorage.getItem('club_profile'))
+  const user = JSON.parse(localStorage.getItem("club_profile"));
   console.log(user.clubID);
-  useEffect(()=>{
-    dispatch(getDraftRequest(user.clubID) );
-    dispatch(getRequest(user.clubID) );
-  }
-    ,[]);
-
+  useEffect(() => {
+    dispatch(getDraftRequest(user.clubID));
+    dispatch(getRequest(user.clubID));
+  }, []);
+  const d = useSelector((state) => state.formReducer.drafts);
+  console.log(d);
   const handleClickOpen = () => {
     setOpen(true);
   };

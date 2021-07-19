@@ -1,28 +1,28 @@
-import React,{useState} from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import MenuIcon from '@material-ui/icons/Menu';
-import IconButton from '@material-ui/core/IconButton';
+import React, { useState } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Drawer from "@material-ui/core/Drawer";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import MenuIcon from "@material-ui/icons/Menu";
+import IconButton from "@material-ui/core/IconButton";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   list: {
     width: 250,
   },
   fullList: {
-    width: 'auto',
+    width: "auto",
   },
 });
 
-export default function TemporaryDrawer({x}) {
+export default function TemporaryDrawer({ x }) {
   const classes = useStyles();
   const [state, setState] = useState(x);
 
   const toggleDrawer = () => {
-
-    setState(pre => !pre);
+    setState((pre) => !pre);
   };
 
   const list = () => (
@@ -32,27 +32,50 @@ export default function TemporaryDrawer({x}) {
       onClick={toggleDrawer}
       onKeyDown={toggleDrawer}
     >
-      
       <List>
-        {['Dashbord', 'Drafts', 'Sent Requests' , 'Correction' , 'Club Details'].map((text, index) => (
-          
-          <ListItem button key={index}>
-            <ListItemText primary={text} />
+        <Link to="/club/home" style={{ textDecoration: "none" }}>
+          <ListItem button>
+            <ListItemText primary="Dashboard" />
           </ListItem>
-        ))}
+        </Link>
+        <Link to="/club/drafts" style={{ textDecoration: "none" }}>
+          <ListItem button>
+            <ListItemText primary="Drafts" />
+          </ListItem>
+        </Link>
+        <Link to="/club/sent" style={{ textDecoration: "none" }}>
+          <ListItem button>
+            <ListItemText primary="Sent Requests" />
+          </ListItem>
+        </Link>
+        <Link to="/club/sent" style={{ textDecoration: "none" }}>
+          <ListItem button>
+            <ListItemText primary="Correction" />
+          </ListItem>
+        </Link>
+        <Link to="/club/sent" style={{ textDecoration: "none" }}>
+          <ListItem button>
+            <ListItemText primary="Club Details" />
+          </ListItem>
+        </Link>
       </List>
     </div>
   );
 
   return (
     <div>
-
-<IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={toggleDrawer}>
-      <MenuIcon />
-    </IconButton>
-          <Drawer anchor="left" open={state} onClose={toggleDrawer}>
-            {list()}
-          </Drawer>
+      <IconButton
+        edge="start"
+        className={classes.menuButton}
+        color="inherit"
+        aria-label="menu"
+        onClick={toggleDrawer}
+      >
+        <MenuIcon />
+      </IconButton>
+      <Drawer anchor="left" open={state} onClose={toggleDrawer}>
+        {list()}
+      </Drawer>
     </div>
   );
 }

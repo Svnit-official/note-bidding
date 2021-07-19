@@ -13,7 +13,6 @@ const NavBar = () => {
       <AppBar position="static" color="primary" elevation={6}>
         <Toolbar>
           <SimpleDrawer state={open} />
-
           <Typography variant="h6" className={classes.title}>
             SVNIT FORUM
           </Typography>
