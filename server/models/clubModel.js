@@ -64,6 +64,4 @@ clubSchema.methods.correctPassword = async function (candidatePass, userPass) {
   return await bcrypt.compare(candidatePass, userPass);
 };
 
-const Club = new mongoose.model("Club", clubSchema);
-
-module.exports = Club;
+module.exports = mongoose.model("Club", clubSchema); 

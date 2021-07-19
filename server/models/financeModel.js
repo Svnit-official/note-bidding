@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+
 const financeSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -8,18 +9,19 @@ const financeSchema = new mongoose.Schema({
     trim: true,
   },
   password: {
-    required: [true, "A name must be there"],
     type: String,
-    select: false,
+    select: false
   },
   financeName: {
-    required: [true, "A name must be there"],
     type: String,
     trim: true,
   },
   financeEmail: {
     type: String,
     trim: true,
+  },
+  financeDesignation: {
+    type: String,
   },
   financeContact: {
     type: String,
@@ -29,7 +31,6 @@ const financeSchema = new mongoose.Schema({
   },
   signature: {
     type: String,
-    required: [true, "Signature must be there"],
   },
   respondedRequests: [
     {
@@ -56,5 +57,4 @@ financeSchema.methods.correctPassword = async function (
   return await bcrypt.compare(candidatePass, userPass);
 };
 
-module.exports =
-  mongoose.models.Finance || mongoose.model("Finance", financeSchema);
+module.exports = mongoose.model("Finance", financeSchema);

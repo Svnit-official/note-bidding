@@ -63,6 +63,5 @@ facultySchema.methods.correctPassword = async function (
   return await bcrypt.compare(candidatePass, userPass);
 };
 
-const Faculty = new mongoose.model("Faculty", facultySchema);
+module.exports = mongoose.model("Faculty", facultySchema);
 
-module.exports = Faculty;
