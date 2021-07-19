@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
-import Card from "../Card/Card";
-import NavBar from "../NavBar/NavBar";
-import BottomNav from "../BottomNav/BottomNav";
+import Card from "../../Card/Card";
+import NavBar from "../../NavBar/NavBar";
+import BottomNav from "../../BottomNav/BottomNav";
 // import AddButton from '../AddButton/AddButton';
 import { Button, Dialog, DialogActions, DialogTitle } from "@material-ui/core";
-import SubmitForm from "../SubmitForm/SubmitForm";
+import SubmitForm from "../../SubmitForm/SubmitForm";
 import IconButton from "@material-ui/core/IconButton";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
-import SwipeableTemporaryDrawer from "../NavBar/SwipableMenu/SwipableMenu";
+//import SwipeableTemporaryDrawer from "../../NavBar/SwipableMenu/SwipableMenu";
 import { useDispatch, useSelector } from "react-redux";
-import { getRequest, getDraftRequest } from "../../actions/clubActions";
+import { getRequest, getDraftRequest } from "../../../actions/clubActions";
 
 const Home = () => {
   const [open, setOpen] = useState(false);

@@ -73,7 +73,7 @@ export const facultysignin = (formdata, router) => async (dispatch) => {
     console.log(sessionStorage.getItem("faculty"));
     dispatch({ type: "FAC_LOGIN", data });
     console.log("loggedIn");
-    router.push("/faculty/pending");
+    router.push("/faculty/home");
   } catch (e) {
     console.log(e);
   }

@@ -46,7 +46,7 @@ module.exports.authentication = async (req, res) => {
 
     const flag = await bcrypt.compare(password, foundFinance.password);
     if (flag == true) {
-      // req.session.user_id = foundFinance._id;
+      // req.params.id = foundFinance._id;
       const token = jwt.sign({ id: foundFinance._id }, "finance", {
         expiresIn: "2h",
       });
@@ -164,13 +164,10 @@ module.exports.sendBackPendingRequest = async (req, res) => {
   try {
     const request = await Request.findById(req.body._id);
     const comments = req.body.comments;
-    const finance = await Finance.findById(req.session.user_id);
-    const respondedRequests = finance.respondedRequests;
+    const finance = await Finance.findById(req.params.id);
     if (!respondedRequests.includes(req.body._id)) {
-      respondedRequests.push(request);
-      await Finance.findByIdAndUpdate(req.session.user_id, {
-        respondedRequests,
-      });
+      finance.respondedRequests.push(request);
+      finance.save();
     }
     await Request.findByIdAndUpdate(req.body._id, {
       status: "sentByFinance",
@@ -198,13 +195,10 @@ module.exports.approvePendingRequest = async (req, res) => {
   try {
     const request = await Request.findById(req.body._id);
     const comments = req.body.comments;
-    const finance = await Finance.findById(req.session.user_id);
-    const respondedRequests = finance.respondedRequests;
-    if (!respondedRequests.includes(req.body._id)) {
-      respondedRequests.push(request);
-      await Finance.findByIdAndUpdate(req.session.user_id, {
-        respondedRequests,
-      });
+    const finance = await Finance.findById(req.params.id);
+    if (!finance.respondedRequests.includes(req.body._id)) {
+      finance.respondedRequests.push(request);
+      finance.save();
     }
     await Request.findByIdAndUpdate(req.body._id, {
       status: "approvedByFinance",
@@ -231,13 +225,10 @@ module.exports.rejectPendingRequest = async (req, res) => {
   try {
     const request = await Request.findById(req.body._id);
     const comments = req.body.comments;
-    const finance = await Finance.findById(req.session.user_id);
-    const respondedRequests = finance.respondedRequests;
-    if (!respondedRequests.includes(req.body._id)) {
-      respondedRequests.push(request);
-      await Finance.findByIdAndUpdate(req.session.user_id, {
-        respondedRequests,
-      });
+    const finance = await Finance.findById(req.params.id);
+    if (!finance.respondedRequests.includes(req.body._id)) {
+      finance.respondedRequests.push(request);
+      finance.save();
     }
     await Request.findByIdAndUpdate(req.body._id, {
       status: "rejectedByFinance",
@@ -264,7 +255,7 @@ module.exports.rejectPendingRequest = async (req, res) => {
 /////////////////////////////////////////////////////////////////////////ROUTE: /respondedRequests
 module.exports.getRespondedRequests = async (req, res) => {
   try {
-    const finance = await Finance.findById(req.session.user_id);
+    const finance = await Finance.findById(req.params.id);
     const requestIds = finance.respondedRequests;
     const requests = await Request.find({ _id: [...requestIds] });
     res.status(200).json({
@@ -289,7 +280,7 @@ module.exports.getRespondedRequests = async (req, res) => {
 
 //////////////////////////////////////////////////////////////////////ROUTE: /logout/
 module.exports.logout = async (req, res) => {
-  req.session.user_id = null;
+  req.params.id = null;
   console.log("logged out");
   res.status(200).json({
     status: "success",
@@ -327,13 +318,13 @@ module.exports.authorise = async (req, res) => {
       });
       return;
     }
-    const finance = await Finance.findById(req.session.user_id).select(
+    const finance = await Finance.findById(req.params.id).select(
       "+password"
     );
     if (await finance.correctPassword(oldPassword, finance.password)) {
       if (newPassword === confirmPassword) {
-        await Finance.findByIdAndUpdate(req.session.user_id, { newPassword });
-        req.session.user_id = null;
+        await Finance.findByIdAndUpdate(req.params.id, { newPassword });
+        //req.params.id = null;
         res.status(200).json({
           status: "success",
           requested: req.requestTime,
@@ -364,3 +355,24 @@ module.exports.authorise = async (req, res) => {
     });
   }
 };
+
+////////////////////////////////////////Route: /getRejectedRequests
+module.exports.getRejectedRequests = async (req, res) => {
+  try {
+    const rejectedRequests = await Request.find({
+     status: { $in: ["rejectedByFinance", "rejectedByDean"] } 
+    });
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        rejectedRequests  
+      }
+    })
+  } catch (err) {
+    res.status(400).json({
+      status: "failed",
+      message: err
+    })
+  }
+}
