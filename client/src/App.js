@@ -13,6 +13,8 @@ import FinanceDashboard from "./components/Finance/Profile";
 import Drafts from "./components/Events/Drafts";
 import SentEvents from "./components/Events/SentRequests";
 import { withRouter } from "react-router-dom";
+import FacultyHome from "./components/Faculty/FacultyHome";
+
 const App = () => {
   const userClub = JSON.parse(localStorage.getItem("club_profile"));
   const userDean = JSON.parse(localStorage.getItem("dean_profile"));
@@ -45,6 +47,7 @@ const App = () => {
         <Route path="/finance/:id/details" component={FinanceDashboard} />
         <Route path="/club/drafts" component={Drafts} />
         <Route path="/club/sent" component={SentEvents} />
+        <Route path="/faculty/pending" component={FacultyHome} />
 
         {/* <Route path="/club/submit" component={authClub} /> */}
         {/*

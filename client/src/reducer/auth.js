@@ -1,6 +1,7 @@
 const authReducer = (state = { authData: null, deanDetail: null }, action) => {
   switch (action.type) {
     case "DEAN_LOGIN":
+      localStorage.clear();
       localStorage.setItem("dean_profile", JSON.stringify({ ...action?.data }));
       return { ...state, authData: action.data, errors: null };
     case "DEAN_DETAILS":
@@ -16,14 +17,21 @@ const authReducer = (state = { authData: null, deanDetail: null }, action) => {
     case "UPDATE_FINANCE_DETAILS":
       return { ...state, financeDetail: action.payload };
     case "CLUB_LOGIN":
+      localStorage.clear();
       localStorage.setItem("club_profile", JSON.stringify({ ...action?.data }));
       return { ...state, authData: action.data, errors: null };
     case "FIN_LOGIN":
+      localStorage.clear();
       localStorage.setItem("fin_profile", JSON.stringify({ ...action?.data }));
       return { ...state, authData: action.data, errors: null };
     case "FAC_LOGIN":
+      localStorage.clear();
       localStorage.setItem("fac_profile", JSON.stringify({ ...action?.data }));
       return { ...state, authData: action.data, errors: null };
+    case "LOGOUT":
+      localStorage.clear();
+      sessionStorage.clear();
+      break;
     default:
       return state;
   }

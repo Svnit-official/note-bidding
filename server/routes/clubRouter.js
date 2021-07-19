@@ -1,7 +1,7 @@
 const express = require("express");
 const clubController = require("./../controller/clubController");
 const { isClubLoggedIn } = require("./../controller/authController");
-const auth = require('../middleware/auth.js')
+const clubAuth = require('../middleware/clubAuth.js')
 const router = express.Router();
 
 //router.param('id', testController.checkId);
@@ -14,39 +14,39 @@ router
   .get(clubController.login)
   .post(clubController.authentication);
 
-router.route("/").get(isClubLoggedIn, clubController.dashboard); //
+router.route("/").get(clubAuth, clubController.dashboard); //
 
 router
   .route("/clubDetails")
-  .get(auth, clubController.getDetailsById) // 'Club Details' button on dashboard
-  .patch( auth, clubController.updateDetailsById); // 'Update' button on club details page
+  .get(clubAuth, clubController.getDetailsById) // 'Club Details' button on dashboard
+  .patch( clubAuth, clubController.updateDetailsById); // 'Update' button on club details page
 
 router
   .route("/changePassword")
-  .get(auth, clubController.changePassword)
-  .patch(auth, clubController.authorise);
+  .get(clubAuth, clubController.changePassword)
+  .patch(clubAuth, clubController.authorise);
 
 router.route("/downloadPdf").post(isClubLoggedIn, clubController.downloadPdf);
 
 router
   .route("/req")
-  .get( auth, clubController.newRequest) // 'New Request' or '+' button on dashboard
-  .delete(auth, clubController.deleteRequest); // 'Delete' button on 'Request'
+  .get( clubAuth, clubController.newRequest) // 'New Request' or '+' button on dashboard
+  .delete(clubAuth, clubController.deleteRequest); // 'Delete' button on 'Request'
 
 router
   .route("/:id/drafts")
-  .get( auth, clubController.getDrafts) // 'Drafts' button on dashboard
-  .post(auth, clubController.postDraft); // 'Save as Draft' or 'Update and save as draft' button on 'Request'
+  .get( clubAuth, clubController.getDrafts) // 'Drafts' button on dashboard
+  .post(clubAuth, clubController.postDraft); // 'Save as Draft' or 'Update and save as draft' button on 'Request'
 
 router
   .route("/:id/sentRequests")
-  .post( auth,clubController.sendRequest)
-  .get( auth,clubController.getSentRequests); // 'Sent Requests' button on dashboard
+  .post( clubAuth,clubController.sendRequest)
+  .get( clubAuth,clubController.getSentRequests); // 'Sent Requests' button on dashboard
 
 router
   .route("/receivedRequests")
-  .get( auth, clubController.getReceivedRequests); // 'Received for Correction' button on dashboard
+  .get( clubAuth, clubController.getReceivedRequests); // 'Received for Correction' button on dashboard
 
-router.route("/logout").get( auth, clubController.logout);
+router.route("/logout").get( clubAuth, clubController.logout);
 
 module.exports = router;

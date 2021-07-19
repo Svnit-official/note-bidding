@@ -30,6 +30,7 @@ const SubmitForm = () => {
 
   const saveDraft = (e) => {
     dispatch(clubFormDraft({...postData} , clubID , history));
+    history.push("/club/home");
   }
 
   return (

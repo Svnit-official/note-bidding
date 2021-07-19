@@ -31,6 +31,9 @@ const facultySchema = new mongoose.Schema({
   facultyPic: {
     type: String,
   },
+  facultyClubs: [
+   { type: mongoose.Schema.Types.ObjectId,}
+  ],
   signature: {
     type: String,
     required: [true, "Signature must be there"],
