@@ -32,34 +32,49 @@ export const updateDeanDetails = (id, formdata) =>
 export const clubLogin = (formdata) => API.post("/club/login", formdata);
 
 export const clubRequest = (clubID) => API.get(`/club/${clubID}/sentRequests`);
-export const clubFormSubmit = (formdata,clubID) =>  API.post(`/club/${clubID}/sentRequests`, formdata);
-
-export const clubFormDraft = (formdata,clubID) => API.post(`/club/${clubID}/drafts`,formdata );
+export const clubFormSubmit = (formdata, clubID) =>
+  API.post(`/club/${clubID}/sentRequests`, formdata);
+export const sendRequestFromDraft = (id) => API.post(`/club/${id}/sendDraft`);
+export const clubFormDraft = (formdata, clubID) =>
+  API.post(`/club/${clubID}/drafts`, formdata);
 export const clubDraftRequest = (clubID) => API.get(`/club/${clubID}/drafts`);
-
+export const clubUpdateDraft = (id, formdata) =>
+  API.patch(`/club/${id}/drafts`, formdata);
+export const clubDeleteDraft = (id) => API.delete(`/club/${id}/drafts`);
 /////////////////////////// FACULTY
 export const facultyLogin = (formdata) => API.post("/faculty/login", formdata);
 
-export const getPendingRequests = (facultyID) => API.get(`/faculty/${facultyID}/pendingRequests`)
-export const sendBackPendingRequests = (facultyID) => API.patch(`/faculty/${facultyID}/pendingRequests`)
-export const approvePendingRequests = (facultyID) => API.post(`/faculty/${facultyID}/pendingRequests`)
-export const rejectPendingRequests = (facultyID) => API.put(`/faculty/${facultyID}/pendingRequests`)
+export const getPendingRequests = (facultyID) =>
+  API.get(`/faculty/${facultyID}/pendingRequests`);
+export const sendBackPendingRequests = (facultyID) =>
+  API.patch(`/faculty/${facultyID}/pendingRequests`);
+export const approvePendingRequests = (facultyID) =>
+  API.post(`/faculty/${facultyID}/pendingRequests`);
+export const rejectPendingRequests = (facultyID) =>
+  API.put(`/faculty/${facultyID}/pendingRequests`);
 
-export const getRespondedRequests = (facultyID) => API.get(`/faculty/${facultyID}/RespondedRequests`)
+export const getRespondedRequests = (facultyID) =>
+  API.get(`/faculty/${facultyID}/RespondedRequests`);
 
 export const getFacultyDetails = (id) => API.get(`/faculty/${id}/details`);
-export const updateFacultyDetails = (id, formdata) =>API.patch(`/faculty/${id}/details`, formdata);
-
+export const updateFacultyDetails = (id, formdata) =>
+  API.patch(`/faculty/${id}/details`, formdata);
 
 /////////////////////////// FINANCE
- export const financeLogin = (formdata) => API.post("/finance/login", formdata);
+export const financeLogin = (formdata) => API.post("/finance/login", formdata);
 
-export const getPendingRequestsFin = (facultyID) => API.get(`/finance/${facultyID}/pendingRequests`)
-export const sendBackPendingRequestsFin = (facultyID) => API.patch(`/finance/${facultyID}/pendingRequests`)
-export const approvePendingRequestsFin = (facultyID) => API.post(`/finance/${facultyID}/pendingRequests`)
-export const rejectPendingRequestsFin = (facultyID) => API.put(`/finance/${facultyID}/pendingRequests`)
+export const getPendingRequestsFin = (facultyID) =>
+  API.get(`/finance/${facultyID}/pendingRequests`);
+export const sendBackPendingRequestsFin = (facultyID) =>
+  API.patch(`/finance/${facultyID}/pendingRequests`);
+export const approvePendingRequestsFin = (facultyID) =>
+  API.post(`/finance/${facultyID}/pendingRequests`);
+export const rejectPendingRequestsFin = (facultyID) =>
+  API.put(`/finance/${facultyID}/pendingRequests`);
 
-export const getRespondedRequestsFin = (facultyID) => API.get(`/finance/${facultyID}/RespondedRequests`)
+export const getRespondedRequestsFin = (facultyID) =>
+  API.get(`/finance/${facultyID}/RespondedRequests`);
 
 export const getFinanceDetails = (id) => API.get(`/finance/${id}/details`);
-export const updateFinanceDetails = (id, formdata) =>API.patch(`/finance/${id}/details`, formdata);
+export const updateFinanceDetails = (id, formdata) =>
+  API.patch(`/finance/${id}/details`, formdata);

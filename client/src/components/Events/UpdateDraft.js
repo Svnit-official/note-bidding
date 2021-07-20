@@ -3,26 +3,20 @@ import FileBase from "react-file-base64";
 import { TextField, Button, Typography, Paper } from "@material-ui/core";
 import useStyles from "./styles";
 import { useDispatch } from "react-redux";
-import { clubFormSubmit, clubFormDraft } from "../../actions/clubActions";
+import { updateDraft } from "../../actions/clubActions";
 import { useHistory } from "react-router-dom";
 
-const SubmitForm = () => {
+const SubmitForm = ({ id }) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const classes = useStyles();
-  const user = JSON.parse(localStorage.getItem("club_profile"));
-  const clubID = user?.clubID;
   const [postData, setPostData] = useState({});
   const handleChange = (e) => {
     setPostData({ ...postData, [e.target.name]: e.target.value });
   };
-  const handleSubmit = (e) => {
-    console.log(postData);
-    dispatch(clubFormSubmit({ ...postData }, clubID, history));
-  };
 
   const saveDraft = (e) => {
-    dispatch(clubFormDraft({ ...postData }, clubID, history));
+    dispatch(updateDraft(id, { ...postData }, history));
     history.push("/club/home");
   };
 
@@ -80,23 +74,9 @@ const SubmitForm = () => {
           color="primary"
           size="large"
           // type="submit"
-          onClick={handleSubmit}
-        >
-          Submit
-        </Button>
-        <Button
-          className={classes.buttonSubmit}
-          fullWidth
-          variant="contained"
-          color="primary"
-          size="large"
-          // type="submit"
           onClick={saveDraft}
         >
-          Save as Draft
-        </Button>
-        <Button variant="contained" color="secondary" fullWidth size="large">
-          clear
+          Update Draft
         </Button>
       </form>
     </Paper>

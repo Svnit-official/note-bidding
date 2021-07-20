@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react";
-import Card from "../Card/Card";
+import Card from "../Card/EventCard";
 import NavBar from "../NavBar/NavBar";
 import BottomNav from "../BottomNav/BottomNav";
 // import AddButton from '../AddButton/AddButton';
@@ -22,8 +22,8 @@ const SentRequest = () => {
     return (
       <div>
         <NavBar />
-        {d.requests.map((draft) => (
-          <Card draft={draft}>Name</Card>
+        {d.requests.map((event) => (
+          <Card event={event}>Name</Card>
         ))}
         <BottomNav />
       </div>

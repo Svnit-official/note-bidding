@@ -10,26 +10,17 @@ import {
   AccordionSummary,
   AccordionDetails,
   Checkbox,
-  Dialog,
-  DialogTitle,
-  DialogActions,
 } from "@material-ui/core";
-import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MultiStepForm from "../MultiStepForm/MultiStepForm";
 import useStyles from "./styles";
 import FileBase from "react-file-base64";
-import UpdateDraft from "../Events/UpdateDraft";
-import { sendRequest, deleteRequest } from "../../actions/clubActions";
-export default function SimpleCard({ progress, draft }) {
-  const dispatch = useDispatch();
-  const history = useHistory();
-  const [open, setOpen] = useState(false);
+
+export default function SimpleCard({ progress, event }) {
   const classes = useStyles();
   const [checked, setChecked] = useState(true);
   const downloadPdf = () => {
-    const linkSource = `${draft.pdf}`;
+    const linkSource = `${event.pdf}`;
     const downloadLink = document.createElement("a");
     const fileName = "Event.pdf";
 
@@ -40,21 +31,11 @@ export default function SimpleCard({ progress, draft }) {
   const handleChange = (event) => {
     setChecked(event.target.checked);
   };
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const sendingRequest = () => {
-    console.log("sendRequest", draft._id);
-    dispatch(sendRequest(draft._id, history));
-  };
-  const handleDelete = () => {
-    dispatch(deleteRequest(draft._id, history));
-  };
+  let flag = false;
+  if (event.status === "sentByFaculty" || event.status === "sentByFinance") {
+    flag = true;
+  }
+  console.log(flag);
   return (
     <Card
       className={classes.root}
@@ -68,16 +49,16 @@ export default function SimpleCard({ progress, draft }) {
           color="textSecondary"
           gutterBottom
         >
-          {draft.clubName}
+          {event.clubName}
         </Typography>
         <Typography variant="h5" component="h2">
-          {draft.eventName}
+          {event.eventName}
         </Typography>
         <Typography className={classes.pos} color="textSecondary">
-          {draft.message}
+          {event.message}
         </Typography>
         <Typography variant="body2" component="p">
-          {draft.eventDate}
+          {event.eventDate}
         </Typography>
       </CardContent>
       <CardActions>
@@ -86,9 +67,8 @@ export default function SimpleCard({ progress, draft }) {
           size="small"
           variant="contained"
           color="primary"
-          onClick={sendingRequest}
         >
-          Send Request
+          Learn More
         </Button>
         <Button
           className={classes.button}
@@ -104,31 +84,11 @@ export default function SimpleCard({ progress, draft }) {
           size="small"
           variant="contained"
           color="secondary"
-          onClick={handleClickOpen}
+          disabled={!flag}
         >
           Edit
         </Button>
-        <Button
-          className={classes.button}
-          size="small"
-          variant="contained"
-          color="secondary"
-          onClick={handleDelete}
-        >
-          Delete
-        </Button>
       </CardActions>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{"Submit Event Form"}</DialogTitle>
-        <DialogActions>
-          <UpdateDraft id={draft._id} />
-        </DialogActions>
-      </Dialog>
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}

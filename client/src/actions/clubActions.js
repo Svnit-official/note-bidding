@@ -4,6 +4,7 @@ import {
   CLUB_REQUESTS,
   CLUB_DRAFT_SUBMIT,
   CLUB_DRAFT_REQUEST,
+  CLUB_UPDATE_DRAFT,
 } from "../constents/authActionTypes";
 
 export const clubFormSubmit =
@@ -49,6 +50,36 @@ export const getDraftRequest = (clubID) => async (dispatch) => {
     const { data } = await api.clubDraftRequest(clubID);
     console.log(data);
     dispatch({ type: CLUB_DRAFT_REQUEST, payload: data });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateDraft = (id, formdata, router) => async (dispatch) => {
+  try {
+    const { data } = await api.clubUpdateDraft(id, formdata);
+    console.log(data);
+    router.push("/club/home");
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const sendRequest = (id, router) => async (dispatch) => {
+  try {
+    console.log("action");
+    const { data } = await api.sendRequestFromDraft(id);
+    console.log(data);
+    router.push("/club/home");
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const deleteRequest = (id, router) => async (dispatch) => {
+  try {
+    console.log("action");
+    const { data } = await api.clubDeleteDraft(id);
+    console.log(data);
+    router.push("/club/home");
   } catch (error) {
     console.log(error);
   }
