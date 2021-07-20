@@ -50,10 +50,10 @@ export const getPendingRequests = (facultyID) =>
   API.get(`/faculty/${facultyID}/pendingRequests`);
 export const sendBackPendingRequests = (facultyID) =>
   API.patch(`/faculty/${facultyID}/pendingRequests`);
-export const approvePendingRequests = (facultyID) =>
-  API.post(`/faculty/${facultyID}/pendingRequests`);
-export const rejectPendingRequests = (facultyID) =>
-  API.put(`/faculty/${facultyID}/pendingRequests`);
+export const approvePendingRequests = (facultyID,requestID) =>
+  API.post(`/faculty/${facultyID}/pendingRequests`,requestID);
+export const rejectPendingRequests = (facultyID , requestID) =>
+  API.put(`/faculty/${facultyID}/pendingRequests`, requestID);
 
 export const getRespondedRequests = (facultyID) =>
   API.get(`/faculty/${facultyID}/RespondedRequests`);
@@ -65,17 +65,17 @@ export const updateFacultyDetails = (id, formdata) =>
 /////////////////////////// FINANCE
 export const financeLogin = (formdata) => API.post("/finance/login", formdata);
 
-export const getPendingRequestsFin = (facultyID) =>
-  API.get(`/finance/${facultyID}/pendingRequests`);
-export const sendBackPendingRequestsFin = (facultyID) =>
-  API.patch(`/finance/${facultyID}/pendingRequests`);
-export const approvePendingRequestsFin = (facultyID) =>
-  API.post(`/finance/${facultyID}/pendingRequests`);
-export const rejectPendingRequestsFin = (facultyID) =>
-  API.put(`/finance/${facultyID}/pendingRequests`);
+export const getPendingRequestsFin = (financeID) =>
+  API.get(`/finance/${financeID}/pendingRequests`);
+export const sendBackPendingRequestsFin = (financeID) =>
+  API.patch(`/finance/${financeID}/pendingRequests`);
+export const approvePendingRequestsFin = (financeID , request) =>
+  API.post(`/finance/${financeID}/pendingRequests` , request);
+export const rejectPendingRequestsFin = (financeID , request) =>
+  API.put(`/finance/${financeID}/pendingRequests`,request);
 
-export const getRespondedRequestsFin = (facultyID) =>
-  API.get(`/finance/${facultyID}/RespondedRequests`);
+export const getRespondedRequestsFin = (financeID) =>
+  API.get(`/finance/${financeID}/RespondedRequests`);
 
 export const getFinanceDetails = (id) => API.get(`/finance/${id}/details`);
 export const updateFinanceDetails = (id, formdata) =>

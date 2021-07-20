@@ -14,6 +14,7 @@ import Drafts from "./components/Events/Drafts";
 import SentEvents from "./components/Events/SentRequests";
 import { withRouter } from "react-router-dom";
 import FacultyHome from "./components/Faculty/FacultyHome/FacultyHome";
+import FinanceHome from "./components/Finance/FinanceHome/FinanceHome"
 
 const App = () => {
   const userClub = JSON.parse(localStorage.getItem("club_profile"));
@@ -56,6 +57,7 @@ const App = () => {
         {/* ..............finance route ........... */}
         <Route path="/finance/login" component={FinanceForm} />
         <Route path="/finance/:id/details" component={()=> !userFinance ? <Redirect to="/finance/login" /> : <FinanceDashboard />} />
+        <Route path="/finance/home" component={()=> !userFinance ? <Redirect to="/finance/login" /> : <FinanceHome/>} />
         
         
         

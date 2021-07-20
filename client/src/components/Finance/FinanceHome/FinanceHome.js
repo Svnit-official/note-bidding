@@ -1,37 +1,40 @@
 import React, { useState,useEffect } from "react";
-import Card from "../../Card/Card";
-import NavBar from "../../NavBar/NavBar";
+import NavBar from "../NavBar/NavBar";
 import BottomNav from "../../BottomNav/BottomNav";
 // import AddButton from '../AddButton/AddButton';
 import {useDispatch,useSelector} from "react-redux";
-
+import {getPendingRequestsFinance} from '../../../actions/financeActions'
+import FinanceCard from '../FinanceCard/FinanceCard'
+import {CircularProgress} from '@material-ui/core'
 
 const FinanceHome = () => {
-  const [open, setOpen] = useState(false);
+
   const dispatch = useDispatch();
 
   const user = JSON.parse(localStorage.getItem('fin_profile'))
   console.log(user);
-//   useEffect(()=>{
-//     dispatch(getPendingRequests(user.facultyID))
-//   }
-//     ,[]);
 
+  useEffect((e)=>{
+    dispatch(getPendingRequestsFinance(user.financeID))
+  }
+    ,[]);
+
+    const d = useSelector((state) => state.financeReducer.requests);
     
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   return (
     <div>
         <NavBar />
+        { !d ? <CircularProgress /> : (
+          d.map((x)=>(
+            <FinanceCard draft={x} />
+          ))
+
+        )}
       <BottomNav />
     </div>
   );
 };
 
-export default FacultyHome;
+export default FinanceHome;

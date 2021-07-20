@@ -12,3 +12,14 @@ export const getPendingRequests = (facultyID) => async (dispatch) => {
         
     }
 }
+
+export const approvePendingRequest = (facultyID , requestID) => async (dispatch) => {
+    console.log(facultyID , requestID)
+    const {data} = await api.approvePendingRequests(facultyID,requestID);
+    console.log(data);
+}
+
+export const rejectPendingRequests = (facultyID , requestID) => async (dispatch) => {
+    const {data} = await api.rejectPendingRequests(facultyID , requestID);
+    console.log(data);
+}
