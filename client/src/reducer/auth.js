@@ -31,7 +31,6 @@ const authReducer = (state = { authData: null, deanDetail: null }, action) => {
     case "LOGOUT":
       localStorage.clear();
       sessionStorage.clear();
-      break;
     default:
       return state;
   }

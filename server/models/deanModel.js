@@ -49,6 +49,5 @@ deanSchema.methods.correctPassword = async function (candidatePass, userPass) {
   return await bcrypt.compare(candidatePass, userPass);
 };
 
-const Dean = new mongoose.model("Dean", deanSchema);
+module.exports = mongoose.model("Dean", deanSchema);
 
-module.exports = Dean;

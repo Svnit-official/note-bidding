@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-const financeHeadSchema = new mongoose.Schema({
+const financeSchema = new mongoose.Schema({
   username: {
     type: String,
     required: [true, "A name must be there"],
@@ -8,9 +8,12 @@ const financeHeadSchema = new mongoose.Schema({
     trim: true,
   },
   password: {
+    required: [true, "A name must be there"],
     type: String,
+    select: false,
   },
   financeName: {
+    required: [true, "A name must be there"],
     type: String,
     trim: true,
   },
@@ -18,20 +21,15 @@ const financeHeadSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
-  financeDesignation: {
-    type: String,
-  },
   financeContact: {
     type: String,
   },
   financePic: {
     type: String,
   },
-  financeDesignation: {
-    type: String,
-  },
   signature: {
     type: String,
+    required: [true, "Signature must be there"],
   },
   respondedRequests: [
     {
@@ -44,4 +42,19 @@ const financeHeadSchema = new mongoose.Schema({
     default: Date.now(),
   },
 });
-module.exports = mongoose.model("FinanceHead", financeHeadSchema);
+
+financeSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+  this.password = await bcrypt.hash(this.password, 12);
+  next();
+});
+
+financeSchema.methods.correctPassword = async function (
+  candidatePass,
+  userPass
+) {
+  return await bcrypt.compare(candidatePass, userPass);
+};
+
+module.exports =
+  mongoose.models.Finance || mongoose.model("Finance", financeSchema);

@@ -5,7 +5,7 @@ import FinanceForm from "./components/Finance/Form";
 import FacultyForm from "./components/Faculty/Form";
 import DeanForm from "./components/Dean/Form";
 import SubmitForm from "./components/SubmitForm/SubmitForm";
-import Home from "./components/Home/Home";
+import Home from './components/Club/Home/Home';
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import DeanDashboard from "./components/Dean/Profile";
 import FacultyDashboard from "./components/Faculty/Profile";
@@ -13,7 +13,7 @@ import FinanceDashboard from "./components/Finance/Profile";
 import Drafts from "./components/Events/Drafts";
 import SentEvents from "./components/Events/SentRequests";
 import { withRouter } from "react-router-dom";
-import FacultyHome from "./components/Faculty/FacultyHome";
+import FacultyHome from "./components/Faculty/FacultyHome/FacultyHome";
 
 const App = () => {
   const userClub = JSON.parse(localStorage.getItem("club_profile"));
@@ -36,18 +36,37 @@ const App = () => {
           exact
           component={() => <Redirect to="/club/login"></Redirect>}
         ></Route>
+        {/* ..............club route............. */}
         <Route path="/club/login" component={ClubForm} />
-        <Route path="/finance/login" component={FinanceForm} />
+        <Route path="/club/submit" component={()=> !userClub ? <Redirect to="/club/login" /> : <SubmitForm/>} />
+        <Route path="/club/home" component={()=> !userClub ? <Redirect to="/club/login" /> : <Home />} />
+        <Route path="/club/drafts" component={()=> !userClub ? <Redirect to="/club/login" /> :<Drafts/>} />
+        <Route path="/club/sent" component={()=> !userClub ? <Redirect to="/club/login" /> :<SentEvents/>} />
+        
+        
+        
+        {/* ..............faculty route........... */}
+        
         <Route path="/faculty/login" component={FacultyForm} />
+        <Route path="/faculty/:id/details" component={()=> !userFaculty ? <Redirect to="/faculty/login" /> :<FacultyDashboard />} />
+        <Route path="/faculty/home" component={()=> !userFaculty ? <Redirect to="/faculty/login" /> : <FacultyHome />} />
+        
+        
+        
+        {/* ..............finance route ........... */}
+        <Route path="/finance/login" component={FinanceForm} />
+        <Route path="/finance/:id/details" component={()=> !userFinance ? <Redirect to="/finance/login" /> : <FinanceDashboard />} />
+        
+        
+        
+        {/* ..............dean route................*/}
         <Route path="/dean/login" component={DeanForm} />
-        <Route path="/club/submit" component={SubmitForm} />
-        <Route path="/club/home" component={Home} />
-        <Route path="/dean/:id/details" component={DeanDashboard} />
-        <Route path="/faculty/:id/details" component={FacultyDashboard} />
-        <Route path="/finance/:id/details" component={FinanceDashboard} />
-        <Route path="/club/drafts" component={Drafts} />
-        <Route path="/club/sent" component={SentEvents} />
-        <Route path="/faculty/pending" component={FacultyHome} />
+        <Route path="/dean/:id/details" component={() => !userDean ? <Redirect to="/dean/login" /> : <DeanDashboard />} />
+
+        
+        
+
+        
 
         {/* <Route path="/club/submit" component={authClub} /> */}
         {/*

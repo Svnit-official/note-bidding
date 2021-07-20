@@ -11,7 +11,7 @@ const facultySchema = new mongoose.Schema({
   password: {
     required: [true, "A name must be there"],
     type: String,
-    select: false,
+    select: false, 
   },
   facultyName: {
     required: [true, "A name must be there"],
@@ -63,6 +63,5 @@ facultySchema.methods.correctPassword = async function (
   return await bcrypt.compare(candidatePass, userPass);
 };
 
-const Faculty = new mongoose.model("Faculty", facultySchema);
+module.exports = mongoose.model("Faculty", facultySchema);
 
-module.exports = Faculty;

@@ -22,21 +22,21 @@ const getDate = function () {
 // };
 
 //////////////////////////////////////////////////////////////////////////////ROUTE: /login
-module.exports.login = async (req, res) => {
-  try {
-    res.status(200).json({
-      status: "success",
-      requested: req.requestTime,
-      message: "Club Login Page",
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(404).json({
-      status: "failed",
-      messsage: err,
-    });
-  }
-};
+// module.exports.login = async (req, res) => {
+//   try {
+//     res.status(200).json({
+//       status: "success",
+//       requested: req.requestTime,
+//       message: "Club Login Page",
+//     });
+//   } catch (err) {
+//     console.log(err);
+//     res.status(404).json({
+//       status: "failed",
+//       messsage: err,
+//     });
+//   }
+// };
 
 module.exports.authentication = async (req, res) => {
   try {
@@ -81,21 +81,21 @@ module.exports.authentication = async (req, res) => {
 };
 
 ////////////////////////////////////////////////////////////////////////////////ROUTE: /
-module.exports.dashboard = async (req, res) => {
-  try {
-    res.status(200).json({
-      status: "success",
-      requested: req.requestTime,
-      message: `dashboard for club id :${req.userId}`, //:${req.params.id}`
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(404).json({
-      status: "failed",
-      messsage: err,
-    });
-  }
-};
+// module.exports.dashboard = async (req, res) => {
+//   try {
+//     res.status(200).json({
+//       status: "success",
+//       requested: req.requestTime,
+//       message: `dashboard for club id :${req.userId}`, //:${req.params.id}`
+//     });
+//   } catch (err) {
+//     console.log(err);
+//     res.status(404).json({
+//       status: "failed",
+//       messsage: err,
+//     });
+//   }
+// };
 
 /////////////////////////////////////////////////////////////////////////////ROUTE: /clubDetails
 module.exports.getDetailsById = async (req, res) => {
@@ -398,24 +398,24 @@ module.exports.getReceivedRequests = async (req, res) => {
   }
 };
 
-/////////////////////////////////////////////////////////////////////////////////ROUTE: /req/
-module.exports.newRequest = async (req, res) => {
-  try {
-    res.status(200).json({
-      status: "success",
-      requested: req.requestTime,
-      data: {
-        message: "page to fill body to create new request",
-      },
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(404).json({
-      status: "failed",
-      messsage: err,
-    });
-  }
-};
+///////////////////////////////////////////////////////////////
+// module.exports.newRequest = async (req, res) => {
+//   try {
+//     res.status(200).json({
+//       status: "success",
+//       requested: req.requestTime,
+//       data: {
+//         message: "page to fill body to create new request",
+//       },
+//     });
+//   } catch (err) {
+//     console.log(err);
+//     res.status(404).json({
+//       status: "failed",
+//       messsage: err,
+//     });
+//   }
+// };
 
 module.exports.deleteRequest = async (req, res) => {
   try {
@@ -445,16 +445,16 @@ module.exports.deleteRequest = async (req, res) => {
   }
 };
 
-//////////////////////////////////////////////////////////////////////ROUTE: /logout/
-module.exports.logout = (req, res) => {
-  req.params.id = null;
-  console.log("logged out");
-  res.status(200).json({
-    status: "success",
-    requested: req.requestTime,
-    messaage: "logged out, redirect to home",
-  });
-};
+// //////////////////////////////////////////////////////////////////////ROUTE: /logout/
+// module.exports.logout = (req, res) => {
+//   req.params.id = null;
+//   console.log("logged out");
+//   res.status(200).json({
+//     status: "success",
+//     requested: req.requestTime,
+//     messaage: "logged out, redirect to home",
+//   });
+// };
 
 ////////////////////////////////////////////////////////////////////ROUTE: /changePassword
 module.exports.changePassword = async (req, res) => {
@@ -521,23 +521,55 @@ module.exports.authorise = async (req, res) => {
 };
 
 // //////////////////////////////////////////////////////
-module.exports.downloadPdf = async (req, res) => {
+// module.exports.downloadPdf = async (req, res) => {
+//   try {
+//     const id = req.body.id;
+//     const request = Request.findById(id);
+//     const buffer = request.pdf.data.buffer;
+//     const name = request.pdf.name;
+//     fs.writeFileSync(name, buffer);
+//     res.status(200).json({
+//       status: "success",
+//       requested: req.requestTime,
+//       message: "Page to change password",
+//     });
+//   } catch (err) {
+//     console.log(err);
+//     res.status(404).json({
+//       status: "failed",
+//       messsage: err,
+//     });
+//   }
+// };
+
+////////////////////////////////////////Route: /getRejectedRequests
+module.exports.getRejectedRequests = async (req, res) => {
   try {
-    const id = req.body.id;
-    const request = Request.findById(id);
-    const buffer = request.pdf.data.buffer;
-    const name = request.pdf.name;
-    fs.writeFileSync(name, buffer);
+    const clubId = req.params.id;
+    const rejectedRequests = await Request.find({
+      $and: [
+        { clubId : clubId },
+        {
+          $or: [
+            { status: { $in: ["rejectedByFaculty", "rejectedByFinance", "rejectedByDean"] } }
+          ]
+        }
+      ]
+    });
     res.status(200).json({
       status: "success",
-      requested: req.requestTime,
-      message: "Page to change password",
-    });
+      data: {
+        rejectedRequests  
+      }
+    })
   } catch (err) {
-    console.log(err);
-    res.status(404).json({
+    res.status(400).json({
       status: "failed",
-      messsage: err,
-    });
+      message: err
+    })
   }
-};
+}
+
+
+
+

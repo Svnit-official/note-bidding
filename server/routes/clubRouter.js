@@ -11,10 +11,10 @@ const router = express.Router();
 
 router
   .route("/login")
-  .get(clubController.login)
+  //.get(clubController.login)
   .post(clubController.authentication);
 
-router.route("/").get(clubAuth, clubController.dashboard); //
+//router.route("/").get(clubAuth, clubController.dashboard); //
 
 router
   .route("/clubDetails")
@@ -26,7 +26,7 @@ router
   .get(clubAuth, clubController.changePassword)
   .patch(clubAuth, clubController.authorise);
 
-router.route("/downloadPdf").post(isClubLoggedIn, clubController.downloadPdf);
+//router.route("/downloadPdf").post(isClubLoggedIn, clubController.downloadPdf);
 
 router
   .route("/req")

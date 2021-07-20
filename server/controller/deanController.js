@@ -314,3 +314,23 @@ module.exports.authorise = async (req, res) => {
     });
   }
 };
+
+////////////////////////////////////////Route: /getRejectedRequests
+module.exports.getRejectedRequests = async (req, res) => {
+  try {
+    const rejectedRequests = await Request.find({
+      status:  "rejectedByDean" 
+    });
+    res.status(200).json({
+      status: "success",
+      data: {
+        rejectedRequests  
+      }
+    })
+  } catch (err) {
+    res.status(400).json({
+      status: "failed",
+      message: err
+    })
+  }
+}

@@ -147,17 +147,17 @@ module.exports.getPendingRequests = async (req, res) => {
     facultyId = req.params.id;
     console.log(facultyId);
     const faculty = await Faculty.findOne({_id: facultyId});
-    console.log(faculty)
+    // console.log(faculty)
     //console.log(faculty, "hello");
     const clubIds = faculty.facultyClubs;
-    console.log(clubIds);
+    //console.log(clubIds);
     const requests = await Request.find({
        $and: [
         { clubId  : {$in: clubIds }},
         { $or: [{ status: "sentByClub" }, { status: "receivedByFaculty" }]},
       ]
      });
-    console.log(requests);
+    //console.log(requests);
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
@@ -180,13 +180,10 @@ module.exports.sendBackPendingRequest = async (req, res) => {
     const {id } = req.params;
     const request = await Request.findById(req.body._id);
     const comments = req.body.comments;
-    if (request.status === "sentByClub") {
+    if (request.status === "sentByClub" || request.status === "receivedByFaculty") {
       const faculty = await Faculty.findById(id);
-      const respondedRequests = faculty.respondedRequests;
-      respondedRequests.push(request);
-      await Faculty.findByIdAndUpdate(id, {
-        respondedRequests,
-      });
+      faculty.respondedRequests.push(request);
+      faculty.save();
     }
     await Request.findByIdAndUpdate(req.body._id, {
       status: "sentByFaculty",
@@ -217,11 +214,8 @@ module.exports.approvePendingRequest = async (req, res) => {
     const comments = req.body.comments;
     if (request.status === "sentByClub") {
       const faculty = await Faculty.findById(id);
-      const respondedRequests = faculty.respondedRequests;
-      respondedRequests.push(request);
-      await Faculty.findByIdAndUpdate(id, {
-        respondedRequests,
-      });
+      faculty.respondedRequests.push(request);
+      faculty.save();
     }
     await Request.findByIdAndUpdate(req.body._id, {
       status: "approvedByFaculty",
@@ -251,11 +245,8 @@ module.exports.rejectPendingRequest = async (req, res) => {
     const comments = req.body.comments;
     if (request.status === "sentByClub") {
       const faculty = await Faculty.findById(id);
-      const respondedRequests = faculty.respondedRequests;
-      respondedRequests.push(request);
-      await Faculty.findByIdAndUpdate(id, {
-        respondedRequests,
-      });
+      faculty.respondedRequests.push(request);
+      faculty.save();
     }
     await Request.findByIdAndUpdate(req.body._id, {
       status: "rejectedByFaculty",
@@ -382,3 +373,33 @@ module.exports.authorise = async (req, res) => {
     });
   }
 };
+
+////////////////////////////////////////Route: /getRejectedRequests
+module.exports.getRejectedRequests = async (req, res) => {
+  try {
+    const facultyId = req.params.id;
+    const faculty = await Faculty.findById(facultyId);
+    const clubIds = Faculty.facultyClubs;
+    const rejectedRequests = await Request.find({
+      $and: [
+        { clubId: {$in: clubIds} },
+        {
+          $or: [
+            { status: { $in: ["rejectedByFaculty", "rejectedByFinance", "rejectedByDean"] } }
+          ]
+        }
+      ]
+    });
+    res.status(200).json({
+      status: "success",
+      data: {
+        rejectedRequests  
+      }
+    })
+  } catch (err) {
+    res.status(400).json({
+      status: "failed",
+      message: err
+    })
+  }
+}

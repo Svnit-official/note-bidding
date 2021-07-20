@@ -1,5 +1,4 @@
 import React,{ useState} from "react";
-
 import { AppBar, Toolbar, Typography, Button } from "@material-ui/core";
 import SimpleDrawer from "./SwipableMenu/SwipableMenu";
 import useStyles from "./styles";
@@ -12,12 +11,12 @@ const NavBar = () => {
   const classes = useStyles();
   const open = true;
 
-const userClub = JSON.parse(localStorage.getItem('club_profile'));
+//const userClub = JSON.parse(localStorage.getItem('club_profile'));
 const userFaculty = JSON.parse(localStorage.getItem('fac_profile'));
-const userFinance = JSON.parse(localStorage.getItem('fin_profile'));
-const userDean = JSON.parse(localStorage.getItem('dean_profile'));
+// const userFinance = JSON.parse(localStorage.getItem('fin_profile'));
+// const userDean = JSON.parse(localStorage.getItem('dean_profile'));
 
-  const [user , setUser] =  useState(userClub || userFaculty || userFinance || userDean);
+  const [user , setUser] =  useState(userFaculty);
   console.log(user);
   const dispatch = useDispatch();
 const history = useHistory();

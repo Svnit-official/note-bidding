@@ -23,6 +23,8 @@ API.interceptors.request.use((req) => {
   return req;
 });
 
+/////////////////////////DEAN
+
 export const deanLogin = (formdata) => API.post("/dean/login", formdata);
 export const getDeanDetails = (id) => API.get(`/dean/${id}/details`);
 export const updateDeanDetails = (id, formdata) =>

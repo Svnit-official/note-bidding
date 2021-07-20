@@ -37,32 +37,22 @@ export default function TemporaryDrawer({ x }) {
       onKeyDown={toggleDrawer}
     >
       <List>
-        <Link to="/club/home" style={{ textDecoration: "none" }}>
+        <Link to="/faculty/home" style={{ textDecoration: "none" }}>
           <ListItem button>
             <ListItemText primary="Dashboard" />
           </ListItem>
         </Link>
-        <Link to="/club/drafts" style={{ textDecoration: "none" }}>
+        <Link to="/faculty/responded" style={{ textDecoration: "none" }}>
           <ListItem button>
             <ListItemText primary="Drafts" />
           </ListItem>
         </Link>
-        <Link to="/club/sent" style={{ textDecoration: "none" }}>
+        <Link to="/faculty/rejected" style={{ textDecoration: "none" }}>
           <ListItem button>
             <ListItemText primary="Sent Requests" />
           </ListItem>
         </Link>
-        <Link to="/club/sent" style={{ textDecoration: "none" }}>
-          <ListItem button>
-            <ListItemText primary="Correction" />
-          </ListItem>
-        </Link>
-        <Link to="/club/sent" style={{ textDecoration: "none" }}>
-          <ListItem button>
-            <ListItemText primary="Club Details" />
-          </ListItem>
-        </Link>
-      </List>
+     </List>
     </div>
   );
 
