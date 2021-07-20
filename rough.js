@@ -1,25 +1,3 @@
-  passwordConfirm: {
-    type: String,
-    required: [true, "Please provide a password"],
-    validate: [
-      function (el) {
-        return el === this.password;
-      },
-      "Passwords doesn't match",
-    ]
-  },
-
-
-clubSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
-  this.password = await bcrypt.hash(this.password, 12);
-  this.passwordConfirm = undefined;
-  next();
-});
-
-clubSchema.methods.correctPassword = async function (candidatePass, userPass) {
-  return await bcrypt.compare(candidatePass, userPass);
-};
 
 
 const { promisify } = require('util')
@@ -55,13 +33,6 @@ module.exports.protect = async (req, res, next) => {
         //     );
         // } 
         
-    } catch (err) {
-        return next(
-            res.status(401).json({
-                status: 'failed',
-                message: 'Please login to access this route'
-            })
-        );
-    }
+    } 
     next();
 }

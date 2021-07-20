@@ -1,14 +1,14 @@
 const Request = require("./../models/requestModel");
-const Finance = require("../models/financeHead");
+const Finance = require("../models/financeModel");
 
-const mongodb = require("mongodb");
+//const mongodb = require("mongodb");
 const jwt = require("jsonwebtoken");
 // const fs = require("fs");
 // const jwt = require("jsonwebtoken");
 // const secret = process.env.SECRET || "this-is-my-finance-secret";
 // const expires = process.env.EXPIRES || 1000;
 // // const Faculty = require('./../models/facultyModel');
-const bcrypt = require("bcryptjs");
+//const bcrypt = require("bcryptjs");
 // const signToken = function (id) {
 //   return jwt.sign({ id }, secret, { expiresIn: expires });
 // };
@@ -41,10 +41,11 @@ module.exports.authentication = async (req, res) => {
         message: "please provied username and password",
       });
     }
-    const foundFinance = await Finance.findOne({ username });
+    const foundFinance = await Finance.findOne({ username }).select("+password");
     console.log(foundFinance);
 
-    const flag = await bcrypt.compare(password, foundFinance.password);
+    const flag = await foundFinance.correctPassword(password, foundFinance.password);
+    //const flag = await bcrypt.compare(password, foundFinance.password);
     if (flag == true) {
       // req.params.id = foundFinance._id;
       const token = jwt.sign({ id: foundFinance._id }, "finance", {
