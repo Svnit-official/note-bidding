@@ -3,7 +3,7 @@ const financeController = require("./../controller/financeController");
 const { isFinanceLoggedIn } = require("./../controller/authController");
 const finAuth = require("../middleware/financeAuth.js");
 const bcrypt = require("bcrypt");
-const financeHead = require("../models/financeHead");
+const financeHead = require("../models/financeModel");
 const router = express.Router();
 
 //router.param('id', testController.checkId);

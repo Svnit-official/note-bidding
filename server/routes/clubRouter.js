@@ -28,10 +28,10 @@ router
 
 //router.route("/downloadPdf").post(isClubLoggedIn, clubController.downloadPdf);
 
-router
-  .route("/req")
-  .get(clubAuth, clubController.newRequest) // 'New Request' or '+' button on dashboard
-  .delete(clubAuth, clubController.deleteRequest); // 'Delete' button on 'Request'
+// router
+  // .route("/req")
+  // .get(clubAuth, clubController.newRequest) // 'New Request' or '+' button on dashboard
+  // .delete(clubAuth, clubController.deleteRequest); // 'Delete' button on 'Request'
 
 router
   .route("/:id/drafts")
@@ -49,6 +49,6 @@ router
   .route("/receivedRequests")
   .get(clubAuth, clubController.getReceivedRequests); // 'Received for Correction' button on dashboard
 
-router.route("/logout").get(clubAuth, clubController.logout);
+// router.route("/logout").get(clubAuth, clubController.logout);
 
 module.exports = router;
