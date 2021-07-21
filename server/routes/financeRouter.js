@@ -45,11 +45,8 @@ router
   .get(financeController.getDetailsById) // 'Finance Details' button on dashboard
   .patch(financeController.updateDetailsById); // 'Update' button on finance details page
 
-router
-  .route("/changePassword")
-  .get(finAuth, financeController.changePassword)
-  .patch(finAuth, financeController.authorise);
-
+router.route("/:id/changePassword").patch(financeController.authorise);
+  
 router
   .route("/pendingRequests")
   .get(finAuth, financeController.getPendingRequests) // 'Pending Requests' button on dashboard

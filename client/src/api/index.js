@@ -29,7 +29,8 @@ export const deanLogin = (formdata) => API.post("/dean/login", formdata);
 export const getDeanDetails = (id) => API.get(`/dean/${id}/details`);
 export const updateDeanDetails = (id, formdata) =>
   API.patch(`/dean/${id}/details`, formdata);
-
+export const deanResetPassword = (id, formdata) =>
+  API.patch(`/dean/${id}/changePassword`, formdata);
 ///////////////////////////// CLUB
 export const clubLogin = (formdata) => API.post("/club/login", formdata);
 
@@ -43,6 +44,8 @@ export const clubDraftRequest = (clubID) => API.get(`/club/${clubID}/drafts`);
 export const clubUpdateDraft = (id, formdata) =>
   API.patch(`/club/${id}/drafts`, formdata);
 export const clubDeleteDraft = (id) => API.delete(`/club/${id}/drafts`);
+export const clubResetPassword = (id, formdata) =>
+  API.patch(`/club/${id}/changePassword`, formdata);
 /////////////////////////// FACULTY
 export const facultyLogin = (formdata) => API.post("/faculty/login", formdata);
 
@@ -61,7 +64,8 @@ export const getRespondedRequests = (facultyID) =>
 export const getFacultyDetails = (id) => API.get(`/faculty/${id}/details`);
 export const updateFacultyDetails = (id, formdata) =>
   API.patch(`/faculty/${id}/details`, formdata);
-
+export const facultyResetPassword = (id, formdata) =>
+  API.patch(`/faculty/${id}/changePassword`, formdata);
 /////////////////////////// FINANCE
 export const financeLogin = (formdata) => API.post("/finance/login", formdata);
 
@@ -80,3 +84,5 @@ export const getRespondedRequestsFin = (facultyID) =>
 export const getFinanceDetails = (id) => API.get(`/finance/${id}/details`);
 export const updateFinanceDetails = (id, formdata) =>
   API.patch(`/finance/${id}/details`, formdata);
+export const financeResetPassword = (id, formdata) =>
+  API.patch(`/finance/${id}/changePassword`, formdata);

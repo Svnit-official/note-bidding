@@ -23,7 +23,10 @@ const SentRequest = () => {
       <div>
         <NavBar />
         {d.requests.map((event) =>
-          event.status === "sentByClub" ? <Card event={event}>Name</Card> : null
+          event.status === "sentByFaculty" ||
+          event.status === "sentByFinance" ? (
+            <Card event={event}>Name</Card>
+          ) : null
         )}
         <BottomNav />
       </div>

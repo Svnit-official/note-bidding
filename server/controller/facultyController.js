@@ -47,7 +47,7 @@ module.exports.authentication = async (req, res) => {
       foundFaculty.password
     );
     if (flag == true) {
-      // req.session.user_id = foundFaculty._id;
+      // id = foundFaculty._id;
       const token = jwt.sign({ id: foundFaculty._id }, "faculty", {
         expiresIn: "2h",
       });
@@ -146,17 +146,17 @@ module.exports.getPendingRequests = async (req, res) => {
     console.log("idhar hun main");
     facultyId = req.params.id;
     console.log(facultyId);
-    const faculty = await Faculty.findOne({_id: facultyId});
+    const faculty = await Faculty.findOne({ _id: facultyId });
     // console.log(faculty)
     //console.log(faculty, "hello");
     const clubIds = faculty.facultyClubs;
     //console.log(clubIds);
     const requests = await Request.find({
-       $and: [
-        { clubId  : {$in: clubIds }},
-        { $or: [{ status: "sentByClub" }, { status: "receivedByFaculty" }]},
-      ]
-     });
+      $and: [
+        { clubId: { $in: clubIds } },
+        { $or: [{ status: "sentByClub" }, { status: "receivedByFaculty" }] },
+      ],
+    });
     //console.log(requests);
     res.status(200).json({
       status: "success",
@@ -177,10 +177,13 @@ module.exports.getPendingRequests = async (req, res) => {
 
 module.exports.sendBackPendingRequest = async (req, res) => {
   try {
-    const {id } = req.params;
+    const { id } = req.params;
     const request = await Request.findById(req.body._id);
     const comments = req.body.comments;
-    if (request.status === "sentByClub" || request.status === "receivedByFaculty") {
+    if (
+      request.status === "sentByClub" ||
+      request.status === "receivedByFaculty"
+    ) {
       const faculty = await Faculty.findById(id);
       faculty.respondedRequests.push(request);
       faculty.save();
@@ -209,7 +212,7 @@ module.exports.sendBackPendingRequest = async (req, res) => {
 
 module.exports.approvePendingRequest = async (req, res) => {
   try {
-    const {id } = req.params;
+    const { id } = req.params;
     const request = await Request.findById(req.body._id);
     const comments = req.body.comments;
     if (request.status === "sentByClub") {
@@ -240,7 +243,7 @@ module.exports.approvePendingRequest = async (req, res) => {
 };
 module.exports.rejectPendingRequest = async (req, res) => {
   try {
-    const {id } = req.params;
+    const { id } = req.params;
     const request = await Request.findById(req.body._id);
     const comments = req.body.comments;
     if (request.status === "sentByClub") {
@@ -273,7 +276,7 @@ module.exports.rejectPendingRequest = async (req, res) => {
 /////////////////////////////////////////////////////////////////////////ROUTE: /respondedRequests
 module.exports.getRespondedRequests = async (req, res) => {
   try {
-    const {id} = req.params;
+    const { id } = req.params;
     const faculty = await Faculty.findById(id);
     const requestIds = faculty.respondedRequests;
     const requests = await Request.find({ _id: [...requestIds] });
@@ -326,6 +329,7 @@ module.exports.changePassword = async (req, res) => {
 };
 
 module.exports.authorise = async (req, res) => {
+  const { id } = req.params;
   try {
     const { oldPassword, newPassword, confirmPassword } = req.body;
     if (!oldPassword || !newPassword || !confirmPassword) {
@@ -336,13 +340,12 @@ module.exports.authorise = async (req, res) => {
       });
       return;
     }
-    const faculty = await Faculty.findById(req.session.user_id).select(
-      "+password"
-    );
-    if (await Faculty.correctPassword(oldPassword, faculty.password)) {
+    const faculty = await Faculty.findById(id).select("+password");
+    if (await faculty.correctPassword(oldPassword, faculty.password)) {
       if (newPassword === confirmPassword) {
-        await Faculty.findByIdAndUpdate(req.session.user_id, { newPassword });
-        req.session.user_id = null;
+        const faculty = await Faculty.findById(id);
+        faculty.password = newPassword;
+        await faculty.save();
         res.status(200).json({
           status: "success",
           requested: req.requestTime,
@@ -382,24 +385,32 @@ module.exports.getRejectedRequests = async (req, res) => {
     const clubIds = Faculty.facultyClubs;
     const rejectedRequests = await Request.find({
       $and: [
-        { clubId: {$in: clubIds} },
+        { clubId: { $in: clubIds } },
         {
           $or: [
-            { status: { $in: ["rejectedByFaculty", "rejectedByFinance", "rejectedByDean"] } }
-          ]
-        }
-      ]
+            {
+              status: {
+                $in: [
+                  "rejectedByFaculty",
+                  "rejectedByFinance",
+                  "rejectedByDean",
+                ],
+              },
+            },
+          ],
+        },
+      ],
     });
     res.status(200).json({
       status: "success",
       data: {
-        rejectedRequests  
-      }
-    })
+        rejectedRequests,
+      },
+    });
   } catch (err) {
     res.status(400).json({
       status: "failed",
-      message: err
-    })
+      message: err,
+    });
   }
-}
+};

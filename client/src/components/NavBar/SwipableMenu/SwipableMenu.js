@@ -17,8 +17,6 @@ const useStyles = makeStyles({
   },
 });
 
-
-
 export default function TemporaryDrawer({ x }) {
   const classes = useStyles();
   const [state, setState] = useState(x);
@@ -26,8 +24,6 @@ export default function TemporaryDrawer({ x }) {
   const toggleDrawer = () => {
     setState((pre) => !pre);
   };
-
-
 
   const list = () => (
     <div
@@ -52,14 +48,14 @@ export default function TemporaryDrawer({ x }) {
             <ListItemText primary="Sent Requests" />
           </ListItem>
         </Link>
-        <Link to="/club/sent" style={{ textDecoration: "none" }}>
+        <Link to="/club/correction" style={{ textDecoration: "none" }}>
           <ListItem button>
             <ListItemText primary="Correction" />
           </ListItem>
         </Link>
-        <Link to="/club/sent" style={{ textDecoration: "none" }}>
+        <Link to="/club/rejected" style={{ textDecoration: "none" }}>
           <ListItem button>
-            <ListItemText primary="Club Details" />
+            <ListItemText primary="Rejected Requests" />
           </ListItem>
         </Link>
       </List>

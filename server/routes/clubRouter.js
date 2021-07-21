@@ -21,17 +21,14 @@ router
   .get(clubAuth, clubController.getDetailsById) // 'Club Details' button on dashboard
   .patch(clubAuth, clubController.updateDetailsById); // 'Update' button on club details page
 
-router
-  .route("/changePassword")
-  .get(clubAuth, clubController.changePassword)
-  .patch(clubAuth, clubController.authorise);
+router.route("/:id/changePassword").patch(clubController.authorise);
 
 //router.route("/downloadPdf").post(isClubLoggedIn, clubController.downloadPdf);
 
 // router
-  // .route("/req")
-  // .get(clubAuth, clubController.newRequest) // 'New Request' or '+' button on dashboard
-  // .delete(clubAuth, clubController.deleteRequest); // 'Delete' button on 'Request'
+// .route("/req")
+// .get(clubAuth, clubController.newRequest) // 'New Request' or '+' button on dashboard
+// .delete(clubAuth, clubController.deleteRequest); // 'Delete' button on 'Request'
 
 router
   .route("/:id/drafts")

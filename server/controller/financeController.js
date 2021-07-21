@@ -41,10 +41,15 @@ module.exports.authentication = async (req, res) => {
         message: "please provied username and password",
       });
     }
-    const foundFinance = await Finance.findOne({ username }).select("+password");
+    const foundFinance = await Finance.findOne({ username }).select(
+      "+password"
+    );
     console.log(foundFinance);
 
-    const flag = await foundFinance.correctPassword(password, foundFinance.password);
+    const flag = await foundFinance.correctPassword(
+      password,
+      foundFinance.password
+    );
     //const flag = await bcrypt.compare(password, foundFinance.password);
     if (flag == true) {
       // req.params.id = foundFinance._id;
@@ -310,6 +315,7 @@ module.exports.changePassword = async (req, res) => {
 
 module.exports.authorise = async (req, res) => {
   try {
+    const { id } = req.params;
     const { oldPassword, newPassword, confirmPassword } = req.body;
     if (!oldPassword || !newPassword || !confirmPassword) {
       res.status(401).json({
@@ -319,13 +325,12 @@ module.exports.authorise = async (req, res) => {
       });
       return;
     }
-    const finance = await Finance.findById(req.params.id).select(
-      "+password"
-    );
+    const finance = await Finance.findById(id).select("+password");
     if (await finance.correctPassword(oldPassword, finance.password)) {
       if (newPassword === confirmPassword) {
-        await Finance.findByIdAndUpdate(req.params.id, { newPassword });
-        //req.params.id = null;
+        const finance = await Finance.findById(id);
+        finance.password = newPassword;
+        await finance.save();
         res.status(200).json({
           status: "success",
           requested: req.requestTime,
@@ -361,19 +366,19 @@ module.exports.authorise = async (req, res) => {
 module.exports.getRejectedRequests = async (req, res) => {
   try {
     const rejectedRequests = await Request.find({
-     status: { $in: ["rejectedByFinance", "rejectedByDean"] } 
+      status: { $in: ["rejectedByFinance", "rejectedByDean"] },
     });
 
     res.status(200).json({
       status: "success",
       data: {
-        rejectedRequests  
-      }
-    })
+        rejectedRequests,
+      },
+    });
   } catch (err) {
     res.status(400).json({
       status: "failed",
-      message: err
-    })
+      message: err,
+    });
   }
-}
+};

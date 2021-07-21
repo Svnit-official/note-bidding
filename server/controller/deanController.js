@@ -270,6 +270,7 @@ module.exports.changePassword = async (req, res) => {
 
 module.exports.authorise = async (req, res) => {
   try {
+    const { id } = req.params;
     const { oldPassword, newPassword, confirmPassword } = req.body;
     if (!oldPassword || !newPassword || !confirmPassword) {
       res.status(401).json({
@@ -279,11 +280,12 @@ module.exports.authorise = async (req, res) => {
       });
       return;
     }
-    const dean = await Dean.findById(req.session.user_id).select("+password");
+    const dean = await Dean.findById(id).select("+password");
     if (await dean.correctPassword(oldPassword, dean.password)) {
       if (newPassword === confirmPassword) {
-        await Dean.findByIdAndUpdate(req.session.user_id, { newPassword });
-        req.session.user_id = null;
+        const dean = await Dean.findById(id);
+        dean.password = newPassword;
+        await dean.save();
         res.status(200).json({
           status: "success",
           requested: req.requestTime,
@@ -319,18 +321,18 @@ module.exports.authorise = async (req, res) => {
 module.exports.getRejectedRequests = async (req, res) => {
   try {
     const rejectedRequests = await Request.find({
-      status:  "rejectedByDean" 
+      status: "rejectedByDean",
     });
     res.status(200).json({
       status: "success",
       data: {
-        rejectedRequests  
-      }
-    })
+        rejectedRequests,
+      },
+    });
   } catch (err) {
     res.status(400).json({
       status: "failed",
-      message: err
-    })
+      message: err,
+    });
   }
-}
+};

@@ -67,14 +67,6 @@ export default function SimpleCard({ progress, event }) {
           size="small"
           variant="contained"
           color="primary"
-        >
-          Learn More
-        </Button>
-        <Button
-          className={classes.button}
-          size="small"
-          variant="contained"
-          color="primary"
           onClick={downloadPdf}
         >
           Download Pdf

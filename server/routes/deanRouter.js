@@ -20,10 +20,7 @@ router
   .get(deanController.getDetailsById) // 'Dean Details' button on dashboard
   .patch(deanController.updateDetailsById); // 'Update' button on dean details page
 
-router
-  .route("/changePassword")
-  .get(isDeanLoggedIn, deanController.changePassword)
-  .patch(isDeanLoggedIn, deanController.authorise);
+router.route("/:id/changePassword").patch(deanController.authorise);
 
 router
   .route("/pendingRequests")
@@ -36,8 +33,6 @@ router
   .get(deanAuth, deanController.getRespondedRequests); // 'Responded Requests' button on dashboard
 //  .delete(financeController.deleteSentRequests);
 
-router
-  .route("/logout")
-  .get(deanAuth, deanController.logout);
+router.route("/logout").get(deanAuth, deanController.logout);
 
 module.exports = router;

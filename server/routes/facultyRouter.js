@@ -1,7 +1,7 @@
 const express = require("express");
 const facultyController = require("./../controller/facultyController");
 const { isFacultyLoggedIn } = require("./../controller/authController");
-const facAuth = require('../middleware/facultyAuth.js')
+const facAuth = require("../middleware/facultyAuth.js");
 const router = express.Router();
 
 //router.param('id', testController.checkId);
@@ -21,10 +21,7 @@ router
   .get(facultyController.getDetailsById) // 'Faculty Details' button on dashboard
   .patch(facultyController.updateDetailsById); // 'Update' button on faculty details page
 
-router
-  .route("/:id/changePassword")
-  .get(facAuth, facultyController.changePassword)
-  .patch(facAuth, facultyController.authorise);
+router.route("/:id/changePassword").patch(facultyController.authorise);
 
 router
   .route("/:id/pendingRequests")

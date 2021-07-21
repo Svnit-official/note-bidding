@@ -94,8 +94,6 @@ export const updateFacultyDetails =
     router.push(`/faculty/${id}/details`);
   };
 
-
-
 export const clubFormSubmit = (formdata, router) => async (dispatch) => {
   console.log(formdata);
   try {
@@ -103,10 +101,28 @@ export const clubFormSubmit = (formdata, router) => async (dispatch) => {
     console.log(data);
     dispatch({ type: "CLUB_FORM_SUBMIT", data });
     console.log("form submitted");
-    router.push("/");
+    router.push("/club/home");
   } catch (e) {
     console.log(e);
   }
 };
-
-
+export const changeDeanPassword = (id, form, router) => async (dispatch) => {
+  try {
+    console.log("action");
+    const { data } = await api.deanResetPassword(id, form);
+    console.log(data);
+    router.push("/dean/home");
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const changeFinancePassword = (id, form, router) => async (dispatch) => {
+  try {
+    console.log("action");
+    const { data } = await api.financeResetPassword(id, form);
+    console.log(data);
+    router.push("/finance/home");
+  } catch (error) {
+    console.log(error);
+  }
+};

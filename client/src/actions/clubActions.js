@@ -84,3 +84,13 @@ export const deleteRequest = (id, router) => async (dispatch) => {
     console.log(error);
   }
 };
+export const changeClubPassword = (id, form, router) => async (dispatch) => {
+  try {
+    console.log("action");
+    const { data } = await api.clubResetPassword(id, form);
+    console.log(data);
+    router.push("/club/home");
+  } catch (error) {
+    console.log(error);
+  }
+};

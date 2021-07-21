@@ -475,7 +475,9 @@ module.exports.changePassword = async (req, res) => {
 
 module.exports.authorise = async (req, res) => {
   try {
+    const { id } = req.params;
     const { oldPassword, newPassword, confirmPassword } = req.body;
+    console.log(oldPassword, newPassword, confirmPassword);
     if (!oldPassword || !newPassword || !confirmPassword) {
       res.status(401).json({
         status: "unauthorized",
@@ -484,11 +486,12 @@ module.exports.authorise = async (req, res) => {
       });
       return;
     }
-    const club = await Club.findById(req.params.id).select("+password");
+    const club = await Club.findById(id).select("+password");
     if (await club.correctPassword(oldPassword, club.password)) {
       if (newPassword === confirmPassword) {
-        await Club.findByIdAndUpdate(req.params.id, { newPassword });
-        req.params.id = null;
+        const club = await Club.findById(id);
+        club.password = newPassword;
+        await club.save();
         res.status(200).json({
           status: "success",
           requested: req.requestTime,
@@ -548,28 +551,32 @@ module.exports.getRejectedRequests = async (req, res) => {
     const clubId = req.params.id;
     const rejectedRequests = await Request.find({
       $and: [
-        { clubId : clubId },
+        { clubId: clubId },
         {
           $or: [
-            { status: { $in: ["rejectedByFaculty", "rejectedByFinance", "rejectedByDean"] } }
-          ]
-        }
-      ]
+            {
+              status: {
+                $in: [
+                  "rejectedByFaculty",
+                  "rejectedByFinance",
+                  "rejectedByDean",
+                ],
+              },
+            },
+          ],
+        },
+      ],
     });
     res.status(200).json({
       status: "success",
       data: {
-        rejectedRequests  
-      }
-    })
+        rejectedRequests,
+      },
+    });
   } catch (err) {
     res.status(400).json({
       status: "failed",
-      message: err
-    })
+      message: err,
+    });
   }
-}
-
-
-
-
+};
