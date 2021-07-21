@@ -341,10 +341,13 @@ module.exports.sendRequest = async (req, res) => {
       }
       await Request.findByIdAndUpdate(request._id, request);
     } else {
-      request.status = "sentByClub";
-      await Request.create(request);
+      newRequest = await Request.create(request);
+      newRequest.status = "sentByClub";
+      await newRequest.save();
     }
-    clubDetails.sentRequests.push(request._id);
+    console.log(newRequest);
+    const sentRequests = clubDetails.sentRequests;
+    sentRequests.push(newRequest._id);
     await clubDetails.save();
     console.log("successful");
     res.status(200).json({
