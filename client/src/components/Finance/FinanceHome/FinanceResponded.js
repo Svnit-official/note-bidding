@@ -3,7 +3,7 @@ import NavBar from "../NavBar/NavBar";
 import BottomNav from "../../BottomNav/BottomNav";
 // import AddButton from '../AddButton/AddButton';
 import {useDispatch,useSelector} from "react-redux";
-import {getPendingRequestsFinance} from '../../../actions/financeActions'
+import {getRespondedRequestsFinance} from '../../../actions/financeActions'
 import FinanceCard from '../FinanceCard/FinanceCard'
 import {CircularProgress} from '@material-ui/core'
 
@@ -15,11 +15,11 @@ const FinanceHome = () => {
   console.log(user);
 
   useEffect((e)=>{
-    dispatch(getPendingRequestsFinance(user.financeID))
+    dispatch(getRespondedRequestsFinance(user.financeID))
   }
     ,[]);
 
-    const d = useSelector((state) => state.financeReducer.requests);
+     const d = useSelector((state) => state.financeReducer.requests);
     
 
 

@@ -31,6 +31,15 @@ export const updateDeanDetails = (id, formdata) =>
   API.patch(`/dean/${id}/details`, formdata);
 export const deanResetPassword = (id, formdata) =>
   API.patch(`/dean/${id}/changePassword`, formdata);
+export const getPendingRequestsDean = (deanID) =>
+  API.get(`/dean/${deanID}/pendingRequests`);
+export const approvePendingRequestsDean = (deanID , request) =>
+  API.post(`/dean/${deanID}/pendingRequests` , request);
+export const rejectPendingRequestsDean = (deanID , request) =>
+  API.put(`/dean/${deanID}/pendingRequests`,request);
+export const getRespondedRequestsDean = (deanID) =>
+  API.get(`/dean/${deanID}/RespondedRequests`);
+
 ///////////////////////////// CLUB
 export const clubLogin = (formdata) => API.post("/club/login", formdata);
 
@@ -46,17 +55,19 @@ export const clubUpdateDraft = (id, formdata) =>
 export const clubDeleteDraft = (id) => API.delete(`/club/${id}/drafts`);
 export const clubResetPassword = (id, formdata) =>
   API.patch(`/club/${id}/changePassword`, formdata);
+export const clubSentBack = (id) => API.get(`/club/${id}/receivedRequests`)
+
 /////////////////////////// FACULTY
 export const facultyLogin = (formdata) => API.post("/faculty/login", formdata);
 
 export const getPendingRequests = (facultyID) =>
   API.get(`/faculty/${facultyID}/pendingRequests`);
-export const sendBackPendingRequests = (facultyID) =>
-  API.patch(`/faculty/${facultyID}/pendingRequests`);
-export const approvePendingRequests = (facultyID) =>
-  API.post(`/faculty/${facultyID}/pendingRequests`);
-export const rejectPendingRequests = (facultyID) =>
-  API.put(`/faculty/${facultyID}/pendingRequests`);
+export const sendBackPendingRequests = (facultyID , requestID) =>
+  API.patch(`/faculty/${facultyID}/pendingRequests`,requestID);
+export const approvePendingRequests = (facultyID,requestID) =>
+  API.post(`/faculty/${facultyID}/pendingRequests`,requestID);
+export const rejectPendingRequests = (facultyID , requestID) =>
+  API.put(`/faculty/${facultyID}/pendingRequests`, requestID);
 
 export const getRespondedRequests = (facultyID) =>
   API.get(`/faculty/${facultyID}/RespondedRequests`);
@@ -69,17 +80,17 @@ export const facultyResetPassword = (id, formdata) =>
 /////////////////////////// FINANCE
 export const financeLogin = (formdata) => API.post("/finance/login", formdata);
 
-export const getPendingRequestsFin = (facultyID) =>
-  API.get(`/finance/${facultyID}/pendingRequests`);
-export const sendBackPendingRequestsFin = (facultyID) =>
-  API.patch(`/finance/${facultyID}/pendingRequests`);
-export const approvePendingRequestsFin = (facultyID) =>
-  API.post(`/finance/${facultyID}/pendingRequests`);
-export const rejectPendingRequestsFin = (facultyID) =>
-  API.put(`/finance/${facultyID}/pendingRequests`);
+export const getPendingRequestsFin = (financeID) =>
+  API.get(`/finance/${financeID}/pendingRequests`);
+export const sendBackPendingRequestsFin = (financeID,request) =>
+  API.patch(`/finance/${financeID}/pendingRequests`,request);
+export const approvePendingRequestsFin = (financeID , request) =>
+  API.post(`/finance/${financeID}/pendingRequests` , request);
+export const rejectPendingRequestsFin = (financeID , request) =>
+  API.put(`/finance/${financeID}/pendingRequests`,request);
 
-export const getRespondedRequestsFin = (facultyID) =>
-  API.get(`/finance/${facultyID}/RespondedRequests`);
+export const getRespondedRequestsFin = (financeID) =>
+  API.get(`/finance/${financeID}/RespondedRequests`);
 
 export const getFinanceDetails = (id) => API.get(`/finance/${id}/details`);
 export const updateFinanceDetails = (id, formdata) =>

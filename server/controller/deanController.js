@@ -35,13 +35,12 @@ module.exports.authentication = async (req, res) => {
       res.status(400).json({
         status: "bad request",
         requested: req.time,
-        message: "please provied username and password",
+        message: "please provide username and password",
       });
     }
     const foundDean = await Dean.findOne({ username }).select("+password");
-    const flag = await foundDean.correctPassword(password, foundDean.password);
-    if (flag == true) {
-      // req.session.user_id = foundDean._id;
+    if (foundDean && await foundDean.correctPassword(password, foundDean.password)){
+      // req.params.id = foundDean._id;
       const token = jwt.sign({ id: foundDean._id }, "dean", {
         expiresIn: "2h",
       });
@@ -155,24 +154,25 @@ module.exports.getPendingRequests = async (req, res) => {
 };
 
 module.exports.approvePendingRequest = async (req, res) => {
+  console.log(req.body)
   try {
-    const request = await Request.findById(req.body._id);
-    const comments = req.body.comments;
-    const dean = await Dean.findById(req.session.user_id);
+    const request = await Request.findById(req.body.id);
+    //const comments = req.body.comments;
+    const dean = await Dean.findById(req.params.id);
     const respondedRequests = dean.respondedRequests;
     respondedRequests.push(request);
-    await Dean.findByIdAndUpdate(req.session.user_id, { respondedRequests });
-    await Request.findByIdAndUpdate(req.body._id, {
+    await Dean.findByIdAndUpdate(req.params.id, { respondedRequests });
+    await Request.findByIdAndUpdate(req.body.id, {
       status: "approvedByDean",
-      comments,
+      // comments,
     });
-    const appRequest = await Request.findById(req.body._id);
+   // const appRequest = await Request.findById(req.body.id);
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
       data: {
         message: "redirect to /respondedRequests",
-        appRequest,
+        //appRequest,
       },
     });
   } catch (err) {
@@ -185,23 +185,23 @@ module.exports.approvePendingRequest = async (req, res) => {
 };
 module.exports.rejectPendingRequest = async (req, res) => {
   try {
-    const request = await Request.findById(req.body._id);
-    const comments = req.body.comments;
-    const dean = await Dean.findById(req.session.user_id);
+    const request = await Request.findById(req.body.id);
+    //const comments = req.body.comments;
+    const dean = await Dean.findById(req.params.id);
     const respondedRequests = dean.respondedRequests;
     respondedRequests.push(request);
-    await Dean.findByIdAndUpdate(req.session.user_id, { respondedRequests });
-    await Request.findByIdAndUpdate(req.body._id, {
+    await Dean.findByIdAndUpdate(req.params.id, { respondedRequests });
+    await Request.findByIdAndUpdate(req.body.id, {
       status: "rejectedByDean",
-      comments,
+      //comments,
     });
-    const rejRequest = await Request.findById(req.body._id);
+    //const rejRequest = await Request.findById(req.body.id);
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
       data: {
         message: "redirect to /rejectedRequests",
-        rejRequest,
+        //rejRequest,
       },
     });
   } catch (err) {
@@ -216,7 +216,7 @@ module.exports.rejectPendingRequest = async (req, res) => {
 /////////////////////////////////////////////////////////////////////////ROUTE: /respondedRequests
 module.exports.getRespondedRequests = async (req, res) => {
   try {
-    const dean = await Dean.findById(req.session.user_id);
+    const dean = await Dean.findById(req.params.id);
     const requestIds = dean.respondedRequests;
     const requests = await Request.find({ _id: [...requestIds] });
     res.status(200).json({
@@ -241,7 +241,7 @@ module.exports.getRespondedRequests = async (req, res) => {
 
 //////////////////////////////////////////////////////////////////////ROUTE: /logout
 module.exports.logout = async (req, res) => {
-  req.session.user_id = null;
+  req.params.id = null;
   console.log("logged out");
   res.status(200).json({
     status: "success",

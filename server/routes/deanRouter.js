@@ -1,8 +1,6 @@
 const express = require("express");
 const deanController = require("./../controller/deanController");
-const { isDeanLoggedIn } = require("./../controller/authController");
 const deanAuth = require("../middleware/deanAuth");
-
 const router = express.Router();
 
 //buttons on request = reject, approve, add comments
@@ -10,10 +8,7 @@ const router = express.Router();
 
 router
   .route("/login")
-  .get(deanController.login)
   .post(deanController.authentication);
-
-router.route("/").get(isDeanLoggedIn, deanController.dashboard);
 
 router
   .route("/:id/details")
@@ -23,16 +18,14 @@ router
 router.route("/:id/changePassword").patch(deanController.authorise);
 
 router
-  .route("/pendingRequests")
+  .route("/:id/pendingRequests")
   .get(deanAuth, deanController.getPendingRequests) // 'Pending Requests' button on dashboard
   .post(deanAuth, deanController.approvePendingRequest) // 'Approve' button on request (after adding comments)
   .put(deanAuth, deanController.rejectPendingRequest); // 'Reject' button on request (after adding comments)
 
 router
-  .route("/respondedRequests")
+  .route("/:id/respondedRequests")
   .get(deanAuth, deanController.getRespondedRequests); // 'Responded Requests' button on dashboard
 //  .delete(financeController.deleteSentRequests);
-
-router.route("/logout").get(deanAuth, deanController.logout);
 
 module.exports = router;

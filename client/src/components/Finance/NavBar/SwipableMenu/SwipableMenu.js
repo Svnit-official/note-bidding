@@ -23,7 +23,7 @@ const useStyles = makeStyles({
 export default function TemporaryDrawer({ x }) {
   const classes = useStyles();
   const [state, setState] = useState(x);
-  const userFaculty = JSON.parse(localStorage.getItem('fac_profile'));
+  const userFinance = JSON.parse(localStorage.getItem('fin_profile'));
   const toggleDrawer = () => {
     setState((pre) => !pre);
   };
@@ -38,17 +38,17 @@ export default function TemporaryDrawer({ x }) {
       onKeyDown={toggleDrawer}
     >
       <List>
-        <Link to="/faculty/home" style={{ textDecoration: "none" }}>
+        <Link to="/finance/home" style={{ textDecoration: "none" }}>
           <ListItem button>
             <ListItemText primary="Dashboard" />
           </ListItem>
         </Link>
-        <Link to="/faculty/responded" style={{ textDecoration: "none" }}>
+        <Link to="/finance/responded" style={{ textDecoration: "none" }}>
           <ListItem button>
-            <ListItemText primary="Responded" />
+            <ListItemText primary="Drafts" />
           </ListItem>
         </Link>
-        <Link to={`/faculty/${userFaculty.facultyID}/details`} style={{ textDecoration: "none" }}>
+        <Link to={`/finance/${userFinance.financeID}/details`} style={{ textDecoration: "none" }}>
           <ListItem button>
             <ListItemText primary="Details" />
           </ListItem>

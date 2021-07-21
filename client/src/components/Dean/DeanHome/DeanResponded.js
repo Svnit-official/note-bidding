@@ -3,22 +3,24 @@ import NavBar from "../NavBar/NavBar"
 import BottomNav from "../../BottomNav/BottomNav";
 // import AddButton from '../AddButton/AddButton';
 import {useDispatch,useSelector} from "react-redux";
-import {getPendingRequestsDean} from '../../../actions/deanActions';
+import {getRespondedRequestsDean} from '../../../actions/deanActions';
 import DeanCard from '../DeanCard/DeanCard';
 import { CircularProgress } from "@material-ui/core";
 
 
-const DeanHome = () => {
+const DeanResponded = () => {
   const dispatch = useDispatch();
 
   const user = JSON.parse(localStorage.getItem('dean_profile'))
   console.log(user);
   useEffect(()=>{
-    dispatch(getPendingRequestsDean(user.deanID));
+    dispatch(getRespondedRequestsDean(user.deanID));
   }
     ,[]);
 
-    const d = useSelector((state) => state.deanReducers.requests); 
+    const req = useSelector((state) => state.deanReducers);
+   const d = req.requests;
+    // const x = req.disabled; 
     console.log(d);
 
 
@@ -26,8 +28,8 @@ const DeanHome = () => {
     <div>
         <NavBar />
         { !d ? <CircularProgress /> : (
-          d.map((x)=>(
-            <DeanCard draft={x} />
+          d.map((x,i)=>(
+            <DeanCard draft={x} display={x} key={i}/>
           ))
 
         )}
@@ -36,4 +38,4 @@ const DeanHome = () => {
   );
 };
 
-export default DeanHome;
+export default DeanResponded;
