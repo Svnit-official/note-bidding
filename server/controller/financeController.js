@@ -42,13 +42,9 @@ module.exports.authentication = async (req, res) => {
       });
     }
     const foundFinance = await Finance.findOne({ username }).select("+password");
-    console.log(foundFinance);
-
-    const flag = await foundFinance.correctPassword(password, foundFinance.password);
-    //const flag = await bcrypt.compare(password, foundFinance.password);
-    if (flag == true) {
+    if(foundFinance && await foundFinance.correctPassword(password, foundFinance.password)){
       // req.params.id = foundFinance._id;
-      const token = jwt.sign({ id: foundFinance._id }, "finance", {
+        const token = jwt.sign({ id: foundFinance._id }, "finance", {
         expiresIn: "2h",
       });
       console.log("loggedIn");

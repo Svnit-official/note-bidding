@@ -36,17 +36,11 @@ module.exports.authentication = async (req, res) => {
       res.status(400).json({
         status: "bad request",
         requested: req.time,
-        message: "please provied username and password",
+        message: "please provide username and password",
       });
     }
-    const foundFaculty = await Faculty.findOne({ username }).select(
-      "+password"
-    );
-    const flag = await foundFaculty.correctPassword(
-      password,
-      foundFaculty.password
-    );
-    if (flag == true) {
+    const foundFaculty = await Faculty.findOne({ username }).select("+password");
+    if(foundFaculty && await foundFaculty.correctPassword(password, foundFaculty.password)){
       // req.session.user_id = foundFaculty._id;
       const token = jwt.sign({ id: foundFaculty._id }, "faculty", {
         expiresIn: "2h",

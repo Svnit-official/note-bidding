@@ -41,17 +41,15 @@ const getDate = function () {
 module.exports.authentication = async (req, res) => {
   try {
     const { username, password } = req.body;
-    console.log(username, password);
     if (!username || !password) {
       res.status(400).json({
         status: "bad request",
         requested: req.time,
-        message: "please provied username and password",
+        message: "please provide username and password",
       });
     }
     const foundClub = await Club.findOne({ username }).select("+password");
-    const flag = await foundClub.correctPassword(password, foundClub.password);
-    if (flag == true) {
+    if(foundClub && await foundClub.correctPassword(password, foundClub.password)){
       const token = jwt.sign({ id: foundClub._id }, "club", {
         expiresIn: "2h",
       });
@@ -192,7 +190,6 @@ module.exports.updateDraft = async (req, res) => {
 };
 module.exports.getDrafts = async (req, res) => {
   try {
-    console.log("hii 2");
     const drafts = await Request.find({
       $and: [
         { clubId: req.params.id },
