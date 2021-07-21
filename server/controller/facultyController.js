@@ -174,7 +174,7 @@ module.exports.sendBackPendingRequest = async (req, res) => {
     const {id } = req.params;
     const request = await Request.findById(req.body._id);
     const comments = req.body.comments;
-    if (request.status === "sentByClub" || request.status === "receivedByFaculty") {
+    if (request.status === "sentByClub" ) { //|| request.status === "receivedByFaculty"
       const faculty = await Faculty.findById(id);
       faculty.respondedRequests.push(request);
       faculty.save();
@@ -203,25 +203,25 @@ module.exports.sendBackPendingRequest = async (req, res) => {
 
 module.exports.approvePendingRequest = async (req, res) => {
   try {
-    const {id } = req.params;
-    const request = await Request.findById(req.body._id);
-    const comments = req.body.comments;
+    const {id } = req.params; 
+    console.log(req.body , req.params)
+    const request = await Request.findById(req.body.id);
+    //const comments = req.body.comments;
     if (request.status === "sentByClub") {
       const faculty = await Faculty.findById(id);
       faculty.respondedRequests.push(request);
       faculty.save();
     }
-    await Request.findByIdAndUpdate(req.body._id, {
-      status: "approvedByFaculty",
-      comments,
-    });
-    const appRequest = await Request.findById(req.body._id);
+    const requ = await Request.findById(req.body.id);
+    requ.status = "approvedByFaculty"
+    await requ.save();
+    //const appRequest = await Request.findById(req.body._id);
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
       data: {
         message: "redirect to /pendingRequests",
-        appRequest,
+  
       },
     });
   } catch (err) {
@@ -235,24 +235,24 @@ module.exports.approvePendingRequest = async (req, res) => {
 module.exports.rejectPendingRequest = async (req, res) => {
   try {
     const {id } = req.params;
-    const request = await Request.findById(req.body._id);
-    const comments = req.body.comments;
+    const request = await Request.findById(req.body.id);
+    //const comments = req.body.comments;
     if (request.status === "sentByClub") {
       const faculty = await Faculty.findById(id);
       faculty.respondedRequests.push(request);
       faculty.save();
     }
-    await Request.findByIdAndUpdate(req.body._id, {
+    await Request.findByIdAndUpdate(req.body.id, {
       status: "rejectedByFaculty",
-      comments,
+      // comments,
     });
-    const rejRequest = await Request.findById(req.body._id);
+    // const rejRequest = await Request.findById(req.body._id);
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
       data: {
         message: "redirect to /pendingRequests",
-        rejRequest,
+        // rejRequest,
       },
     });
   } catch (err) {

@@ -190,24 +190,26 @@ module.exports.sendBackPendingRequest = async (req, res) => {
 
 module.exports.approvePendingRequest = async (req, res) => {
   try {
-    const request = await Request.findById(req.body._id);
-    const comments = req.body.comments;
+    console.log(req.params , req.body);
+    console.log("approved route")
+    const request = await Request.findById(req.body.id);
+    // const comments = req.body.comments;
     const finance = await Finance.findById(req.params.id);
-    if (!finance.respondedRequests.includes(req.body._id)) {
+    if (!finance.respondedRequests.includes(req.body.id)) {
       finance.respondedRequests.push(request);
       finance.save();
     }
-    await Request.findByIdAndUpdate(req.body._id, {
+    await Request.findByIdAndUpdate(req.body.id, {
       status: "approvedByFinance",
-      comments,
+      // comments,
     });
-    const appRequest = await Request.findById(req.body._id);
+    //const appRequest = await Request.findById(req.body.id);
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
       data: {
         message: "redirect to /respondedRequests",
-        appRequest,
+        // appRequest,
       },
     });
   } catch (err) {
@@ -220,24 +222,24 @@ module.exports.approvePendingRequest = async (req, res) => {
 };
 module.exports.rejectPendingRequest = async (req, res) => {
   try {
-    const request = await Request.findById(req.body._id);
-    const comments = req.body.comments;
+    const request = await Request.findById(req.body.id);
+    // const comments = req.body.comments;
     const finance = await Finance.findById(req.params.id);
-    if (!finance.respondedRequests.includes(req.body._id)) {
+    if (!finance.respondedRequests.includes(req.body.id)) {
       finance.respondedRequests.push(request);
       finance.save();
     }
-    await Request.findByIdAndUpdate(req.body._id, {
+    await Request.findByIdAndUpdate(req.body.id, {
       status: "rejectedByFinance",
-      comments,
+      // comments,
     });
-    const rejRequest = await Request.findById(req.body._id);
+    //const rejRequest = await Request.findById(req.body._id);
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
       data: {
         message: "redirect to /respondedRequests",
-        rejRequest,
+        //rejRequest,
       },
     });
   } catch (err) {

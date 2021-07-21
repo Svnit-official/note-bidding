@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const secret = process.env.FINANCE_SECRET || 'finance';
 
-const auth = async (req,res,next) => {
+const finAuth = async (req,res,next) => {
     try {
         if (!req.headers.authorization) {
           return next(
@@ -43,4 +43,4 @@ const auth = async (req,res,next) => {
     }
 }
 
-module.exports = auth
+module.exports = finAuth

@@ -21,23 +21,23 @@ router
   .patch(deanController.updateDetailsById); // 'Update' button on dean details page
 
 router
-  .route("/changePassword")
+  .route("/:id/changePassword")
   .get(isDeanLoggedIn, deanController.changePassword)
   .patch(isDeanLoggedIn, deanController.authorise);
 
 router
-  .route("/pendingRequests")
+  .route("/:id/pendingRequests")
   .get(deanAuth, deanController.getPendingRequests) // 'Pending Requests' button on dashboard
   .post(deanAuth, deanController.approvePendingRequest) // 'Approve' button on request (after adding comments)
   .put(deanAuth, deanController.rejectPendingRequest); // 'Reject' button on request (after adding comments)
 
 router
-  .route("/respondedRequests")
+  .route("/:id/respondedRequests")
   .get(deanAuth, deanController.getRespondedRequests); // 'Responded Requests' button on dashboard
 //  .delete(financeController.deleteSentRequests);
 
 router
-  .route("/logout")
+  .route("/:id/logout")
   .get(deanAuth, deanController.logout);
 
 module.exports = router;

@@ -18,8 +18,8 @@ router.route("/").get(facAuth, facultyController.dashboard);
 
 router
   .route("/:id/details")
-  .get(facultyController.getDetailsById) // 'Faculty Details' button on dashboard
-  .patch(facultyController.updateDetailsById); // 'Update' button on faculty details page
+  .get(facAuth,facultyController.getDetailsById) // 'Faculty Details' button on dashboard
+  .patch(facAuth,facultyController.updateDetailsById); // 'Update' button on faculty details page
 
 router
   .route("/:id/changePassword")

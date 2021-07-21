@@ -1,10 +1,9 @@
 import React, { useState,useEffect } from "react";
-import Card from "../../Card/Card";
 import NavBar from "../../NavBar/NavBar";
 import BottomNav from "../../BottomNav/BottomNav";
 // import AddButton from '../AddButton/AddButton';
 import {useDispatch,useSelector} from "react-redux";
-import {getPendingRequests} from '../../../actions/facultyActions';
+//import {getPendingRequests} from '../../../actions/facultyActions';
 
 
 const FacultyHome = () => {
@@ -19,13 +18,7 @@ const FacultyHome = () => {
 //     ,[]);
 
     
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   return (
     <div>
