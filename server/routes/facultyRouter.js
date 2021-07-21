@@ -1,20 +1,14 @@
 const express = require("express");
 const facultyController = require("./../controller/facultyController");
-const { isFacultyLoggedIn } = require("./../controller/authController");
 const facAuth = require('../middleware/facultyAuth.js')
 const router = express.Router();
-
-//router.param('id', testController.checkId);
 
 //buttons on request = reject, approve, send back, add comments
 //buttons on dashboard = Faculty details, Pending Requests, Responded Requests
 
 router
   .route("/login")
-  .get(facultyController.login)
   .post(facultyController.authentication);
-
-router.route("/").get(facAuth, facultyController.dashboard);
 
 router
   .route("/:id/details")
@@ -23,7 +17,6 @@ router
 
 router
   .route("/:id/changePassword")
-  .get(facAuth, facultyController.changePassword)
   .patch(facAuth, facultyController.authorise);
 
 router
@@ -37,7 +30,5 @@ router
   .route("/:id/respondedRequests")
   .get(facAuth, facultyController.getRespondedRequests); // 'Responded Requests' button on dashboard
 //  .delete(facultyController.deleteSentRequests);
-
-router.route("/logout").get(facAuth, facultyController.logout);
 
 module.exports = router;

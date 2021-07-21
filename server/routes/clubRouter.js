@@ -1,6 +1,5 @@
 const express = require("express");
 const clubController = require("./../controller/clubController");
-const { isClubLoggedIn } = require("./../controller/authController");
 const clubAuth = require("../middleware/clubAuth.js");
 const router = express.Router();
 
