@@ -16,7 +16,7 @@ import { useHistory } from "react-router-dom";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MultiStepForm from "../../MultiStepForm/MultiStepForm";
 import useStyles from "./styles";
-import {approvePendingRequest , rejectPendingRequests} from '../../../actions/facultyActions';
+import {approvePendingRequest , rejectPendingRequests ,sendBackPendingRequests  } from '../../../actions/facultyActions';
 
 
 
@@ -56,13 +56,27 @@ export default function FacultyCard({draft}) {
     dispatch(rejectPendingRequests(userFaculty.facultyID,request))
   }
 
+  const handleSendBack = () => {
+    dispatch(sendBackPendingRequests(userFaculty.facultyID,request))
+  }
+
+  const progress = function (status) {
+    switch(status){
+      case "sentByClub": return 1;
+      case "approvedByFaculty": return 2;
+      case "approvedByFinance": return 3;
+      case "approvedByDean": return 4;
+      default: return null;
+    }
+  }
+
   return (
     <Card
       className={classes.root}
       style={{ width: "100%", marginTop: "30px" }}
       elevation={6}
     >
-      <MultiStepForm progress={1} />
+      <MultiStepForm progress={progress(draft.status)} />
       <CardContent>
         <Typography
           className={classes.title}
@@ -125,6 +139,7 @@ export default function FacultyCard({draft}) {
             size="small"
             variant="contained"
             color="secondary"
+            onClick={handleSendBack}
           >
             Edit Request
           </Button>

@@ -40,7 +40,7 @@ module.exports.authentication = async (req, res) => {
     }
     const foundDean = await Dean.findOne({ username }).select("+password");
     if (foundDean && await foundDean.correctPassword(password, foundDean.password)){
-      // req.session.user_id = foundDean._id;
+      // req.params.id = foundDean._id;
       const token = jwt.sign({ id: foundDean._id }, "dean", {
         expiresIn: "2h",
       });
@@ -154,24 +154,25 @@ module.exports.getPendingRequests = async (req, res) => {
 };
 
 module.exports.approvePendingRequest = async (req, res) => {
+  console.log(req.body)
   try {
-    const request = await Request.findById(req.body._id);
-    const comments = req.body.comments;
-    const dean = await Dean.findById(req.session.user_id);
+    const request = await Request.findById(req.body.id);
+    //const comments = req.body.comments;
+    const dean = await Dean.findById(req.params.id);
     const respondedRequests = dean.respondedRequests;
     respondedRequests.push(request);
-    await Dean.findByIdAndUpdate(req.session.user_id, { respondedRequests });
-    await Request.findByIdAndUpdate(req.body._id, {
+    await Dean.findByIdAndUpdate(req.params.id, { respondedRequests });
+    await Request.findByIdAndUpdate(req.body.id, {
       status: "approvedByDean",
-      comments,
+      // comments,
     });
-    const appRequest = await Request.findById(req.body._id);
+   // const appRequest = await Request.findById(req.body.id);
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
       data: {
         message: "redirect to /respondedRequests",
-        appRequest,
+        //appRequest,
       },
     });
   } catch (err) {
@@ -184,23 +185,23 @@ module.exports.approvePendingRequest = async (req, res) => {
 };
 module.exports.rejectPendingRequest = async (req, res) => {
   try {
-    const request = await Request.findById(req.body._id);
-    const comments = req.body.comments;
-    const dean = await Dean.findById(req.session.user_id);
+    const request = await Request.findById(req.body.id);
+    //const comments = req.body.comments;
+    const dean = await Dean.findById(req.params.id);
     const respondedRequests = dean.respondedRequests;
     respondedRequests.push(request);
-    await Dean.findByIdAndUpdate(req.session.user_id, { respondedRequests });
-    await Request.findByIdAndUpdate(req.body._id, {
+    await Dean.findByIdAndUpdate(req.params.id, { respondedRequests });
+    await Request.findByIdAndUpdate(req.body.id, {
       status: "rejectedByDean",
-      comments,
+      //comments,
     });
-    const rejRequest = await Request.findById(req.body._id);
+    //const rejRequest = await Request.findById(req.body.id);
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
       data: {
         message: "redirect to /rejectedRequests",
-        rejRequest,
+        //rejRequest,
       },
     });
   } catch (err) {
@@ -215,7 +216,7 @@ module.exports.rejectPendingRequest = async (req, res) => {
 /////////////////////////////////////////////////////////////////////////ROUTE: /respondedRequests
 module.exports.getRespondedRequests = async (req, res) => {
   try {
-    const dean = await Dean.findById(req.session.user_id);
+    const dean = await Dean.findById(req.params.id);
     const requestIds = dean.respondedRequests;
     const requests = await Request.find({ _id: [...requestIds] });
     res.status(200).json({
@@ -240,7 +241,7 @@ module.exports.getRespondedRequests = async (req, res) => {
 
 //////////////////////////////////////////////////////////////////////ROUTE: /logout
 module.exports.logout = async (req, res) => {
-  req.session.user_id = null;
+  req.params.id = null;
   console.log("logged out");
   res.status(200).json({
     status: "success",
@@ -278,11 +279,11 @@ module.exports.authorise = async (req, res) => {
       });
       return;
     }
-    const dean = await Dean.findById(req.session.user_id).select("+password");
+    const dean = await Dean.findById(req.params.id).select("+password");
     if (await dean.correctPassword(oldPassword, dean.password)) {
       if (newPassword === confirmPassword) {
-        await Dean.findByIdAndUpdate(req.session.user_id, { newPassword });
-        req.session.user_id = null;
+        await Dean.findByIdAndUpdate(req.params.id, { newPassword });
+        req.params.id = null;
         res.status(200).json({
           status: "success",
           requested: req.requestTime,

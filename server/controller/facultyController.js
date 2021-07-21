@@ -170,20 +170,21 @@ module.exports.getPendingRequests = async (req, res) => {
 };
 
 module.exports.sendBackPendingRequest = async (req, res) => {
+  console.log(req.body ,req.params);
   try {
     const {id } = req.params;
-    const request = await Request.findById(req.body._id);
-    const comments = req.body.comments;
-    if (request.status === "sentByClub" ) { //|| request.status === "receivedByFaculty"
+    const request = await Request.findById(req.body.id);
+    ///const comments = req.body.comments;
+    if (request.status === "sentByClub" ) {  
       const faculty = await Faculty.findById(id);
-      faculty.respondedRequests.push(request);
+      faculty.respondedRequests.push(req.body.id);
       faculty.save();
     }
-    await Request.findByIdAndUpdate(req.body._id, {
+    await Request.findByIdAndUpdate(req.body.id, {
       status: "sentByFaculty",
-      comments,
+      //comments,
     });
-    const sentRequest = await Request.findById(req.body._id);
+    const sentRequest = await Request.findById(req.body.id);
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
@@ -209,12 +210,11 @@ module.exports.approvePendingRequest = async (req, res) => {
     //const comments = req.body.comments;
     if (request.status === "sentByClub") {
       const faculty = await Faculty.findById(id);
-      faculty.respondedRequests.push(request);
+      faculty.respondedRequests.push(request._id);
       faculty.save();
     }
-    const requ = await Request.findById(req.body.id);
-    requ.status = "approvedByFaculty"
-    await requ.save();
+    request.status = "approvedByFaculty"
+    await request.save();
     //const appRequest = await Request.findById(req.body._id);
     res.status(200).json({
       status: "success",
@@ -239,7 +239,7 @@ module.exports.rejectPendingRequest = async (req, res) => {
     //const comments = req.body.comments;
     if (request.status === "sentByClub") {
       const faculty = await Faculty.findById(id);
-      faculty.respondedRequests.push(request);
+      faculty.respondedRequests.push(request._id);
       faculty.save();
     }
     await Request.findByIdAndUpdate(req.body.id, {

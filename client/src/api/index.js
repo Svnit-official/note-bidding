@@ -29,6 +29,14 @@ export const deanLogin = (formdata) => API.post("/dean/login", formdata);
 export const getDeanDetails = (id) => API.get(`/dean/${id}/details`);
 export const updateDeanDetails = (id, formdata) =>
   API.patch(`/dean/${id}/details`, formdata);
+export const getPendingRequestsDean = (deanID) =>
+  API.get(`/dean/${deanID}/pendingRequests`);
+export const approvePendingRequestsDean = (deanID , request) =>
+  API.post(`/dean/${deanID}/pendingRequests` , request);
+export const rejectPendingRequestsDean = (deanID , request) =>
+  API.put(`/dean/${deanID}/pendingRequests`,request);
+export const getRespondedRequestsDean = (deanID) =>
+  API.get(`/dean/${deanID}/RespondedRequests`);
 
 ///////////////////////////// CLUB
 export const clubLogin = (formdata) => API.post("/club/login", formdata);
@@ -43,13 +51,15 @@ export const clubDraftRequest = (clubID) => API.get(`/club/${clubID}/drafts`);
 export const clubUpdateDraft = (id, formdata) =>
   API.patch(`/club/${id}/drafts`, formdata);
 export const clubDeleteDraft = (id) => API.delete(`/club/${id}/drafts`);
+export const clubSentBack = (id) => API.get(`/club/${id}/receivedRequests`)
+
 /////////////////////////// FACULTY
 export const facultyLogin = (formdata) => API.post("/faculty/login", formdata);
 
 export const getPendingRequests = (facultyID) =>
   API.get(`/faculty/${facultyID}/pendingRequests`);
-export const sendBackPendingRequests = (facultyID) =>
-  API.patch(`/faculty/${facultyID}/pendingRequests`);
+export const sendBackPendingRequests = (facultyID , requestID) =>
+  API.patch(`/faculty/${facultyID}/pendingRequests`,requestID);
 export const approvePendingRequests = (facultyID,requestID) =>
   API.post(`/faculty/${facultyID}/pendingRequests`,requestID);
 export const rejectPendingRequests = (facultyID , requestID) =>
@@ -67,8 +77,8 @@ export const financeLogin = (formdata) => API.post("/finance/login", formdata);
 
 export const getPendingRequestsFin = (financeID) =>
   API.get(`/finance/${financeID}/pendingRequests`);
-export const sendBackPendingRequestsFin = (financeID) =>
-  API.patch(`/finance/${financeID}/pendingRequests`);
+export const sendBackPendingRequestsFin = (financeID,request) =>
+  API.patch(`/finance/${financeID}/pendingRequests`,request);
 export const approvePendingRequestsFin = (financeID , request) =>
   API.post(`/finance/${financeID}/pendingRequests` , request);
 export const rejectPendingRequestsFin = (financeID , request) =>

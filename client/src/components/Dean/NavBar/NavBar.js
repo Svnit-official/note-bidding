@@ -13,10 +13,10 @@ const NavBar = () => {
 
 //const userClub = JSON.parse(localStorage.getItem('club_profile'));
 // const userFaculty = JSON.parse(localStorage.getItem('fac_profile'));
- const userFinance = JSON.parse(localStorage.getItem('fin_profile'));
-// const userDean = JSON.parse(localStorage.getItem('dean_profile'));
+// const userFinance = JSON.parse(localStorage.getItem('fin_profile'));
+ const userDean = JSON.parse(localStorage.getItem('dean_profile'));
 
-  const [user , setUser] =  useState(userFinance);
+  const [user , setUser] =  useState(userDean);
   console.log(user);
   const dispatch = useDispatch();
 const history = useHistory();
@@ -48,7 +48,7 @@ const history = useHistory();
             SVNIT FORUM
           </Typography>
           <Button color="inherit">Requests</Button>
-          {!user ? <Button color="inherit">Login</Button> : <Button color="inherit" onClick={logout}>logout</Button>}
+          {!userDean ? <Button color="inherit">Login</Button> : <Button color="inherit" onClick={logout}>logout</Button>}
           
         </Toolbar>
       </AppBar>

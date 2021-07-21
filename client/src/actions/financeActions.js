@@ -18,3 +18,14 @@ export const rejectPendingRequestsFinance = (financeID , request) => async (disp
     const {data} = await api.rejectPendingRequestsFin(financeID , request)
     console.log(data)
 }
+
+export const getRespondedRequestsFinance = (financeID) => async (dispatch) =>{
+    const {data} = await api.getRespondedRequestsFin(financeID);
+    console.log(data);
+    dispatch({ type : "GET_RESPONDED_REQUESTS_FIN" , payload : data.data.requests})
+}
+
+export const sendBackPendingRequestsFinance = (financeID , request) => async (dispatch)=>{
+    const {data} = await api.sendBackPendingRequestsFin(financeID, request);
+    console.log(data);
+}

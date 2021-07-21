@@ -158,19 +158,21 @@ module.exports.getPendingRequests = async (req, res) => {
 };
 
 module.exports.sendBackPendingRequest = async (req, res) => {
+  console.log(req.body , req.params)
   try {
-    const request = await Request.findById(req.body._id);
-    const comments = req.body.comments;
+    const request = await Request.findById(req.body.id);
+    //const comments = req.body.comments;
     const finance = await Finance.findById(req.params.id);
-    if (!respondedRequests.includes(req.body._id)) {
-      finance.respondedRequests.push(request);
+    const respondedRequests = finance.respondedRequests;
+    if (!respondedRequests.includes(req.body.id)) {
+      finance.respondedRequests.push(req.body.id);
       finance.save();
     }
-    await Request.findByIdAndUpdate(req.body._id, {
+    await Request.findByIdAndUpdate(req.body.id, {
       status: "sentByFinance",
-      comments,
+    //  comments,
     });
-    const sentRequest = await Request.findById(req.body._id);
+    const sentRequest = await Request.findById(req.body.id);
     res.status(200).json({
       status: "success",
       requested: req.requestTime,

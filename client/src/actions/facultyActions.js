@@ -23,3 +23,14 @@ export const rejectPendingRequests = (facultyID , requestID) => async (dispatch)
     const {data} = await api.rejectPendingRequests(facultyID , requestID);
     console.log(data);
 }
+
+export const getRespondedRequests = (facultyID) => async (dispatch) => {
+    const {data} = await api.getRespondedRequests(facultyID);
+    dispatch({type : "GET_RESPONDED_REQUESTS" , payload : data.data.requests});
+    
+}
+
+export const sendBackPendingRequests = (facultyID,requestID) => async (dispatch) => {
+    const {data} = await api.sendBackPendingRequests(facultyID,requestID);
+    console.log(data);
+}

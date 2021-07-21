@@ -16,7 +16,7 @@ import { useHistory } from "react-router-dom";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MultiStepForm from "../../MultiStepForm/MultiStepForm";
 import useStyles from "./styles";
-import {approvePendingRequestsFinance,rejectPendingRequestsFinance} from '../../../actions/financeActions';
+import {approvePendingRequestsFinance,rejectPendingRequestsFinance,sendBackPendingRequestsFinance} from '../../../actions/financeActions';
 
 
 export default function FinanceCard({draft}) {
@@ -53,14 +53,26 @@ export default function FinanceCard({draft}) {
     dispatch(rejectPendingRequestsFinance(userFinance.financeID,request))
   }
 
+  const handleSendBack = () => {
+    dispatch(sendBackPendingRequestsFinance(userFinance.financeID,request))
+  }
 
+  const progress = function (status) {
+    switch(status){
+      case "sentByClub": return 1;
+      case "approvedByFaculty": return 2;
+      case "approvedByFinance": return 3;
+      case "approvedByDean": return 4;
+      default: return null;
+    }
+  }
   return (
     <Card
       className={classes.root}
       style={{ width: "100%", marginTop: "30px" }}
       elevation={6}
     >
-      <MultiStepForm progress={1} />
+      <MultiStepForm progress={progress(draft.status)} />
       <CardContent>
         <Typography
           className={classes.title}
@@ -123,6 +135,7 @@ export default function FinanceCard({draft}) {
             size="small"
             variant="contained"
             color="secondary"
+            onClick={handleSendBack}
           >
             Edit Request
           </Button>

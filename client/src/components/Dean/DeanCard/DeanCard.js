@@ -17,9 +17,9 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MultiStepForm from "../../MultiStepForm/MultiStepForm";
 import useStyles from "./styles";
 //import {approvePendingRequestsFinance,rejectPendingRequestsFinance} from '../../../actions/financeActions';
+import {approvePendingRequestsDean,rejectPendingRequestsDean} from '../../../actions/deanActions';
 
-
-export default function FinanceCard({draft}) {
+export default function DeanCard({draft , display}) {
   const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles();
@@ -44,23 +44,32 @@ export default function FinanceCard({draft}) {
 
   const handleApprove =(e) => {
     e.preventDefault();
-    console.log(userFinance.financeID)
-    
-    //dispatch(approvePendingRequestsFinance(userFinance.financeID,request));
+    dispatch(approvePendingRequestsDean(userDean.deanID , request));
   }
 
-  const handleReject = () => {
-   // dispatch(rejectPendingRequestsFinance(userFinance.financeID,request))
+  const handleReject = (e) => {
+    e.preventDefault();
+    dispatch(rejectPendingRequestsDean(userDean.deanID , request))
+  }
+  const progress = function (status) {
+    switch(status){
+      case "sentByClub": return 1;
+      case "approvedByFaculty": return 2;
+      case "approvedByFinance": return 3;
+      case "approvedByDean": return 4;
+      default: return 0;
+    }
   }
 
+  const x = progress(draft.status);
 
   return (
     <Card
       className={classes.root}
-      style={{ width: "100%", marginTop: "30px" }}
+      style={{ width: "100%", marginTop: "30px",background :(x===4 && "green") || (x===0 && "#FF6767") }}
       elevation={6}
     >
-      <MultiStepForm progress={1} />
+      <MultiStepForm progress={progress(draft.status)} />
       <CardContent>
         <Typography
           className={classes.title}
@@ -90,7 +99,7 @@ export default function FinanceCard({draft}) {
           Download Pdf
         </Button>
       </CardActions>
-      <Accordion>
+<Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
@@ -137,6 +146,9 @@ export default function FinanceCard({draft}) {
           </Button>
         </AccordionDetails>
       </Accordion>
+
+      
     </Card>
   );
+  
 }

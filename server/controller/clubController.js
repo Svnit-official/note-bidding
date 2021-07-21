@@ -292,12 +292,9 @@ module.exports.deleteRequest = async (req, res) => {
 
 //////////////////////////////////////////////////////////////////////////////////ROUTE: /sentRequests
 module.exports.getSentRequests = async (req, res) => {
-  console.log("hii");
   const { id } = req.params;
-  console.log(id);
   try {
     const clubDetails = await Club.findById(id);
-    console.log(clubDetails);
     const requestIds = clubDetails.sentRequests;
     const requests = await Request.find({ _id: [...requestIds] });
     res.status(200).json({
@@ -317,7 +314,6 @@ module.exports.getSentRequests = async (req, res) => {
 };
 
 module.exports.sendRequest = async (req, res) => {
-  //req.body should contain _id if its an old request, status of the request
   try {
     const club_id = req.params.id;
     const request = req.body;
@@ -345,13 +341,10 @@ module.exports.sendRequest = async (req, res) => {
       }
       await Request.findByIdAndUpdate(request._id, request);
     } else {
-      newRequest = await Request.create(request);
-      newRequest.status = "sentByClub";
-      await newRequest.save();
+      request.status = "sentByClub";
+      await Request.create(request);
     }
-    console.log(newRequest);
-    const sentRequests = clubDetails.sentRequests;
-    sentRequests.push(newRequest._id);
+    clubDetails.sentRequests.push(request._id);
     await clubDetails.save();
     console.log("successful");
     res.status(200).json({

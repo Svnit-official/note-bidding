@@ -45,7 +45,7 @@ export default function TemporaryDrawer({ x }) {
         </Link>
         <Link to="/faculty/responded" style={{ textDecoration: "none" }}>
           <ListItem button>
-            <ListItemText primary="Drafts" />
+            <ListItemText primary="Responded" />
           </ListItem>
         </Link>
         <Link to={`/faculty/${userFaculty.facultyID}/details`} style={{ textDecoration: "none" }}>
