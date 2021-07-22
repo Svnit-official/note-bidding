@@ -3,6 +3,26 @@ const Finance = require("../models/financeModel");
 
 //const mongodb = require("mongodb");
 const jwt = require("jsonwebtoken");
+const getDate = function () {
+  const today = new Date();
+  const dd = String(today.getDate()).padStart(2, "0");
+  const mm = String(today.getMonth() + 1).padStart(2, "0");
+  const yyyy = today.getFullYear();
+  const date = dd + "/" + mm + "/" + yyyy;
+  return date;
+};
+
+const getTime = function () {
+  const date = new Date();
+  var hours = date.getHours();
+  if (hours < 10) hours = "0" + hours.toString();
+  var minutes = date.getMinutes();
+  if (minutes < 10) minutes = "0" + minutes.toString();
+  var seconds = date.getSeconds();
+  if (seconds < 10) seconds = "0" + seconds.toString();
+  return hours + ":" + minutes + ":" + seconds;
+};
+
 // const fs = require("fs");
 // const jwt = require("jsonwebtoken");
 // const secret = process.env.SECRET || "this-is-my-finance-secret";
@@ -198,13 +218,13 @@ module.exports.approvePendingRequest = async (req, res) => {
     // const comments = req.body.comments;
     const finance = await Finance.findById(req.params.id);
     if (!finance.respondedRequests.includes(req.body.id)) {
-      finance.respondedRequests.push(request);
-      finance.save();
+      finance.respondedRequests.push(request._id);
+      finance.save(); 
     }
-    await Request.findByIdAndUpdate(req.body.id, {
-      status: "approvedByFinance",
-      // comments,
-    });
+    request.status = "approvedByFinance",
+    request.timeline.approvedByFinance = { date: getDate(), time: getTime() };
+    await request.save();
+    // comments,
     //const appRequest = await Request.findById(req.body.id);
     res.status(200).json({
       status: "success",
