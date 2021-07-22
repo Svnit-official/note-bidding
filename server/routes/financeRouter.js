@@ -14,21 +14,30 @@ router
 
 router
   .route("/:id/details")
-  .get(financeController.getDetailsById) // 'Finance Details' button on dashboard
-  .patch(financeController.updateDetailsById); // 'Update' button on finance details page
+  .get(finAuth, financeController.getDetailsById) // 'Finance Details' button on dashboard
+  .patch(finAuth, financeController.updateDetailsById); // 'Update' button on finance details page
 
-router.route("/:id/changePassword").patch(financeController.authorise);
+router
+  .route("/:id/changePassword")
+  .patch(finAuth, financeController.authorise);
   
 router
   .route("/:id/pendingRequests")
-  .get( financeController.getPendingRequests) // 'Pending Requests' button on dashboard
-  .patch( financeController.sendBackPendingRequest) // 'Send back' button on request (after adding comments)
-  .post( financeController.approvePendingRequest) // 'Approve' button on request (after adding comments)
-  .put( financeController.rejectPendingRequest); // 'Reject' button on request (after adding comments)
+  .get( finAuth, financeController.getPendingRequests) // 'Pending Requests' button on dashboard
+  .patch(finAuth, financeController.sendBackPendingRequest) // 'Send back' button on request (after adding comments)
+  .post(finAuth, financeController.approvePendingRequest) // 'Approve' button on request (after adding comments)
+  .put(finAuth, financeController.rejectPendingRequest); // 'Reject' button on request (after adding comments)
 
 router
   .route("/:id/respondedRequests")
-  .get( financeController.getRespondedRequests); // 'Responded Requests' button on dashboard
-//  .delete(financeController.deleteSentRequests);
+  .get( finAuth, financeController.getRespondedRequests); // 'Responded Requests' button on dashboard
+
+router
+  .route("/rejectedRequests")
+  .get(finAuth, financeController.getRejectedRequests); //
+
+router
+  .route("/approvedRequests")
+  .get(finAuth, financeController.getApprovedRequests);  
 
 module.exports = router;

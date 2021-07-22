@@ -34,26 +34,9 @@ const getTime = function () {
 // };
 
 ///////////////////////////////////////////////////////////////////ROUTE: /login
-module.exports.login = async (req, res) => {
-  try {
-    res.status(200).json({
-      status: "success",
-      requested: req.requestTime,
-      message: "finance Login Page",
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(404).json({
-      status: "failed",
-      messsage: err,
-    });
-  }
-};
-
 module.exports.authentication = async (req, res) => {
   try {
     const { username, password } = req.body;
-    console.log(username, password);
     if (!username || !password) {
       res.status(400).json({
         status: "bad request",
@@ -87,23 +70,6 @@ module.exports.authentication = async (req, res) => {
     res.status(404).json({
       status: "failed",
       message: err,
-    });
-  }
-};
-
-//////////////////////////////////////////////////////////////////////ROUTE: /
-module.exports.dashboard = async (req, res) => {
-  try {
-    res.status(200).json({
-      status: "success",
-      requested: req.requestTime,
-      message: "dashboard",
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(404).json({
-      status: "failed",
-      messsage: err,
     });
   }
 };
@@ -178,7 +144,6 @@ module.exports.getPendingRequests = async (req, res) => {
 };
 
 module.exports.sendBackPendingRequest = async (req, res) => {
-  console.log(req.body , req.params)
   try {
     const request = await Request.findById(req.body.id);
     //const comments = req.body.comments;
@@ -212,8 +177,6 @@ module.exports.sendBackPendingRequest = async (req, res) => {
 
 module.exports.approvePendingRequest = async (req, res) => {
   try {
-    console.log(req.params , req.body);
-    console.log("approved route")
     const request = await Request.findById(req.body.id);
     // const comments = req.body.comments;
     const finance = await Finance.findById(req.params.id);
@@ -295,39 +258,7 @@ module.exports.getRespondedRequests = async (req, res) => {
   }
 };
 
-// module.exports.deleteSentRequests = async (req, res) => {
-//   // delete sent requests
-// };
-
-//////////////////////////////////////////////////////////////////////ROUTE: /logout/
-module.exports.logout = async (req, res) => {
-  req.params.id = null;
-  console.log("logged out");
-  res.status(200).json({
-    status: "success",
-    requested: req.requestTime,
-    messaage: "logged out, redirect to home",
-  });
-  res.send("logged out");
-};
-
 ////////////////////////////////////////////////////////////////////ROUTE: /changePassword
-module.exports.changePassword = async (req, res) => {
-  try {
-    res.status(200).json({
-      status: "success",
-      requested: req.requestTime,
-      message: "Page to change password",
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(404).json({
-      status: "failed",
-      messsage: err,
-    });
-  }
-};
-
 module.exports.authorise = async (req, res) => {
   try {
     const { id } = req.params;
@@ -388,6 +319,51 @@ module.exports.getRejectedRequests = async (req, res) => {
       status: "success",
       data: {
         rejectedRequests,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "failed",
+      message: err,
+    });
+  }
+};
+
+////////////////////////////////////////Route: /getRejectedRequests
+module.exports.getRejectedRequests = async (req, res) => {
+  try {
+    const rejectedRequests = await Request.find({
+      status: {
+        $in: [
+          "rejectedByFinance",
+          "rejectedByDean",
+        ],
+      }
+    });
+    res.status(200).json({
+      status: "success",
+      data: {
+        rejectedRequests,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "failed",
+      message: err,
+    });
+  }
+};
+
+////////////////////////////////////////Route: /getApprovedRequests
+module.exports.getApprovedRequests = async (req, res) => {
+  try {
+    const approvedRequests = await Request.find({
+      status: "approvedByDean" ,
+    });
+    res.status(200).json({
+      status: "success",
+      data: {
+        approvedRequests,
       },
     });
   } catch (err) {

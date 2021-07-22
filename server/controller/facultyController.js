@@ -33,26 +33,9 @@ const getTime = function () {
 // };
 
 ///////////////////////////////////////////////////////////////////ROUTE: /login
-module.exports.login = async (req, res) => {
-  try {
-    res.status(200).json({
-      status: "success",
-      requested: req.requestTime,
-      message: "Faculty Login Page",
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(404).json({
-      status: "failed",
-      messsage: err,
-    });
-  }
-};
-
 module.exports.authentication = async (req, res) => {
   try {
     const { username, password } = req.body;
-    console.log(username, password);
     if (!username || !password) {
       res.status(400).json({
         status: "bad request",
@@ -86,23 +69,6 @@ module.exports.authentication = async (req, res) => {
     res.status(404).json({
       status: "failed",
       message: err,
-    });
-  }
-};
-
-//////////////////////////////////////////////////////////////////////ROUTE: /
-module.exports.dashboard = async (req, res) => {
-  try {
-    res.status(200).json({
-      status: "success",
-      requested: req.requestTime,
-      message: "dashboard",
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(404).json({
-      status: "failed",
-      messsage: err,
     });
   }
 };
@@ -158,21 +124,15 @@ module.exports.updateDetailsById = async (req, res) => {
 ////////////////////////////////////////////////////////////////ROUTE: /pendingRequests
 module.exports.getPendingRequests = async (req, res) => {
   try {
-    console.log("idhar hun main");
-    facultyId = req.params.id;
-    console.log(facultyId);
+    const facultyId = req.params.id;
     const faculty = await Faculty.findOne({ _id: facultyId });
-    // console.log(faculty)
-    //console.log(faculty, "hello");
     const clubIds = faculty.facultyClubs;
-    //console.log(clubIds);
     const requests = await Request.find({
       $and: [
         { clubId: { $in: clubIds } },
         { $or: [{ status: "sentByClub" }, { status: "receivedByFaculty" }] },
       ],
     });
-    //console.log(requests);
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
@@ -191,7 +151,6 @@ module.exports.getPendingRequests = async (req, res) => {
 };
 
 module.exports.sendBackPendingRequest = async (req, res) => {
-  console.log(req.body ,req.params);
   try {
     const {id } = req.params;
     const request = await Request.findById(req.body.id);
@@ -226,7 +185,6 @@ module.exports.sendBackPendingRequest = async (req, res) => {
 module.exports.approvePendingRequest = async (req, res) => {
   try {
     const {id } = req.params; 
-    console.log(req.body , req.params)
     const request = await Request.findById(req.body.id);
     //const comments = req.body.comments;
     if (request.status === "sentByClub") {
@@ -254,6 +212,7 @@ module.exports.approvePendingRequest = async (req, res) => {
     });
   }
 };
+
 module.exports.rejectPendingRequest = async (req, res) => {
   try {
     const {id } = req.params;
@@ -309,38 +268,8 @@ module.exports.getRespondedRequests = async (req, res) => {
   }
 };
 
-// module.exports.deleteSentRequests = async (req, res) => {
-//   // delete sent requests
-// };
-
-//////////////////////////////////////////////////////////////////////ROUTE: /logout/
-module.exports.logout = async (req, res) => {
-  console.log("logged out");
-  res.status(200).json({
-    status: "success",
-    requested: req.requestTime,
-    messaage: "logged out, redirect to home",
-  });
-  res.send("logged out");
-};
 
 ////////////////////////////////////////////////////////////////////ROUTE: /changePassword
-module.exports.changePassword = async (req, res) => {
-  try {
-    res.status(200).json({
-      status: "success",
-      requested: req.requestTime,
-      message: "Page to change password",
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(404).json({
-      status: "failed",
-      messsage: err,
-    });
-  }
-};
-
 module.exports.authorise = async (req, res) => {
   const { id } = req.params;
   try {
@@ -395,22 +324,17 @@ module.exports.getRejectedRequests = async (req, res) => {
   try {
     const facultyId = req.params.id;
     const faculty = await Faculty.findById(facultyId);
-    const clubIds = Faculty.facultyClubs;
+    const clubIds = faculty.facultyClubs;
     const rejectedRequests = await Request.find({
       $and: [
         { clubId: { $in: clubIds } },
-        {
-          $or: [
-            {
-              status: {
-                $in: [
-                  "rejectedByFaculty",
-                  "rejectedByFinance",
-                  "rejectedByDean",
-                ],
-              },
-            },
-          ],
+        { status: {
+            $in: [
+              "rejectedByFaculty",
+              "rejectedByFinance",
+              "rejectedByDean",
+            ],
+          },
         },
       ],
     });
@@ -418,6 +342,29 @@ module.exports.getRejectedRequests = async (req, res) => {
       status: "success",
       data: {
         rejectedRequests,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "failed",
+      message: err,
+    });
+  }
+};
+
+////////////////////////////////////////Route: /getApprovedRequests
+module.exports.getApprovedRequests = async (req, res) => {
+  try {
+    const facutlyId = req.params.id;
+    const faculty = await Faculty.findById(facutlyId);
+    const clubIds = faculty.facultyClubs;
+    const approvedRequests = await Request.find({
+      $and: [{ clubId: { $in: clubIds } }, { status: ["approvedByDean"] }],
+    });
+    res.status(200).json({
+      status: "success",
+      data: {
+        approvedRequests,
       },
     });
   } catch (err) {
