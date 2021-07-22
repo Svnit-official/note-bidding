@@ -53,6 +53,20 @@ const requestSchema = new mongoose.Schema({
   comments: {
     type: String,
   },
+  timeline: {
+    sentByClub: {
+      type: Object,
+    },
+    approvedByFaculty: {
+      type: Object,
+    },
+    approvedByFinance: {
+      type: Object,
+    },
+    approvedByDean: {
+      type: Object,
+    }
+  },
   createdAt: {
     type: Date,
     default: Date.now(),

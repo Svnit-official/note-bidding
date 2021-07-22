@@ -2,6 +2,27 @@ const Faculty = require("./../models/facultyModel");
 const Request = require("./../models/requestModel");
 const mongodb = require("mongodb");
 const jwt = require("jsonwebtoken");
+
+const getDate = function () {
+  const today = new Date();
+  const dd = String(today.getDate()).padStart(2, "0");
+  const mm = String(today.getMonth() + 1).padStart(2, "0");
+  const yyyy = today.getFullYear();
+  const date = dd + "/" + mm + "/" + yyyy;
+  return date;
+};
+
+const getTime = function () {
+  const date = new Date();
+  var hours = date.getHours();
+  if (hours < 10) hours = "0" + hours.toString();
+  var minutes = date.getMinutes();
+  if (minutes < 10) minutes = "0" + minutes.toString();
+  var seconds = date.getSeconds();
+  if (seconds < 10) seconds = "0" + seconds.toString();
+  return hours + ":" + minutes + ":" + seconds;
+};
+
 // const fs = require("fs");
 // const jwt = require("jsonwebtoken");
 // const secret = process.env.SECRET || "this-is-my-faculty-secret";
@@ -214,6 +235,7 @@ module.exports.approvePendingRequest = async (req, res) => {
       faculty.save();
     }
     request.status = "approvedByFaculty"
+    request.timeline.approvedByFaculty = { date: getDate(), time: getTime() };
     await request.save();
     //const appRequest = await Request.findById(req.body._id);
     res.status(200).json({

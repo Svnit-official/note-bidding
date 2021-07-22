@@ -10,6 +10,26 @@ const jwt = require("jsonwebtoken");
 // const signToken = function (id) {
 //   return jwt.sign({ id }, secret, { expiresIn: expires });
 // };
+const getDate = function () {
+  const today = new Date();
+  const dd = String(today.getDate()).padStart(2, "0");
+  const mm = String(today.getMonth() + 1).padStart(2, "0");
+  const yyyy = today.getFullYear();
+  const date = dd + "/" + mm + "/" + yyyy;
+  return date;
+};
+
+const getTime = function () {
+  const date = new Date();
+  var hours = date.getHours();
+  if (hours < 10) hours = "0" + hours.toString();
+  var minutes = date.getMinutes();
+  if (minutes < 10) minutes = "0" + minutes.toString();
+  var seconds = date.getSeconds();
+  if (seconds < 10) seconds = "0" + seconds.toString();
+  return hours + ":" + minutes + ":" + seconds;
+};
+
 ///////////////////////////////////////////////////////////////////ROUTE: /login
 module.exports.login = async (req, res) => {
   try {
@@ -159,13 +179,12 @@ module.exports.approvePendingRequest = async (req, res) => {
     const request = await Request.findById(req.body.id);
     //const comments = req.body.comments;
     const dean = await Dean.findById(req.params.id);
-    const respondedRequests = dean.respondedRequests;
-    respondedRequests.push(request);
-    await Dean.findByIdAndUpdate(req.params.id, { respondedRequests });
-    await Request.findByIdAndUpdate(req.body.id, {
-      status: "approvedByDean",
-      // comments,
-    });
+    dean.respondedRequests.push(request);
+    await dean.save();
+    request.status= "approvedByDean",
+    request.timeline.approvedByDean = { date: getDate(), time: getTime() }; 
+    // comments,
+  
    // const appRequest = await Request.findById(req.body.id);
     res.status(200).json({
       status: "success",

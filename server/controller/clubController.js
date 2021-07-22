@@ -12,6 +12,18 @@ const getDate = function () {
   const date = dd + "/" + mm + "/" + yyyy;
   return date;
 };
+
+const getTime = function () {
+  const date = new Date();
+  var hours = date.getHours();
+  if (hours < 10) hours = "0" + hours.toString();
+  var minutes = date.getMinutes();
+  if (minutes < 10) minutes = "0" + minutes.toString();
+  var seconds = date.getSeconds();
+  if (seconds < 10) seconds = "0" + seconds.toString();
+  return hours + ":" + minutes + ":" + seconds;
+}
+
 // const jwt = require("jsonwebtoken");
 // const secret = process.env.SECRET || "this-is-my-secret";
 // const expires = process.env.EXPIRES || 100000;
@@ -156,6 +168,7 @@ module.exports.sendDraft = async (req, res) => {
   const { id } = req.params;
   const draft = await Request.findById(id);
   draft.status = "sentByClub";
+  draft.timeline.sentByClub = { date: getDate(), time: getTime() };
   await draft.save();
   const clubID = draft.clubId;
   const club = await Club.findById(clubID);
@@ -318,7 +331,6 @@ module.exports.sendRequest = async (req, res) => {
     const club_id = req.params.id;
     const request = req.body;
     request.clubId = club_id;
-    console.log(request);
     const clubDetails = await Club.findById(club_id);
     request.clubName = clubDetails.clubName;
     // if(request.pdf){
@@ -332,8 +344,7 @@ module.exports.sendRequest = async (req, res) => {
     if (request._id) {
       if (
         request.status === "sentByFaculty" ||
-        request.status === "sentByFinance" ||
-        request.status === "correctedDraft"
+        request.status === "sentByFinance" 
       )
         request.status = "receivedByFaculty";
       else {
@@ -343,6 +354,7 @@ module.exports.sendRequest = async (req, res) => {
     } else {
       newRequest = await Request.create(request);
       newRequest.status = "sentByClub";
+      newRequest.timeline.sentByClub = { date: getDate(), time: getTime() };
       await newRequest.save();
     }
     console.log(newRequest);
