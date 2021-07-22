@@ -28,7 +28,6 @@ const SentRequest = () => {
             <Card event={event}>Name</Card>
           ) : null
         )}
-        <BottomNav />
       </div>
     );
   }
