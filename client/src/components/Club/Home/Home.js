@@ -31,14 +31,19 @@ const Home = () => {
   };
 
   const progress = function (status) {
-    switch(status){
-      case "sentByClub": return 0;
-      case "approvedByFaculty": return 1;
-      case "approvedByFinance": return 2;
-      case "approvedByDean": return 3;
-      default: return null;
+    switch (status) {
+      case "sentByClub":
+        return 0;
+      case "approvedByFaculty":
+        return 1;
+      case "approvedByFinance":
+        return 2;
+      case "approvedByDean":
+        return 3;
+      default:
+        return null;
     }
-  }
+  };
 
   return (
     <div>
@@ -58,7 +63,6 @@ const Home = () => {
           <SubmitForm />
         </DialogActions>
       </Dialog>
-      <BottomNav />
     </div>
   );
 };

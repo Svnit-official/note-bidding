@@ -22,9 +22,12 @@ const SentRequest = () => {
     return (
       <div>
         <NavBar />
-        {d.requests.map((event) => (
-          <Card event={event}>Name</Card>
-        ))}
+        {d.requests.map((event) =>
+          event.status === "sentByClub" ||
+          event.status === "receivedByFaculty" ? (
+            <Card event={event}>Name</Card>
+          ) : null
+        )}
         <BottomNav />
       </div>
     );

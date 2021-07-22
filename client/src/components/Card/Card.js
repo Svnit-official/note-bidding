@@ -129,44 +129,6 @@ export default function SimpleCard({ progress, draft }) {
           <UpdateDraft id={draft._id} />
         </DialogActions>
       </Dialog>
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
-          <Typography className={classes.heading}>Options</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            <Checkbox
-              checked={checked}
-              onChange={handleChange}
-              inputProps={{ "aria-label": "primary checkbox" }}
-            />
-            checking following I agree to give concent for that event.
-          </Typography>
-          <FileBase type="file" multiple={false} style={{ color: "blue" }} />
-          <Button
-            className={classes.button}
-            size="small"
-            variant="contained"
-            color="primary"
-            disabled={!checked}
-          >
-            Submit
-          </Button>
-
-          <Button
-            className={classes.button}
-            size="small"
-            variant="contained"
-            color="secondary"
-          >
-            Edit Request
-          </Button>
-        </AccordionDetails>
-      </Accordion>
     </Card>
   );
 }

@@ -1,6 +1,6 @@
 const Faculty = require("./../models/facultyModel");
 const Request = require("./../models/requestModel");
-const mongodb = require("mongodb");
+//const mongodb = require("mongodb");
 const jwt = require("jsonwebtoken");
 
 const getDate = function () {

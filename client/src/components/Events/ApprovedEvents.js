@@ -1,13 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react";
-import Card from "../Card/CorrectionCard";
+import Card from "../Card/EventCard";
 import NavBar from "../NavBar/NavBar";
 import BottomNav from "../BottomNav/BottomNav";
 // import AddButton from '../AddButton/AddButton';
 import { useDispatch, useSelector } from "react-redux";
 import { getRequest } from "../../actions/clubActions";
 
-const SentRequest = () => {
+const ApprovedEvents = () => {
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("club_profile"));
   console.log(user.clubID);
@@ -23,14 +23,14 @@ const SentRequest = () => {
       <div>
         <NavBar />
         {d.requests.map((event) =>
-          event.status === "sentByFaculty" ||
-          event.status === "sentByFinance" ? (
+          event.status === "approvedByDean" ? (
             <Card event={event}>Name</Card>
           ) : null
         )}
+        <BottomNav />
       </div>
     );
   }
 };
 
-export default SentRequest;
+export default ApprovedEvents;

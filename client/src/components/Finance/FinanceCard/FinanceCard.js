@@ -16,19 +16,25 @@ import { useHistory } from "react-router-dom";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MultiStepForm from "../../MultiStepForm/MultiStepForm";
 import useStyles from "./styles";
-import {approvePendingRequestsFinance,rejectPendingRequestsFinance,sendBackPendingRequestsFinance} from '../../../actions/financeActions';
+import {
+  approvePendingRequestsFinance,
+  rejectPendingRequestsFinance,
+  sendBackPendingRequestsFinance,
+} from "../../../actions/financeActions";
 
-
-export default function FinanceCard({draft}) {
+export default function FinanceCard({ draft }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles();
   const [checked, setChecked] = useState(true);
   const request = {
-    id : draft._id,
+    id: draft._id,
+  };
+  const userFinance = JSON.parse(localStorage.getItem("fin_profile"));
+  let flag = false;
+  if (draft.status !== "approvedByFaculty") {
+    flag = true;
   }
-  const userFinance = JSON.parse(localStorage.getItem('fin_profile'));
-
   const downloadPdf = () => {
     const linkSource = `${draft.pdf}`;
     const downloadLink = document.createElement("a");
@@ -42,30 +48,35 @@ export default function FinanceCard({draft}) {
     setChecked(event.target.checked);
   };
 
-  const handleApprove =(e) => {
+  const handleApprove = (e) => {
     e.preventDefault();
-    console.log(userFinance.financeID)
-    
-    dispatch(approvePendingRequestsFinance(userFinance.financeID,request));
-  }
+    console.log(userFinance.financeID);
+
+    dispatch(approvePendingRequestsFinance(userFinance.financeID, request));
+  };
 
   const handleReject = () => {
-    dispatch(rejectPendingRequestsFinance(userFinance.financeID,request))
-  }
+    dispatch(rejectPendingRequestsFinance(userFinance.financeID, request));
+  };
 
   const handleSendBack = () => {
-    dispatch(sendBackPendingRequestsFinance(userFinance.financeID,request))
-  }
+    dispatch(sendBackPendingRequestsFinance(userFinance.financeID, request));
+  };
 
   const progress = function (status) {
-    switch(status){
-      case "sentByClub": return 1;
-      case "approvedByFaculty": return 2;
-      case "approvedByFinance": return 3;
-      case "approvedByDean": return 4;
-      default: return null;
+    switch (status) {
+      case "sentByClub":
+        return 1;
+      case "approvedByFaculty":
+        return 2;
+      case "approvedByFinance":
+        return 3;
+      case "approvedByDean":
+        return 4;
+      default:
+        return null;
     }
-  }
+  };
   return (
     <Card
       className={classes.root}
@@ -92,7 +103,7 @@ export default function FinanceCard({draft}) {
         </Typography>
       </CardContent>
       <CardActions>
-      <Button
+        <Button
           className={classes.button}
           size="small"
           variant="contained"
@@ -102,54 +113,56 @@ export default function FinanceCard({draft}) {
           Download Pdf
         </Button>
       </CardActions>
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
-          <Typography className={classes.heading}>Options</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            <Checkbox
-              checked={checked}
-              onChange={handleChange}
-              inputProps={{ "aria-label": "primary checkbox" }}
-            />
-            checking following I agree to give concent for that event.
-          </Typography>
-          <Button
-            className={classes.button}
-            size="small"
-            variant="contained"
-            color="primary"
-            disabled={!checked}
-            onClick = {handleApprove}
+      {!flag ? (
+        <Accordion>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
           >
-            Approve
-          </Button>
+            <Typography className={classes.heading}>Options</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>
+              <Checkbox
+                checked={checked}
+                onChange={handleChange}
+                inputProps={{ "aria-label": "primary checkbox" }}
+              />
+              checking following I agree to give concent for that event.
+            </Typography>
+            <Button
+              className={classes.button}
+              size="small"
+              variant="contained"
+              color="primary"
+              disabled={!checked}
+              onClick={handleApprove}
+            >
+              Approve
+            </Button>
 
-          <Button
-            className={classes.button}
-            size="small"
-            variant="contained"
-            color="secondary"
-            onClick={handleSendBack}
-          >
-            Edit Request
-          </Button>
-          <Button
-            className={classes.button}
-            size="small"
-            variant="contained"
-            color="secondary"
-            onClick={handleReject}
-          >
-            reject
-          </Button>
-        </AccordionDetails>
-      </Accordion>
+            <Button
+              className={classes.button}
+              size="small"
+              variant="contained"
+              color="secondary"
+              onClick={handleSendBack}
+            >
+              Edit Request
+            </Button>
+            <Button
+              className={classes.button}
+              size="small"
+              variant="contained"
+              color="secondary"
+              onClick={handleReject}
+            >
+              reject
+            </Button>
+          </AccordionDetails>
+        </Accordion>
+      ) : null}
     </Card>
   );
 }

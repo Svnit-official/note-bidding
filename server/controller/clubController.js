@@ -2,7 +2,7 @@ const Club = require("./../models/clubModel");
 const Request = require("./../models/requestModel");
 const jwt = require("jsonwebtoken");
 const mongodb = require("mongodb");
-const fs = require("fs");
+//const fs = require("fs");
 
 const getDate = function () {
   const today = new Date();
@@ -22,7 +22,7 @@ const getTime = function () {
   var seconds = date.getSeconds();
   if (seconds < 10) seconds = "0" + seconds.toString();
   return hours + ":" + minutes + ":" + seconds;
-}
+};
 
 // const jwt = require("jsonwebtoken");
 // const secret = process.env.SECRET || "this-is-my-secret";
@@ -45,7 +45,10 @@ module.exports.authentication = async (req, res) => {
       });
     }
     const foundClub = await Club.findOne({ username }).select("+password");
-    if(foundClub && await foundClub.correctPassword(password, foundClub.password)){
+    if (
+      foundClub &&
+      (await foundClub.correctPassword(password, foundClub.password))
+    ) {
       const token = jwt.sign({ id: foundClub._id }, "club", {
         expiresIn: "2h",
       });
@@ -152,13 +155,18 @@ module.exports.sendDraft = async (req, res) => {
   try {
     const { id } = req.params;
     const draft = await Request.findById(id);
-    draft.status = "sentByClub";
+    if (draft.status === "sentByFaculty" || draft.status === "sentByFinance")
+      draft.status = "receivedByFaculty";
+    else {
+      draft.status = "sentByClub";
+      const clubId = draft.clubId;
+      const club = await Club.findById(clubId);
+      club.sentRequests.push(id);
+      await club.save();
+    }
     draft.timeline.sentByClub = { date: getDate(), time: getTime() };
     await draft.save();
-    const clubID = draft.clubId;
-    const club = await Club.findById(clubID);
-    club.sentRequests.push(id);
-    await club.save();
+
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
@@ -316,7 +324,7 @@ module.exports.sendRequest = async (req, res) => {
     if (request._id) {
       if (
         request.status === "sentByFaculty" ||
-        request.status === "sentByFinance" 
+        request.status === "sentByFinance"
       )
         request.status = "receivedByFaculty";
       else {
@@ -387,7 +395,7 @@ module.exports.authorise = async (req, res) => {
       return;
     }
     const club = await Club.findById(id).select("+password");
-    if (await club.correctPassword(oldPassword, club.password)) {
+    if (await club.tPassword(oldPassword, club.password)) {
       if (newPassword === confirmPassword) {
         const club = await Club.findById(id);
         club.password = newPassword;

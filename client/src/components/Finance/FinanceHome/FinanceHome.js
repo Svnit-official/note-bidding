@@ -32,7 +32,6 @@ const FinanceHome = () => {
           ))
 
         )}
-      <BottomNav />
     </div>
   );
 };

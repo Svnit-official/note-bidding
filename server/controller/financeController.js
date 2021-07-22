@@ -153,17 +153,14 @@ module.exports.sendBackPendingRequest = async (req, res) => {
       finance.respondedRequests.push(req.body.id);
       finance.save();
     }
-    await Request.findByIdAndUpdate(req.body.id, {
-      status: "sentByFinance",
-    //  comments,
-    });
-    const sentRequest = await Request.findById(req.body.id);
+    request.status = "sentByFinance"
+    await request.save();
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
       data: {
         message: "redirect to /respondedRequests",
-        sentRequest,
+        request,
       },
     });
   } catch (err) {
@@ -188,13 +185,11 @@ module.exports.approvePendingRequest = async (req, res) => {
     request.timeline.approvedByFinance = { date: getDate(), time: getTime() };
     await request.save();
     // comments,
-    //const appRequest = await Request.findById(req.body.id);
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
       data: {
         message: "redirect to /respondedRequests",
-        // appRequest,
       },
     });
   } catch (err) {
@@ -218,13 +213,11 @@ module.exports.rejectPendingRequest = async (req, res) => {
       status: "rejectedByFinance",
       // comments,
     });
-    //const rejRequest = await Request.findById(req.body._id);
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
       data: {
         message: "redirect to /respondedRequests",
-        //rejRequest,
       },
     });
   } catch (err) {

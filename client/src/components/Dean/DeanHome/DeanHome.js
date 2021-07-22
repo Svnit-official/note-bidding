@@ -1,37 +1,28 @@
-import React, { useState,useEffect } from "react";
-import NavBar from "../NavBar/NavBar"
+import React, { useState, useEffect } from "react";
+import NavBar from "../NavBar/NavBar";
 import BottomNav from "../../BottomNav/BottomNav";
 // import AddButton from '../AddButton/AddButton';
-import {useDispatch,useSelector} from "react-redux";
-import {getPendingRequestsDean} from '../../../actions/deanActions';
-import DeanCard from '../DeanCard/DeanCard';
+import { useDispatch, useSelector } from "react-redux";
+import { getPendingRequestsDean } from "../../../actions/deanActions";
+import DeanCard from "../DeanCard/DeanCard";
 import { CircularProgress } from "@material-ui/core";
-
 
 const DeanHome = () => {
   const dispatch = useDispatch();
 
-  const user = JSON.parse(localStorage.getItem('dean_profile'))
+  const user = JSON.parse(localStorage.getItem("dean_profile"));
   console.log(user);
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(getPendingRequestsDean(user.deanID));
-  }
-    ,[]);
+  }, []);
 
-    const d = useSelector((state) => state.deanReducers.requests); 
-    console.log(d);
-
+  const d = useSelector((state) => state.deanReducers.requests);
+  console.log(d);
 
   return (
     <div>
-        <NavBar />
-        { !d ? <CircularProgress /> : (
-          d.map((x)=>(
-            <DeanCard draft={x} />
-          ))
-
-        )}
-      <BottomNav />
+      <NavBar />
+      {!d ? <CircularProgress /> : d.map((x) => <DeanCard draft={x} />)}
     </div>
   );
 };
