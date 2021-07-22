@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react";
-import Card from "../Card/EventCard";
+import Card from "../Card/CorrectionCard";
 import NavBar from "../NavBar/NavBar";
 import BottomNav from "../BottomNav/BottomNav";
 // import AddButton from '../AddButton/AddButton';

@@ -22,7 +22,7 @@ const getTime = function () {
   var seconds = date.getSeconds();
   if (seconds < 10) seconds = "0" + seconds.toString();
   return hours + ":" + minutes + ":" + seconds;
-}
+};
 
 // const jwt = require("jsonwebtoken");
 // const secret = process.env.SECRET || "this-is-my-secret";
@@ -61,7 +61,10 @@ module.exports.authentication = async (req, res) => {
       });
     }
     const foundClub = await Club.findOne({ username }).select("+password");
-    if(foundClub && await foundClub.correctPassword(password, foundClub.password)){
+    if (
+      foundClub &&
+      (await foundClub.correctPassword(password, foundClub.password))
+    ) {
       const token = jwt.sign({ id: foundClub._id }, "club", {
         expiresIn: "2h",
       });
@@ -169,6 +172,11 @@ module.exports.sendDraft = async (req, res) => {
   const draft = await Request.findById(id);
   draft.status = "sentByClub";
   draft.timeline.sentByClub = { date: getDate(), time: getTime() };
+  if (draft.status === "sentByFaculty" || draft.status === "sentByFinance")
+    draft.status = "receivedByFaculty";
+  else {
+    draft.status = "sentByClub";
+  }
   await draft.save();
   const clubID = draft.clubId;
   const club = await Club.findById(clubID);
@@ -192,6 +200,9 @@ module.exports.deleteDraft = async (req, res) => {
 module.exports.updateDraft = async (req, res) => {
   const { id } = req.params;
   const { headName, eventName, eventDate, comments, pdf } = req.body;
+  const request = await Request.findById(id);
+  console.log(request);
+  console.log(req.body);
   await Request.findByIdAndUpdate(id, req.body);
   res.status(200).json({
     status: "success",
@@ -344,7 +355,7 @@ module.exports.sendRequest = async (req, res) => {
     if (request._id) {
       if (
         request.status === "sentByFaculty" ||
-        request.status === "sentByFinance" 
+        request.status === "sentByFinance"
       )
         request.status = "receivedByFaculty";
       else {
@@ -492,7 +503,7 @@ module.exports.authorise = async (req, res) => {
       return;
     }
     const club = await Club.findById(id).select("+password");
-    if (await club.correctPassword(oldPassword, club.password)) {
+    if (await club.tPassword(oldPassword, club.password)) {
       if (newPassword === confirmPassword) {
         const club = await Club.findById(id);
         club.password = newPassword;

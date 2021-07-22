@@ -58,6 +58,11 @@ export default function TemporaryDrawer({ x }) {
             <ListItemText primary="Rejected Requests" />
           </ListItem>
         </Link>
+        <Link to="/club/approved" style={{ textDecoration: "none" }}>
+          <ListItem button>
+            <ListItemText primary="Approved Requests" />
+          </ListItem>
+        </Link>
       </List>
     </div>
   );

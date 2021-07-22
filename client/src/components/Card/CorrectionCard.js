@@ -6,30 +6,44 @@ import {
   CardContent,
   Typography,
   Button,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Checkbox,
+  Dialog,
+  DialogTitle,
+  DialogActions,
 } from "@material-ui/core";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MultiStepForm from "../MultiStepForm/MultiStepForm";
 import useStyles from "./styles";
-import FileBase from "react-file-base64";
-
+import { sendRequest } from "../../actions/clubActions";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+import CorrectRequestForm from "../Events/CorrectRequestForm";
 export default function SimpleCard({ progress, event }) {
+  const dispatch = useDispatch();
+  const history = useHistory();
   const classes = useStyles();
+  const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState(true);
   const downloadPdf = () => {
     const linkSource = `${event.pdf}`;
     const downloadLink = document.createElement("a");
     const fileName = "Event.pdf";
-
     downloadLink.href = linkSource;
     downloadLink.download = fileName;
     downloadLink.click();
   };
   const handleChange = (event) => {
     setChecked(event.target.checked);
+  };
+  const handleClickOpen = () => {
+    console.log(event._id);
+    setOpen(true);
+  };
+  const handleSubmit = (e) => {
+    console.log("submitting corrected request");
+    e.preventDefault();
+    dispatch(sendRequest(event._id, history));
+  };
+  const handleClose = () => {
+    setOpen(false);
   };
   let flag = false;
   if (event.status === "sentByFaculty" || event.status === "sentByFinance") {
@@ -77,9 +91,33 @@ export default function SimpleCard({ progress, event }) {
           variant="contained"
           color="secondary"
           disabled={!flag}
+          onClick={handleClickOpen}
         >
           Edit
         </Button>
+        <Button
+          className={classes.button}
+          size="small"
+          variant="contained"
+          color="secondary"
+          disabled={!flag}
+          onClick={handleSubmit}
+        >
+          Submit
+        </Button>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {"Submit Event Form"}
+          </DialogTitle>
+          <DialogActions>
+            <CorrectRequestForm id={event._id} />
+          </DialogActions>
+        </Dialog>
       </CardActions>
     </Card>
   );

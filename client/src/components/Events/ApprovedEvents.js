@@ -7,7 +7,7 @@ import BottomNav from "../BottomNav/BottomNav";
 import { useDispatch, useSelector } from "react-redux";
 import { getRequest } from "../../actions/clubActions";
 
-const SentRequest = () => {
+const ApprovedEvents = () => {
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("club_profile"));
   console.log(user.clubID);
@@ -23,8 +23,7 @@ const SentRequest = () => {
       <div>
         <NavBar />
         {d.requests.map((event) =>
-          event.status === "sentByClub" ||
-          event.status === "receivedByFaculty" ? (
+          event.status === "approvedByDean" ? (
             <Card event={event}>Name</Card>
           ) : null
         )}
@@ -34,4 +33,4 @@ const SentRequest = () => {
   }
 };
 
-export default SentRequest;
+export default ApprovedEvents;

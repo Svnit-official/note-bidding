@@ -36,6 +36,7 @@ router
   .patch(clubController.updateDraft)
   .delete(clubController.deleteDraft); // 'Save as Draft' or 'Update and save as draft' button on 'Request'
 router.post("/:id/sendDraft", clubController.sendDraft); // 'Update and send' button on 'Request')
+
 router
   .route("/:id/sentRequests")
   .post(clubAuth, clubController.sendRequest)
