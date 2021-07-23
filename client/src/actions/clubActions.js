@@ -94,3 +94,23 @@ export const changeClubPassword = (id, form, router) => async (dispatch) => {
     console.log(error);
   }
 };
+
+export const handleReceiptDownload = (id, formdata) => async (dispatch) => {
+  console.log(id,formdata);
+  const {data} = await api.clubDownloadReceipt(id,formdata);
+  //console.log(data)
+  console.log(data.pdfBinary)
+  //dispatch({type : "DOWNLOAD_PDF", payload : data.pdfBinary});
+ 
+  // console.log(data.pdfBinary)
+ 
+ 
+  // const linkSource = data.pdfBinary;
+  // const downloadLink = document.createElement("a");
+  // const fileName = "Event.pdf";
+
+  // downloadLink.href = linkSource;
+  // downloadLink.download = fileName;
+  // downloadLink.click();
+
+}

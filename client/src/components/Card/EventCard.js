@@ -15,10 +15,15 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MultiStepForm from "../MultiStepForm/MultiStepForm";
 import useStyles from "./styles";
 import FileBase from "react-file-base64";
+import {handleReceiptDownload} from '../../actions/clubActions'
+import {useDispatch,useSelector} from 'react-redux';
 
 export default function SimpleCard({ progress, event }) {
   const classes = useStyles();
   const [checked, setChecked] = useState(true);
+  const dispatch = useDispatch();
+  const user = JSON.parse(localStorage.getItem("club_profile"));
+
   const downloadPdf = () => {
     const linkSource = `${event.pdf}`;
     const downloadLink = document.createElement("a");
@@ -31,6 +36,19 @@ export default function SimpleCard({ progress, event }) {
   const handleChange = (event) => {
     setChecked(event.target.checked);
   };
+
+  const handleDownloadReceipt = () => {
+      console.log(user.clubID , event._id);
+      const x = user.clubID
+      const y = {
+        id : event._id
+      }
+   dispatch(handleReceiptDownload(x , y));
+
+  }
+  
+  
+
   let flag = false;
   if (event.status === "sentByFaculty" || event.status === "sentByFinance") {
     flag = true;
@@ -79,6 +97,16 @@ export default function SimpleCard({ progress, event }) {
           disabled={!flag}
         >
           Edit
+        </Button>
+        <Button
+          className={classes.button}
+          size="small"
+          variant="contained"
+          color="secondary"
+          disabled={flag}
+          onClick = {handleDownloadReceipt}
+        >
+          download Receipt
         </Button>
       </CardActions>
     </Card>

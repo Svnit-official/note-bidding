@@ -1,4 +1,4 @@
-const authReducer = (state = { authData: null, deanDetail: null }, action) => {
+const authReducer = (state = { authData: null, deanDetail: null , pdf : null }, action) => {
   switch (action.type) {
     case "DEAN_LOGIN":
       localStorage.clear();
@@ -31,6 +31,8 @@ const authReducer = (state = { authData: null, deanDetail: null }, action) => {
     case "LOGOUT":
       localStorage.clear();
       sessionStorage.clear();
+    case "DOWNLOAD_PDF" : 
+      return {...state , pdf : action.payload} ;
     default:
       return state;
   }

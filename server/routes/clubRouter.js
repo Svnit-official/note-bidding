@@ -39,19 +39,19 @@ router
   .get(clubAuth, clubController.getSentRequests); // 'Sent Requests' button on dashboard
 
 router
-  .route("/receivedRequests")
+  .route("/:id/receivedRequests")
   .get(clubAuth, clubController.getReceivedRequests); // 'Received for Correction' button on dashboard
 
 router
-  .route("/rejectedRequests")
+  .route("/:id/rejectedRequests")
   .get(clubAuth, clubController.getRejectedRequests); // 
 
 router
-  .route("/approvedRequests")
+  .route("/:id/approvedRequests")
   .get(clubAuth, clubController.getApprovedRequests);  
 
 router
-  .route("/:id/downloadPdf/:user")
-  .get(clubAuth, pdfController.downloadPdf);
+  .route("/:id/downloadPdf/club")
+  .post(clubAuth, pdfController.downloadPdf);
 
 module.exports = router;

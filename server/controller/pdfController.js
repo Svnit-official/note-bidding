@@ -29,7 +29,13 @@ const getTime = function () {
   return hours + ":" + minutes + ":" + seconds;
 };
 
-const setup = async (reqid) => {
+module.exports.downloadPdf = async (req, res) => {
+  try {
+    console.log("hell");
+    const reqid = req.body.id;
+    //const data = await setup(reqid);        
+    //const data = { name: "hello" };
+
     const request = await Request.findById(reqid);
 
     // dates
@@ -41,9 +47,9 @@ const setup = async (reqid) => {
     const club = await Club.findById(request.clubId);
     const clubSign = club.signature;
 
-    const faculty = await Faculty.findById(request.facultyId);
-    const facName = faculty.facultyName;
-    const facSign = faculty.signature;
+    // const faculty = await Faculty.findById(request.facultyId);
+    // const facName = faculty.facultyName;
+    // const facSign = faculty.signature;
 
     const fin = await Finance.find({});
     const finSign = fin[0].signature;
@@ -54,28 +60,22 @@ const setup = async (reqid) => {
     const deanSign = dean[0].signature;
 
     const data = {
-        request,  
-        sentByClub,  
-        approvedByFaculty,
-        approvedByFinance,
-        approvedByDean,  
-        clubSign,  
-        facName,
-        facSign,
-        finSign,
+        //request,  
+        // sentByClub,  
+        // approvedByFaculty,
+        // approvedByFinance,
+        // approvedByDean,  
+        // clubSign,  
+        //facName,
+        // facSign,
+        // finSign,
         finName,
         deanName,
         deanSign    
     }
-    return data;
-}
-
-module.exports.downloadPdf = async (req, res) => {
-  try {
-    const reqid = req.body.id;
-    const data = await setup(reqid);        
-    const user = req.params.user;
-    
+    console.log(data);
+    //const user = req.params.user;
+    const user = "Club"
     const options = {
       format: "A3",
       orientation: "portrait",
@@ -97,21 +97,23 @@ module.exports.downloadPdf = async (req, res) => {
       type: "buffer",
     };
     
+
     let pdfBuffer = null;
     await pdf
       .create(document, options)
-      .then((res) => {
-        pdfBuffer = res;
+      .then((re) => {
+        pdfBuffer = re;
         //console.log(res);
       })
       .catch((error) => {
         console.error(error);
       });
 
-    console.log(pdfBuffer);
-    const pdfBinary = mongodb.Binary(pdfBuffer);
-    console.log(pdfBinary);
-
+    //console.log(pdfBuffer);
+    // const pdfBinary = mongodb.Binary(pdfBuffer);
+    const pdfBinary = pdfBuffer.toString('base64')
+    //console.log(pdfBinary);
+    console.log("hello");
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
