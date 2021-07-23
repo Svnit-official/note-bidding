@@ -1,5 +1,6 @@
 const express = require("express");
 const financeController = require("./../controller/financeController");
+const pdfController = require("./../controller/pdfController");
 const finAuth = require("../middleware/financeAuth.js");
 const router = express.Router();
 
@@ -39,5 +40,10 @@ router
 router
   .route("/approvedRequests")
   .get(finAuth, financeController.getApprovedRequests);  
+
+router
+  .route("/:id/downloadPdf/:user")
+  .get(finAuth, pdfController.downloadPdf);
+
 
 module.exports = router;

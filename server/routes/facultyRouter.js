@@ -1,5 +1,6 @@
 const express = require("express");
 const facultyController = require("./../controller/facultyController");
+const pdfController = require("./../controller/pdfController");
 const facAuth = require('../middleware/facultyAuth.js')
 const router = express.Router();
 
@@ -38,4 +39,8 @@ router
   .route("/approvedRequests")
   .get(facAuth, facultyController.getApprovedRequests);  
 
+router
+  .route("/:id/downloadPdf/:user")
+  .get(facAuth, pdfController.downloadPdf);
+  
 module.exports = router;

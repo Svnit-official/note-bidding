@@ -2,7 +2,6 @@ const Club = require("./../models/clubModel");
 const Request = require("./../models/requestModel");
 const jwt = require("jsonwebtoken");
 const mongodb = require("mongodb");
-//const fs = require("fs");
 
 const getDate = function () {
   const today = new Date();
@@ -24,15 +23,8 @@ const getTime = function () {
   return hours + ":" + minutes + ":" + seconds;
 };
 
-// const jwt = require("jsonwebtoken");
 // const secret = process.env.SECRET || "this-is-my-secret";
 // const expires = process.env.EXPIRES || 100000;
-// const Faculty = require('./../models/facultyModel');
-
-// const signToken = function (id) {
-//   return jwt.sign({ id }, secret, { expiresIn: expires });
-// };
-
 
 module.exports.authentication = async (req, res) => {
   try {
@@ -430,28 +422,6 @@ module.exports.authorise = async (req, res) => {
     });
   }
 };
-
-// //////////////////////////////////////////////////////
-// module.exports.downloadPdf = async (req, res) => {
-//   try {
-//     const id = req.body.id;
-//     const request = Request.findById(id);
-//     const buffer = request.pdf.data.buffer;
-//     const name = request.pdf.name;
-//     fs.writeFileSync(name, buffer);
-//     res.status(200).json({
-//       status: "success",
-//       requested: req.requestTime,
-//       message: "Page to change password",
-//     });
-//   } catch (err) {
-//     console.log(err);
-//     res.status(404).json({
-//       status: "failed",
-//       messsage: err,
-//     });
-//   }
-// };
 
 ////////////////////////////////////////Route: /getRejectedRequests
 module.exports.getRejectedRequests = async (req, res) => {

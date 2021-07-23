@@ -1,5 +1,6 @@
 const express = require("express");
 const clubController = require("./../controller/clubController");
+const pdfController = require("./../controller/pdfController");
 const clubAuth = require("../middleware/clubAuth.js");
 const router = express.Router();
 
@@ -20,8 +21,6 @@ router
 router
   .route("/:id/changePassword")
   .patch(clubAuth, clubController.authorise);
-
-//router.route("/downloadPdf").post(isClubLoggedIn, clubController.downloadPdf);
 
 router
   .route("/:id/drafts")
@@ -51,5 +50,8 @@ router
   .route("/approvedRequests")
   .get(clubAuth, clubController.getApprovedRequests);  
 
+router
+  .route("/:id/downloadPdf/:user")
+  .get(clubAuth, pdfController.downloadPdf);
 
 module.exports = router;

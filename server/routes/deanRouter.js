@@ -1,5 +1,6 @@
 const express = require("express");
 const deanController = require("./../controller/deanController");
+const pdfController = require("./../controller/pdfController");
 const deanAuth = require("../middleware/deanAuth");
 const router = express.Router();
 
@@ -36,5 +37,9 @@ router
 router
   .route("/approvedRequests")
   .get(deanAuth, deanController.getApprovedRequests);
+
+router
+  .route("/:id/downloadPdf/:user")
+  .get(deanAuth, pdfController.downloadPdf);
   
 module.exports = router;

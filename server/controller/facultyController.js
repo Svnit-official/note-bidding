@@ -193,6 +193,7 @@ module.exports.approvePendingRequest = async (req, res) => {
       faculty.save();
     }
     request.status = "approvedByFaculty"
+    request.facultyId = req.params.id;
     request.timeline.approvedByFaculty = { date: getDate(), time: getTime() };
     await request.save();
     //const appRequest = await Request.findById(req.body._id);
