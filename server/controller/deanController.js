@@ -42,7 +42,10 @@ module.exports.authentication = async (req, res) => {
       });
     }
     const foundDean = await Dean.findOne({ username }).select("+password");
-    if (foundDean && await foundDean.correctPassword(password, foundDean.password)){
+    if (
+      foundDean &&
+      (await foundDean.correctPassword(password, foundDean.password))
+    ) {
       // req.params.id = foundDean._id;
       const token = jwt.sign({ id: foundDean._id }, "dean", {
         expiresIn: "2h",
@@ -175,6 +178,7 @@ module.exports.sendBackPendingRequest = async (req, res) => {
 
 
 module.exports.approvePendingRequest = async (req, res) => {
+  console.log(req.body);
   try {
     const request = await Request.findById(req.body.id);
     //const comments = req.body.comments;
@@ -185,9 +189,10 @@ module.exports.approvePendingRequest = async (req, res) => {
     }
     request.status= "approvedByDean",
     request.timeline.approvedByDean = { date: getDate(), time: getTime() }; 
+    await request.save();
     // comments,
-  
-   // const appRequest = await Request.findById(req.body.id);
+
+    // const appRequest = await Request.findById(req.body.id);
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
@@ -258,7 +263,6 @@ module.exports.getRespondedRequests = async (req, res) => {
   }
 };
 
-
 ////////////////////////////////////////////////////////////////////ROUTE: /changePassword
 module.exports.authorise = async (req, res) => {
   try {
@@ -313,7 +317,7 @@ module.exports.authorise = async (req, res) => {
 module.exports.getApprovedRequests = async (req, res) => {
   try {
     const approvedRequests = await Request.find({
-      status: "approvedByDean" ,
+      status: "approvedByDean",
     });
     res.status(200).json({
       status: "success",
