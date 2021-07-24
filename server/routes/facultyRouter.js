@@ -1,5 +1,6 @@
 const express = require("express");
 const facultyController = require("./../controller/facultyController");
+const pdfController = require("./../controller/pdfController");
 const facAuth = require('../middleware/facultyAuth.js')
 const router = express.Router();
 
@@ -15,7 +16,9 @@ router
   .get(facAuth,facultyController.getDetailsById) // 'Faculty Details' button on dashboard
   .patch(facAuth,facultyController.updateDetailsById); // 'Update' button on faculty details page
 
-router.route("/:id/changePassword").patch(facultyController.authorise);
+router
+  .route("/:id/changePassword")
+  .patch(facAuth, facultyController.authorise);
 
 router
   .route("/:id/pendingRequests")
@@ -27,6 +30,17 @@ router
 router
   .route("/:id/respondedRequests")
   .get(facAuth, facultyController.getRespondedRequests); // 'Responded Requests' button on dashboard
-//  .delete(facultyController.deleteSentRequests);
 
+router
+  .route("/rejectedRequests")
+  .get(facAuth, facultyController.getRejectedRequests); //
+
+router
+  .route("/approvedRequests")
+  .get(facAuth, facultyController.getApprovedRequests);  
+
+router
+  .route("/:id/downloadPdf/:user")
+  .get(facAuth, pdfController.downloadPdf);
+  
 module.exports = router;

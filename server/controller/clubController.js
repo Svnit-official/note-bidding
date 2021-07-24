@@ -2,7 +2,6 @@ const Club = require("./../models/clubModel");
 const Request = require("./../models/requestModel");
 const jwt = require("jsonwebtoken");
 const mongodb = require("mongodb");
-const fs = require("fs");
 
 const getDate = function () {
   const today = new Date();
@@ -24,31 +23,8 @@ const getTime = function () {
   return hours + ":" + minutes + ":" + seconds;
 };
 
-// const jwt = require("jsonwebtoken");
 // const secret = process.env.SECRET || "this-is-my-secret";
 // const expires = process.env.EXPIRES || 100000;
-// const Faculty = require('./../models/facultyModel');
-
-// const signToken = function (id) {
-//   return jwt.sign({ id }, secret, { expiresIn: expires });
-// };
-
-//////////////////////////////////////////////////////////////////////////////ROUTE: /login
-// module.exports.login = async (req, res) => {
-//   try {
-//     res.status(200).json({
-//       status: "success",
-//       requested: req.requestTime,
-//       message: "Club Login Page",
-//     });
-//   } catch (err) {
-//     console.log(err);
-//     res.status(404).json({
-//       status: "failed",
-//       messsage: err,
-//     });
-//   }
-// };
 
 module.exports.authentication = async (req, res) => {
   try {
@@ -68,7 +44,7 @@ module.exports.authentication = async (req, res) => {
       const token = jwt.sign({ id: foundClub._id }, "club", {
         expiresIn: "2h",
       });
-      console.log("loggedIn, sent from clubController");
+      console.log("loggedIn");
       res.status(200).json({
         user: foundClub,
         status: "success",
@@ -168,56 +144,85 @@ module.exports.updateDetailsById = async (req, res) => {
 
 // ///////////////////////////////////////////////////////////////////////////////ROUTE: /drafts
 module.exports.sendDraft = async (req, res) => {
-  const { id } = req.params;
-  const draft = await Request.findById(id);
-  draft.status = "sentByClub";
-  draft.timeline.sentByClub = { date: getDate(), time: getTime() };
-  if (draft.status === "sentByFaculty" || draft.status === "sentByFinance")
-    draft.status = "receivedByFaculty";
-  else {
-    draft.status = "sentByClub";
+  try {
+    const { id } = req.params;
+    const draft = await Request.findById(id);
+    if (draft.status === "sentByFaculty" || draft.status === "sentByFinance")
+      draft.status = "receivedByFaculty";
+    else {
+      draft.status = "sentByClub";
+      const clubId = draft.clubId;
+      const club = await Club.findById(clubId);
+      club.sentRequests.push(id);
+      await club.save();
+    }
+    draft.timeline.sentByClub = { date: getDate(), time: getTime() };
+    await draft.save();
+
+    res.status(200).json({
+      status: "success",
+      requested: req.requestTime,
+      message: "redirect to /clubDetails",
+    });
+  } catch(err) {
+    console.log(err);
+    res.status(404).json({
+      status: "failed",
+      requested: req.requestTime,
+      messsage: err,
+    });
   }
-  await draft.save();
-  const clubID = draft.clubId;
-  const club = await Club.findById(clubID);
-  club.sentRequests.push(id);
-  await club.save();
-  res.status(200).json({
-    status: "success",
-    requested: req.requestTime,
-    message: "redirect to /clubDetails",
-  });
 };
+
 module.exports.deleteDraft = async (req, res) => {
-  const { id } = req.params;
-  await Request.findByIdAndDelete(id);
-  res.status(200).json({
-    status: "success",
-    requested: req.requestTime,
-    message: "redirect to /clubDetails",
-  });
+  try{
+    const { id } = req.params;
+    await Request.findByIdAndDelete(id);
+    // const clubDetails = await Club.findById(req.params.id);
+    // clubDetails.sentRequests.pull(id);
+    // await clubDetails.save();
+    res.status(200).json({
+      status: "success",
+      requested: req.requestTime,
+      message: "redirect to /clubDetails",
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({
+      status: "failed",
+      requested: req.requestTime,
+      messsage: err,
+    });
+  }
 };
+
 module.exports.updateDraft = async (req, res) => {
-  const { id } = req.params;
-  const { headName, eventName, eventDate, comments, pdf } = req.body;
-  const request = await Request.findById(id);
-  console.log(request);
-  console.log(req.body);
-  await Request.findByIdAndUpdate(id, req.body);
-  res.status(200).json({
-    status: "success",
-    requested: req.requestTime,
-    data: {
-      message: "redirect to /drafts",
-    },
-  });
+  try {
+    const { id } = req.params;
+    await Request.findByIdAndUpdate(id, req.body);
+    res.status(200).json({
+      status: "success",
+      requested: req.requestTime,
+      data: {
+        message: "redirect to /drafts",
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({
+      status: "failed",
+      requested: req.requestTime,
+      messsage: err,
+    })
+  }
 };
+
 module.exports.getDrafts = async (req, res) => {
   try {
     const drafts = await Request.find({
       $and: [
         { clubId: req.params.id },
-        { $or: [{ status: "draft" }, { status: "correctedDraft" }] },
+        { status: "draft" },
       ],
     });
     res.status(200).json({
@@ -238,10 +243,8 @@ module.exports.getDrafts = async (req, res) => {
 
 module.exports.postDraft = async (req, res) => {
   try {
-    console.log("draft posting");
     const club_id = req.params.id;
     const request = req.body;
-    // console.log(request);
     const clubDetails = await Club.findById(club_id);
     request.clubName = clubDetails.clubName;
     // if(request.pdf){
@@ -252,57 +255,15 @@ module.exports.postDraft = async (req, res) => {
     //   request.pdf = requestFile;
     // }
     let newRequest = null;
-    if (request._id) {
-      if (
-        request.status === "sentByFaculty" ||
-        request.status === "sentByFinance" ||
-        request.status === "correctedDraft"
-      )
-        request.status = "correctedDraft";
-      else {
-        request.status = "draft";
-      }
-      await Request.findByIdAndUpdate(request._id, request);
-    } else {
-      newRequest = await Request.create(request);
-      newRequest.clubId = club_id;
-      console.log(club_id);
-      await newRequest.save();
-    }
-    console.log(newRequest);
+    newRequest = await Request.create(request);
+    newRequest.clubId = club_id;
+    await newRequest.save();
     console.log("successful");
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
       data: {
         message: "flash of message saved, redirect to /getDrafts",
-      },
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(404).json({
-      status: "failed",
-      messsage: err,
-    });
-  }
-};
-
-module.exports.deleteRequest = async (req, res) => {
-  try {
-    const request = req.body;
-    if (request.status === "sentByClub") {
-      const clubDetails = await Club.findById(req.params.id);
-      const sentRequests = clubDetails.sentRequests.pull(request._id);
-      await Club.findByIdAndUpdate(req.params.id, { sentRequests });
-    }
-    await Request.findByIdAndDelete(req.body._id);
-    res.status(200).json({
-      status: "success",
-      requested: req.requestTime,
-      data: {
-        message:
-          "redirect to the page from where the request was called (req.body.status)",
-        deletedRequest: request,
       },
     });
   } catch (err) {
@@ -368,9 +329,7 @@ module.exports.sendRequest = async (req, res) => {
       newRequest.timeline.sentByClub = { date: getDate(), time: getTime() };
       await newRequest.save();
     }
-    console.log(newRequest);
-    const sentRequests = clubDetails.sentRequests;
-    sentRequests.push(newRequest._id);
+    clubDetails.sentRequests.push(newRequest._id);
     await clubDetails.save();
     console.log("successful");
     res.status(200).json({
@@ -414,86 +373,11 @@ module.exports.getReceivedRequests = async (req, res) => {
   }
 };
 
-///////////////////////////////////////////////////////////////
-// module.exports.newRequest = async (req, res) => {
-//   try {
-//     res.status(200).json({
-//       status: "success",
-//       requested: req.requestTime,
-//       data: {
-//         message: "page to fill body to create new request",
-//       },
-//     });
-//   } catch (err) {
-//     console.log(err);
-//     res.status(404).json({
-//       status: "failed",
-//       messsage: err,
-//     });
-//   }
-// };
-
-module.exports.deleteRequest = async (req, res) => {
-  try {
-    const request = await Request.findByIdAndDelete(req.params.reqid);
-    const clubDetails = await Club.findById(req.params.id);
-    clubDetails[`${request.status}`].pull(req.params.reqid);
-    await Club.findByIdAndUpdate(req.params.id, clubDetails, {
-      new: true,
-      runValidators: true,
-    });
-    const requestsNew = await Request.find({
-      _id: [...clubDetails[`${request.status}`]],
-    });
-    res.status(200).json({
-      status: "success",
-      requested: req.requestTime,
-      data: {
-        [`${request.status}`]: requestsNew,
-      },
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(404).json({
-      status: "failed",
-      messsage: err,
-    });
-  }
-};
-
-// //////////////////////////////////////////////////////////////////////ROUTE: /logout/
-// module.exports.logout = (req, res) => {
-//   req.params.id = null;
-//   console.log("logged out");
-//   res.status(200).json({
-//     status: "success",
-//     requested: req.requestTime,
-//     messaage: "logged out, redirect to home",
-//   });
-// };
-
 ////////////////////////////////////////////////////////////////////ROUTE: /changePassword
-module.exports.changePassword = async (req, res) => {
-  try {
-    res.status(200).json({
-      status: "success",
-      requested: req.requestTime,
-      message: "Page to change password",
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(404).json({
-      status: "failed",
-      messsage: err,
-    });
-  }
-};
-
 module.exports.authorise = async (req, res) => {
   try {
     const { id } = req.params;
     const { oldPassword, newPassword, confirmPassword } = req.body;
-    console.log(oldPassword, newPassword, confirmPassword);
     if (!oldPassword || !newPassword || !confirmPassword) {
       res.status(401).json({
         status: "unauthorized",
@@ -539,28 +423,6 @@ module.exports.authorise = async (req, res) => {
   }
 };
 
-// //////////////////////////////////////////////////////
-// module.exports.downloadPdf = async (req, res) => {
-//   try {
-//     const id = req.body.id;
-//     const request = Request.findById(id);
-//     const buffer = request.pdf.data.buffer;
-//     const name = request.pdf.name;
-//     fs.writeFileSync(name, buffer);
-//     res.status(200).json({
-//       status: "success",
-//       requested: req.requestTime,
-//       message: "Page to change password",
-//     });
-//   } catch (err) {
-//     console.log(err);
-//     res.status(404).json({
-//       status: "failed",
-//       messsage: err,
-//     });
-//   }
-// };
-
 ////////////////////////////////////////Route: /getRejectedRequests
 module.exports.getRejectedRequests = async (req, res) => {
   try {
@@ -568,19 +430,33 @@ module.exports.getRejectedRequests = async (req, res) => {
     const rejectedRequests = await Request.find({
       $and: [
         { clubId: clubId },
-        {
-          $or: [
-            {
-              status: {
-                $in: [
-                  "rejectedByFaculty",
-                  "rejectedByFinance",
-                  "rejectedByDean",
-                ],
-              },
-            },
-          ],
+        { status:{
+            $in: [ "rejectedByFaculty", "rejectedByFinance", "rejectedByDean" ],
+          },
         },
+      ],
+    });
+    res.status(200).json({
+      status: "success",
+      data: {
+        rejectedRequests,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "failed",
+      message: err,
+    });
+  }
+};
+
+module.exports.getApprovedRequests = async (req, res) => {
+  try {
+    const clubId = req.params.id;
+    const rejectedRequests = await Request.find({
+      $and: [
+        { clubId: clubId },
+        { status: [ "approvedByDean" ] },
       ],
     });
     res.status(200).json({

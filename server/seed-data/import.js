@@ -93,10 +93,22 @@ const del = async () => {
   process.exit();
 };
 
-connect();
+
+
+
+const create = async () => {
+
+}
+
+
+
+//connect();
 
 if (process.argv[2] === "--import") {
   read();
 } else if (process.argv[2] === "--delete") {
   del();
+}
+else if (process.argv[2] === "--create") {
+  create();
 }

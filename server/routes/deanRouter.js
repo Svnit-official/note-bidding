@@ -1,5 +1,6 @@
 const express = require("express");
 const deanController = require("./../controller/deanController");
+const pdfController = require("./../controller/pdfController");
 const deanAuth = require("../middleware/deanAuth");
 const router = express.Router();
 
@@ -12,10 +13,12 @@ router
 
 router
   .route("/:id/details")
-  .get(deanController.getDetailsById) // 'Dean Details' button on dashboard
-  .patch(deanController.updateDetailsById); // 'Update' button on dean details page
+  .get(deanAuth, deanController.getDetailsById) // 'Dean Details' button on dashboard
+  .patch(deanAuth, deanController.updateDetailsById); // 'Update' button on dean details page
 
-router.route("/:id/changePassword").patch(deanController.authorise);
+router
+  .route("/:id/changePassword")
+  .patch(deanController.authorise);
 
 router
   .route("/:id/pendingRequests")
@@ -26,6 +29,17 @@ router
 router
   .route("/:id/respondedRequests")
   .get(deanAuth, deanController.getRespondedRequests); // 'Responded Requests' button on dashboard
-//  .delete(financeController.deleteSentRequests);
 
+router
+  .route("/rejectedRequests")
+  .get(deanAuth, deanController.getRejectedRequests); //
+
+router
+  .route("/approvedRequests")
+  .get(deanAuth, deanController.getApprovedRequests);
+
+router
+  .route("/:id/downloadPdf/:user")
+  .get(deanAuth, pdfController.downloadPdf);
+  
 module.exports = router;
