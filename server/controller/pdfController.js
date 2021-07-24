@@ -7,7 +7,6 @@ const Request = require("./../models/requestModel");
 const mongodb = require("mongodb");
 const fs = require("fs");
 const pdf = require("pdf-creator-node");
-const template = fs.readFileSync("./controller/template.html", "utf8");
 
 const getDate = function () {
   const today = new Date();
@@ -39,17 +38,17 @@ module.exports.downloadPdf = async (req, res) => {
     const request = await Request.findById(reqid);
 
     // dates
-    const sentByClub = request.timeline.sentByClub;
-    const approvedByFaculty = request.timeline.approvedByFaculty;
-    const approvedByFinance = request.timeline.approvedByFinance;
-    const approvedByDean = request.timeline.approvedByDean;
+    const sentByClub = request.timeline.sentByClub.date;
+    const approvedByFaculty = request.timeline.approvedByFaculty.date;
+    const approvedByFinance = request.timeline.approvedByFinance.date;
+    const approvedByDean = request.timeline.approvedByDean.date;
 
     const club = await Club.findById(request.clubId);
     const clubSign = club.signature;
 
-    // const faculty = await Faculty.findById(request.facultyId);
-    // const facName = faculty.facultyName;
-    // const facSign = faculty.signature;
+    const faculty = await Faculty.findById(request.facultyId);
+    const facName = faculty.facultyName;
+    const facSign = faculty.signature;
 
     const fin = await Finance.find({});
     const finSign = fin[0].signature;
@@ -61,14 +60,14 @@ module.exports.downloadPdf = async (req, res) => {
 
     const data = {
         //request,  
-        // sentByClub,  
-        // approvedByFaculty,
-        // approvedByFinance,
-        // approvedByDean,  
-        // clubSign,  
-        //facName,
-        // facSign,
-        // finSign,
+        sentByClub,  
+        approvedByFaculty,
+        approvedByFinance,
+        approvedByDean,  
+        clubSign,  
+        facName,
+        facSign,
+        finSign,
         finName,
         deanName,
         deanSign    
@@ -89,6 +88,8 @@ module.exports.downloadPdf = async (req, res) => {
         contents: `<div style="text-align: left;">${user} Copy</div>`,
       },
     };
+
+    const template = fs.readFileSync("./controller/template.html", "utf8");
 
     const document = {
       html: template,
