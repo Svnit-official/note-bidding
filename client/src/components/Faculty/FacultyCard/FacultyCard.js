@@ -31,7 +31,7 @@ export default function FacultyCard({ draft }) {
     id: draft._id,
   };
   let flag = false;
-  if (draft.status === "sentByClub" || draft.status==="receivedByFaculty") {
+  if (draft.status === "sentByClub" || draft.status === "receivedByFaculty") {
     flag = true;
   }
 
@@ -53,15 +53,15 @@ export default function FacultyCard({ draft }) {
   const handleApprove = (e) => {
     console.log(userFaculty.facultyID);
 
-    dispatch(approvePendingRequest(userFaculty.facultyID, request));
+    dispatch(approvePendingRequest(userFaculty.facultyID, request, history));
   };
 
   const handleReject = (e) => {
-    dispatch(rejectPendingRequests(userFaculty.facultyID, request));
+    dispatch(rejectPendingRequests(userFaculty.facultyID, request, history));
   };
 
   const handleSendBack = () => {
-    dispatch(sendBackPendingRequests(userFaculty.facultyID, request));
+    dispatch(sendBackPendingRequests(userFaculty.facultyID, request, history));
   };
 
   const progress = function (status) {
@@ -151,7 +151,7 @@ export default function FacultyCard({ draft }) {
               color="secondary"
               onClick={handleSendBack}
             >
-              Edit Request
+              Send Back for Correction
             </Button>
             <Button
               className={classes.button}
@@ -160,7 +160,7 @@ export default function FacultyCard({ draft }) {
               color="secondary"
               onClick={handleReject}
             >
-              reject
+              Reject Request
             </Button>
           </AccordionDetails>
         </Accordion>

@@ -32,6 +32,9 @@ module.exports.downloadPdf = async (req, res) => {
     console.log("hell");
     const reqid = req.body.id;
     const request = await Request.findById(reqid);
+    const eventName = request.eventName;
+    const eventDate = request.eventDate;
+    const eventDescription = request.eventDescription;
 
     // dates
     const sentByClub = request.timeline.sentByClub.date;
@@ -41,6 +44,7 @@ module.exports.downloadPdf = async (req, res) => {
 
     const club = await Club.findById(request.clubId);
     const clubSign = club.signature;
+    const clubName = club.clubName;
 
     const faculty = await Faculty.findById(request.facultyId);
     const facName = faculty.facultyName;
@@ -55,7 +59,11 @@ module.exports.downloadPdf = async (req, res) => {
     const deanSign = dean[0].signature;
 
     const data = {
-        //request,  
+        //request,
+      eventDate,
+      eventDescription,
+        eventName, 
+        clubName,
         sentByClub,  
         approvedByFaculty,
         approvedByFinance,
@@ -75,6 +83,7 @@ module.exports.downloadPdf = async (req, res) => {
       format: "A3",
       orientation: "portrait",
       border: "10mm",
+      margin : "20%",
       header: {
         height: "45mm",
         contents: `<div style="text-align: left;">${getDate()}</div>`,

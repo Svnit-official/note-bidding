@@ -6,10 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { getPendingRequests } from "../../../actions/facultyActions";
 import FacultyCard from "../FacultyCard/FacultyCard";
 import { CircularProgress, Typography } from "@material-ui/core";
+//import {useLocation} from 'react-router-dom'
 
 const FacultyHome = () => {
   const dispatch = useDispatch();
-
+  ///const location = useLocation();
   const user = JSON.parse(localStorage.getItem("fac_profile"));
   // console.log(user);
   useEffect(() => {

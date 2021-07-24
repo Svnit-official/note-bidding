@@ -23,6 +23,7 @@ router
 router
   .route("/:id/pendingRequests")
   .get(deanAuth, deanController.getPendingRequests) // 'Pending Requests' button on dashboard
+  .patch(deanAuth, deanController.sendBackPendingRequest) // 'Send back' button on request (after adding comments)
   .post(deanAuth, deanController.approvePendingRequest) // 'Approve' button on request (after adding comments)
   .put(deanAuth, deanController.rejectPendingRequest); // 'Reject' button on request (after adding comments)
 

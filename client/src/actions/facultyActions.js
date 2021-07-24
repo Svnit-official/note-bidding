@@ -21,16 +21,18 @@ export const changeFacultyPassword = (id, form, router) => async (dispatch) => {
 };
 
 export const approvePendingRequest =
-  (facultyID, requestID) => async (dispatch) => {
+  (facultyID, requestID, router) => async (dispatch) => {
     console.log(facultyID, requestID);
     const { data } = await api.approvePendingRequests(facultyID, requestID);
     console.log(data);
+    router.push("/faculty/home");
   };
 
 export const rejectPendingRequests =
-  (facultyID, requestID) => async (dispatch) => {
+  (facultyID, requestID, router) => async (dispatch) => {
     const { data } = await api.rejectPendingRequests(facultyID, requestID);
     console.log(data);
+    router.push("/faculty/home");
   };
 
 export const getRespondedRequests = (facultyID) => async (dispatch) => {
@@ -39,7 +41,8 @@ export const getRespondedRequests = (facultyID) => async (dispatch) => {
 };
 
 export const sendBackPendingRequests =
-  (facultyID, requestID) => async (dispatch) => {
+  (facultyID, requestID, router) => async (dispatch) => {
     const { data } = await api.sendBackPendingRequests(facultyID, requestID);
     console.log(data);
+    router.push("/faculty/home");
   };

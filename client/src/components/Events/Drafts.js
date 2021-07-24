@@ -2,7 +2,6 @@
 import React, { useEffect } from "react";
 import Card from "../Card/Card";
 import NavBar from "../NavBar/NavBar";
-import BottomNav from "../BottomNav/BottomNav";
 // import AddButton from '../AddButton/AddButton';
 import { useDispatch, useSelector } from "react-redux";
 import { getDraftRequest } from "../../actions/clubActions";
@@ -25,7 +24,6 @@ const Home = () => {
         {d.drafts.map((draft) => (
           <Card draft={draft}>Name</Card>
         ))}
-        <BottomNav />
       </div>
     );
   }

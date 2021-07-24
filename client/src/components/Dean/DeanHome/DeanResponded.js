@@ -33,7 +33,6 @@ const DeanResponded = () => {
           ))
 
         )}
-      <BottomNav />
     </div>
   );
 };

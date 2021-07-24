@@ -52,15 +52,21 @@ export default function FinanceCard({ draft }) {
     e.preventDefault();
     console.log(userFinance.financeID);
 
-    dispatch(approvePendingRequestsFinance(userFinance.financeID, request));
+    dispatch(
+      approvePendingRequestsFinance(userFinance.financeID, request, history)
+    );
   };
 
   const handleReject = () => {
-    dispatch(rejectPendingRequestsFinance(userFinance.financeID, request));
+    dispatch(
+      rejectPendingRequestsFinance(userFinance.financeID, request, history)
+    );
   };
 
   const handleSendBack = () => {
-    dispatch(sendBackPendingRequestsFinance(userFinance.financeID, request));
+    dispatch(
+      sendBackPendingRequestsFinance(userFinance.financeID, request, history)
+    );
   };
 
   const progress = function (status) {
@@ -149,7 +155,7 @@ export default function FinanceCard({ draft }) {
               color="secondary"
               onClick={handleSendBack}
             >
-              Edit Request
+              Send Back for Correction
             </Button>
             <Button
               className={classes.button}
@@ -158,7 +164,7 @@ export default function FinanceCard({ draft }) {
               color="secondary"
               onClick={handleReject}
             >
-              reject
+              Reject
             </Button>
           </AccordionDetails>
         </Accordion>

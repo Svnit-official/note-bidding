@@ -17,6 +17,7 @@ const UpdateForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(updateFacultyDetails(id, postData, history));
+    history.go(0);
   };
   return (
     <Paper className={classes.paper} elevation={6}>

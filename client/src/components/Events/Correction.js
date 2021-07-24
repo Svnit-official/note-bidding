@@ -24,7 +24,8 @@ const SentRequest = () => {
         <NavBar />
         {d.requests.map((event) =>
           event.status === "sentByFaculty" ||
-          event.status === "sentByFinance" ? (
+          event.status === "sentByFinance" ||
+          event.status === "sentByDean" ? (
             <Card event={event}>Name</Card>
           ) : null
         )}

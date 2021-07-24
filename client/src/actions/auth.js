@@ -6,7 +6,7 @@ export const deansignin = (formdata, router) => async (dispatch) => {
     console.log(sessionStorage.getItem("dean"));
     dispatch({ type: "DEAN_LOGIN", data });
     console.log("loggedIn");
-    router.push(`/dean/${data.deanID}/details`);
+    router.push(`/dean/home`);
   } catch (e) {
     console.log(e);
   }
@@ -21,31 +21,26 @@ export const deanDetails = (id) => async (dispatch) => {
 export const updateDeanDetails = (id, formdata, router) => async (dispatch) => {
   const { data } = await api.updateDeanDetails(id, formdata);
   dispatch({ type: "UPDATE_DEAN_DETAILS", payload: data.data.deanDetailsNew });
-  router.push(`/dean/${id}/details`);
 };
 export const clubsignin = (formdata, router) => async (dispatch) => {
   try {
     const { data } = await api.clubLogin(formdata);
     console.log(data);
-    if(data.status === "success"){
-
+    if (data.status === "success") {
       dispatch({ type: "CLUB_LOGIN", data });
-       dispatch({type : "AUTHORIZED"});
+      dispatch({ type: "AUTHORIZED" });
       console.log("loggedIn");
       router.push("/club/home");
-    }
-    else{
-      console.log("not Authorized")
-       dispatch({type : "NOT_AUHORIZED"});
+    } else {
+      console.log("not Authorized");
+      dispatch({ type: "NOT_AUHORIZED" });
       router.push("/club/login");
     }
-       
-    
-    
+
     sessionStorage.getItem("user");
-   } catch (e) {
-     console.log("not authorized");
-    dispatch({type : "NOT_AUHORIZED"});
+  } catch (e) {
+    console.log("not authorized");
+    dispatch({ type: "NOT_AUHORIZED" });
     console.log(e);
   }
 };
@@ -57,7 +52,7 @@ export const financesignin = (formdata, router) => async (dispatch) => {
     console.log(sessionStorage.getItem("faculty"));
     dispatch({ type: "FIN_LOGIN", data: data });
     console.log("loggedIn");
-    router.push(`/finance/${data.financeID}/details`);
+    router.push(`/finance/home`);
   } catch (e) {
     console.log(e);
   }
@@ -77,7 +72,6 @@ export const updateFinanceDetails =
       payload: data.data.financeDetailsNew,
     });
     console.log(data.data.financeDetailsNew);
-    router.push(`/finance/${id}/details`);
   };
 export const facultysignin = (formdata, router) => async (dispatch) => {
   try {
@@ -105,7 +99,7 @@ export const updateFacultyDetails =
       type: "UPDATE_FACULTY_DETAILS",
       payload: data.data.facultyDetailsNew,
     });
-    router.push(`/faculty/${id}/details`);
+    // router.push(`/faculty/${id}/details`);
   };
 
 export const clubFormSubmit = (formdata, router) => async (dispatch) => {

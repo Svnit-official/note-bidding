@@ -20,6 +20,7 @@ import useStyles from "./styles";
 import {
   approvePendingRequestsDean,
   rejectPendingRequestsDean,
+  sendBackPendingRequestsDean,
 } from "../../../actions/deanActions";
 
 export default function DeanCard({ draft, display }) {
@@ -50,12 +51,17 @@ export default function DeanCard({ draft, display }) {
 
   const handleApprove = (e) => {
     e.preventDefault();
-    dispatch(approvePendingRequestsDean(userDean.deanID, request));
+    dispatch(approvePendingRequestsDean(userDean.deanID, request, history));
   };
 
   const handleReject = (e) => {
     e.preventDefault();
-    dispatch(rejectPendingRequestsDean(userDean.deanID, request));
+    dispatch(rejectPendingRequestsDean(userDean.deanID, request, history));
+  };
+
+  const handleSendBack = (e) => {
+    e.preventDefault();
+    dispatch(sendBackPendingRequestsDean(userDean.deanID, request, history));
   };
   const progress = function (status) {
     switch (status) {
@@ -148,8 +154,9 @@ export default function DeanCard({ draft, display }) {
               size="small"
               variant="contained"
               color="secondary"
+              onClick={handleSendBack}
             >
-              Edit Request
+              Send Back for Correction
             </Button>
             <Button
               className={classes.button}

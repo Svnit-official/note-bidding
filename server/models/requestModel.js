@@ -5,7 +5,8 @@ const allowedStatus = [
   "sentByClub", // (sent by club, received by faculty)
   "sentByFaculty", // (sent back for correction by faculty)
   "sentByFinance", // (sent back for correction by finance)
-  "correctedDraft", // (sent back for corrections and saved as draft)
+  "sentByDean",
+  //"correctedDraft", // (sent back for corrections and saved as draft)
   "receivedByFaculty", // (received by faculty after correction )
   "approvedByFaculty", // (approved by faculty, received by finance)
   "rejectedByFaculty",
@@ -38,6 +39,9 @@ const requestSchema = new mongoose.Schema({
   eventName: {
     type: String,
     required: [true, "A name must be there"],
+  },
+  eventDescription:{
+    type: String,
   },
   eventDate: {
     type: Date,

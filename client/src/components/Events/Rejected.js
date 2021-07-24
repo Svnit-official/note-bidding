@@ -29,7 +29,6 @@ const RejectedRequests = () => {
             <Card event={event}>Name</Card>
           ) : null
         )}
-        <BottomNav />
       </div>
     );
   }

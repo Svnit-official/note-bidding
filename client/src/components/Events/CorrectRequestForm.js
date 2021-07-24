@@ -18,6 +18,7 @@ const UpdateForm = ({ id }) => {
   const saveDraft = (e) => {
     console.log(postData);
     dispatch(updateDraft(id, { ...postData }, history));
+    history.push("/club/correction");
   };
 
   return (

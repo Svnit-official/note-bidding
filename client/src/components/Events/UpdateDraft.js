@@ -17,7 +17,7 @@ const SubmitForm = ({ id }) => {
 
   const saveDraft = (e) => {
     dispatch(updateDraft(id, { ...postData }, history));
-    history.push("/club/home");
+    history.push('/club/drafts')
   };
 
   return (

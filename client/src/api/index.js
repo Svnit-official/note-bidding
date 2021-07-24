@@ -38,7 +38,9 @@ export const approvePendingRequestsDean = (deanID , request) =>
 export const rejectPendingRequestsDean = (deanID , request) =>
   API.put(`/dean/${deanID}/pendingRequests`,request);
 export const getRespondedRequestsDean = (deanID) =>
-  API.get(`/dean/${deanID}/RespondedRequests`);
+  API.get(`/dean/${deanID}/respondedRequests`);
+export const sendBackPendingRequestsDean = (deanID, formdata) =>
+ API.patch(`/dean/${deanID}/pendingRequests`, formdata) // 'Send back' button on request (after adding comments)
 
 export const deanDownloadReceipt = (id, formdata) => API.get(`/club/${id}/downloadPdf/Dean`);
 

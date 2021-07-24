@@ -29,7 +29,6 @@ const FacultyResponded = () => {
             <FacultyCard  draft={x} key={i}/>
           ))
         )}
-      <BottomNav />
     </div>
   );
 };

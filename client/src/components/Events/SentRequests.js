@@ -24,11 +24,13 @@ const SentRequest = () => {
         <NavBar />
         {d.requests.map((event) =>
           event.status === "sentByClub" ||
-          event.status === "receivedByFaculty" ? (
+          event.status === "receivedByFaculty"||
+          event.status === "approvedByFaculty" ||
+          event.status === "approvedByFinance" 
+          ? ( 
             <Card event={event}>Name</Card>
           ) : null
         )}
-        <BottomNav />
       </div>
     );
   }

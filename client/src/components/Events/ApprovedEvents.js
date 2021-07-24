@@ -27,7 +27,6 @@ const ApprovedEvents = () => {
             <Card event={event}>Name</Card>
           ) : null
         )}
-        <BottomNav />
       </div>
     );
   }

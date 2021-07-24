@@ -16,7 +16,7 @@ import { sendRequest } from "../../actions/clubActions";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import CorrectRequestForm from "../Events/CorrectRequestForm";
-export default function SimpleCard({ progress, event }) {
+export default function SimpleCard({ event }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles();
@@ -46,17 +46,37 @@ export default function SimpleCard({ progress, event }) {
     setOpen(false);
   };
   let flag = false;
-  if (event.status === "sentByFaculty" || event.status === "sentByFinance") {
+  if (
+    event.status === "sentByFaculty" ||
+    event.status === "sentByFinance" ||
+    event.status === "sentByDean"
+  ) {
     flag = true;
   }
   console.log(flag);
+
+  const progress = function (status) {
+    switch (status) {
+      case "sentByClub":
+        return 1;
+      case "approvedByFaculty":
+        return 2;
+      case "approvedByFinance":
+        return 3;
+      case "approvedByDean":
+        return 4;
+      default:
+        return 0;
+    }
+  };
+
   return (
     <Card
       className={classes.root}
       style={{ width: "100%", marginTop: "30px" }}
       elevation={6}
     >
-      <MultiStepForm progress={progress} />
+      <MultiStepForm progress={progress(event.stat)} />
       <CardContent>
         <Typography
           className={classes.title}

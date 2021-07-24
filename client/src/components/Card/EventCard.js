@@ -18,7 +18,7 @@ import FileBase from "react-file-base64";
 import {handleReceiptDownload} from '../../actions/clubActions'
 import {useDispatch,useSelector} from 'react-redux';
 
-export default function SimpleCard({ progress, event }) {
+export default function SimpleCard({ event }) {
   const classes = useStyles();
   const [checked, setChecked] = useState(true);
   const dispatch = useDispatch();
@@ -54,13 +54,29 @@ export default function SimpleCard({ progress, event }) {
     flag = true;
   }
   console.log(flag);
+
+  const progress = function (status) {
+    switch (status) {
+      case "sentByClub":
+        return 1;
+      case "approvedByFaculty":
+        return 2;
+      case "approvedByFinance":
+        return 3;
+      case "approvedByDean":
+        return 4;
+      default:
+        return 0;
+    }
+  };
+  
   return (
     <Card
       className={classes.root}
       style={{ width: "100%", marginTop: "30px" }}
       elevation={6}
     >
-      <MultiStepForm progress={progress} />
+      <MultiStepForm progress={progress(event.status)} />
       <CardContent>
         <Typography
           className={classes.title}

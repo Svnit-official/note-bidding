@@ -1,4 +1,4 @@
-const authReducer = (state = { authData: null, deanDetail: null  }, action) => {
+const authReducer = (state = { authData: null, deanDetail: null }, action) => {
   switch (action.type) {
     case "DEAN_LOGIN":
       localStorage.clear();
@@ -27,10 +27,16 @@ const authReducer = (state = { authData: null, deanDetail: null  }, action) => {
     case "FAC_LOGIN":
       localStorage.clear();
       localStorage.setItem("fac_profile", JSON.stringify({ ...action?.data }));
-      return { ...state, authData: action.data, errors: null , isAuthorized : true };
+      return {
+        ...state,
+        authData: action.data,
+        errors: null,
+        isAuthorized: true,
+      };
     case "LOGOUT":
       localStorage.clear();
       sessionStorage.clear();
+      return null;
     default:
       return state;
   }

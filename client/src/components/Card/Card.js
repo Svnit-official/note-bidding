@@ -22,7 +22,7 @@ import useStyles from "./styles";
 import FileBase from "react-file-base64";
 import UpdateDraft from "../Events/UpdateDraft";
 import { sendRequest, deleteRequest } from "../../actions/clubActions";
-export default function SimpleCard({ progress, draft }) {
+export default function SimpleCard({  draft }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const [open, setOpen] = useState(false);
@@ -55,13 +55,27 @@ export default function SimpleCard({ progress, draft }) {
   const handleDelete = () => {
     dispatch(deleteRequest(draft._id, history));
   };
+  const progress = function (status) {
+    switch (status) {
+      case "sentByClub":
+        return 1;
+      case "approvedByFaculty":
+        return 2;
+      case "approvedByFinance":
+        return 3;
+      case "approvedByDean":
+        return 4;
+      default:
+        return 0;
+    }
+  };
   return (
     <Card
       className={classes.root}
       style={{ width: "100%", marginTop: "30px" }}
       elevation={6}
     >
-      <MultiStepForm progress={progress} />
+      <MultiStepForm progress={progress(draft.stat)} />
       <CardContent>
         <Typography
           className={classes.title}

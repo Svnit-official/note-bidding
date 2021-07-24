@@ -13,9 +13,9 @@ export const clubFormSubmit =
     try {
       const { data } = await api.clubFormSubmit(formdata, clubID);
       console.log(data);
-      dispatch({ type: CLUB_FORM_SUBMIT, data });
       console.log("form submitted");
-      router.push("/club/home");
+      router.push("/club/sent");
+      dispatch({ type: CLUB_FORM_SUBMIT, data });
     } catch (e) {
       console.log(e);
     }
@@ -25,9 +25,9 @@ export const clubFormDraft = (formdata, clubID, router) => async (dispatch) => {
   try {
     const { data } = await api.clubFormDraft(formdata, clubID);
     console.log(data);
-    dispatch({ type: CLUB_DRAFT_SUBMIT, data });
     console.log("draft submitted");
-    router.push("/club/home");
+    router.push("/club/drafts");
+    dispatch({ type: CLUB_DRAFT_SUBMIT, data });
   } catch (e) {
     console.log(e);
   }
@@ -59,7 +59,7 @@ export const updateDraft = (id, formdata, router) => async (dispatch) => {
   try {
     const { data } = await api.clubUpdateDraft(id, formdata);
     console.log(data);
-    router.push("/club/home");
+    router.push("/club/drafts");
   } catch (error) {
     console.log(error);
   }
@@ -69,7 +69,7 @@ export const sendRequest = (id, router) => async (dispatch) => {
     console.log("action");
     const { data } = await api.sendRequestFromDraft(id);
     console.log(data);
-    router.push("/club/home");
+    router.push("/club/sent");
   } catch (error) {
     console.log(error);
   }
@@ -79,7 +79,7 @@ export const deleteRequest = (id, router) => async (dispatch) => {
     console.log("action");
     const { data } = await api.clubDeleteDraft(id);
     console.log(data);
-    router.push("/club/home");
+    router.push("/club/drafts");
   } catch (error) {
     console.log(error);
   }
@@ -96,13 +96,13 @@ export const changeClubPassword = (id, form, router) => async (dispatch) => {
 };
 
 export const handleReceiptDownload = (id, formdata) => async (dispatch) => {
-  console.log(id, formdata);
+  // console.log(id, formdata);
   const { data } = await api.clubDownloadReceipt(id, formdata);
   //console.log(data)
-  console.log(data.pdfBinary);
+  // console.log(data.pdfBinary);
   const link = "data:application/pdf;base64," + data.pdfBinary;
   dispatch({ type: "DOWNLOAD_PDF", payload: data.pdfBinary });
-  console.log(link);
+  // console.log(link);
 
   const linkSource = link;
   const downloadLink = document.createElement("a");

@@ -23,8 +23,9 @@ const SubmitForm = () => {
 
   const saveDraft = (e) => {
     dispatch(clubFormDraft({ ...postData }, clubID, history));
-    history.push("/club/home");
+    
   };
+
 
   return (
     <Paper className={classes.paper} elevation={6}>
@@ -38,14 +39,14 @@ const SubmitForm = () => {
           id="filled-required"
           name="headName"
           variant="outlined"
-          label="Title"
+          label="Head Name"
           fullWidth
           onChange={handleChange}
         />
         <TextField
           name="eventName"
           variant="outlined"
-          label="Message"
+          label="Event Name"
           fullWidth
           onChange={handleChange}
         />
@@ -61,7 +62,7 @@ const SubmitForm = () => {
           variant="outlined"
           multiline
           rows={3}
-          label="Message"
+          label="Description"
           fullWidth
           onChange={handleChange}
         />
@@ -95,7 +96,7 @@ const SubmitForm = () => {
         >
           Save as Draft
         </Button>
-        <Button variant="contained" color="secondary" fullWidth size="large">
+        <Button variant="contained" color="secondary" fullWidth size="large" >
           clear
         </Button>
       </form>
