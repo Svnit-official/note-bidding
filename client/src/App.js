@@ -36,7 +36,7 @@ const App = () => {
   };
 
   return (
-    <BrowserRouter>
+    <BrowserRouter forceRefresh={true}>
       <Switch>
         <Route
           path="/"

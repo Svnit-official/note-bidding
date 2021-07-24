@@ -29,8 +29,9 @@ export const clubsignin = (formdata, router) => async (dispatch) => {
     console.log(data);
     dispatch({ type: "CLUB_LOGIN", data });
     console.log("loggedIn");
-    sessionStorage.getItem("user");
-   } catch (e) {
+    router.push("/club/home");
+  } catch (e) {
+    console.log("-------------");
     console.log(e);
   }
 };
