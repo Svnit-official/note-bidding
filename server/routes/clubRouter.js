@@ -26,8 +26,8 @@ router
   .route("/:id/drafts")
   .get(clubAuth, clubController.getDrafts) // 'Drafts' button on dashboard
   .post(clubAuth, clubController.postDraft)
-  .patch(clubAuth, clubController.updateDraft)
-  .delete(clubAuth ,clubController.deleteDraft); // 'Save as Draft' or 'Update and save as draft' button on 'Request'
+  .patch(clubController.updateDraft)
+  .delete(clubController.deleteDraft); // 'Save as Draft' or 'Update and save as draft' button on 'Request'
 
 router
   .route("/:id/sendDraft")

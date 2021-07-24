@@ -126,6 +126,13 @@ module.exports.updateDetailsById = async (req, res) => {
 module.exports.getPendingRequests = async (req, res) => {
   try {
     const requests = await Request.find({ status: "approvedByFaculty" });
+    const finance = await Finance.findById(req.params.id)
+    const respondedRequests = finance.respondedRequests;
+    for (let r in requests) {
+      if (respondedRequests.includes(requests[r]._id)) {
+        requests[r].new = false;
+      }
+    }
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
@@ -151,7 +158,7 @@ module.exports.sendBackPendingRequest = async (req, res) => {
     const respondedRequests = finance.respondedRequests;
     if (!respondedRequests.includes(req.body.id)) {
       finance.respondedRequests.push(req.body.id);
-      finance.save();
+      await finance.save();
     }
     request.status = "sentByFinance"
     await request.save();
@@ -179,7 +186,7 @@ module.exports.approvePendingRequest = async (req, res) => {
     const finance = await Finance.findById(req.params.id);
     if (!finance.respondedRequests.includes(req.body.id)) {
       finance.respondedRequests.push(request._id);
-      finance.save(); 
+      await finance.save(); 
     }
     request.status = "approvedByFinance",
     request.timeline.approvedByFinance = { date: getDate(), time: getTime() };
@@ -207,7 +214,7 @@ module.exports.rejectPendingRequest = async (req, res) => {
     const finance = await Finance.findById(req.params.id);
     if (!finance.respondedRequests.includes(req.body.id)) {
       finance.respondedRequests.push(request);
-      finance.save();
+      await finance.save();
     }
     await Request.findByIdAndUpdate(req.body.id, {
       status: "rejectedByFinance",
@@ -308,31 +315,6 @@ module.exports.getRejectedRequests = async (req, res) => {
       status: { $in: ["rejectedByFinance", "rejectedByDean"] },
     });
 
-    res.status(200).json({
-      status: "success",
-      data: {
-        rejectedRequests,
-      },
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: "failed",
-      message: err,
-    });
-  }
-};
-
-////////////////////////////////////////Route: /getRejectedRequests
-module.exports.getRejectedRequests = async (req, res) => {
-  try {
-    const rejectedRequests = await Request.find({
-      status: {
-        $in: [
-          "rejectedByFinance",
-          "rejectedByDean",
-        ],
-      }
-    });
     res.status(200).json({
       status: "success",
       data: {

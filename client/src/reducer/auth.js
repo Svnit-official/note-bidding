@@ -1,4 +1,4 @@
-const authReducer = (state = { authData: null, deanDetail: null , pdf : null }, action) => {
+const authReducer = (state = { authData: null, deanDetail: null  }, action) => {
   switch (action.type) {
     case "DEAN_LOGIN":
       localStorage.clear();
@@ -27,12 +27,10 @@ const authReducer = (state = { authData: null, deanDetail: null , pdf : null }, 
     case "FAC_LOGIN":
       localStorage.clear();
       localStorage.setItem("fac_profile", JSON.stringify({ ...action?.data }));
-      return { ...state, authData: action.data, errors: null };
+      return { ...state, authData: action.data, errors: null , isAuthorized : true };
     case "LOGOUT":
       localStorage.clear();
       sessionStorage.clear();
-    case "DOWNLOAD_PDF" : 
-      return {...state , pdf : action.payload} ;
     default:
       return state;
   }
