@@ -16,7 +16,7 @@ import useStyles from "./styles";
 import { changeClubPassword } from "../../actions/clubActions";
 import { changeFacultyPassword } from "../../actions/facultyActions";
 import { changeDeanPassword, changeFinancePassword } from "../../actions/auth";
-
+import NavBar from "../NavBar/NavBar";
 const initialState = {};
 const ResetPassword = () => {
   const dispatch = useDispatch();
@@ -60,53 +60,55 @@ const ResetPassword = () => {
     }
   };
   return (
-    <Container component="main" maxWidth="xs">
-      <Paper className={classes.paper} elevation={5}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Change Password
-        </Typography>
-        <form className={classes.form} onSubmit={handleSubmit}>
-          <Grid container spacing={2}>
-            <Input
-              pass="pass"
-              name="oldPassword"
-              label="Old Password"
-              handleChange={handleChange}
-              type={showPassword ? "text" : "password"}
-              handleShowPassword={handleShowPassword}
-            />
-            <Input
-              pass="pass"
-              name="newPassword"
-              label="New Password"
-              handleChange={handleChange}
-              type={showPassword ? "text" : "password"}
-              handleShowPassword={handleShowPassword}
-            />
-            <Input
-              name="confirmPassword"
-              pass="pass"
-              label="Confirm Password"
-              handleChange={handleChange}
-              type={showPassword ? "text" : "password"}
-              handleShowPassword={handleShowPassword}
-            />
-          </Grid>
-          <Button
-            type="submit"
-            className={classes.loginButton}
-            fullWidth
-            color="primary"
-            variant="contained"
-          >
+    <div>
+      <Container component="main" maxWidth="xs">
+        <Paper className={classes.paper} elevation={5}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
             Change Password
-          </Button>
-        </form>
-      </Paper>
-    </Container>
+          </Typography>
+          <form className={classes.form} onSubmit={handleSubmit}>
+            <Grid container spacing={2}>
+              <Input
+                pass="pass"
+                name="oldPassword"
+                label="Old Password"
+                handleChange={handleChange}
+                type={showPassword ? "text" : "password"}
+                handleShowPassword={handleShowPassword}
+              />
+              <Input
+                pass="pass"
+                name="newPassword"
+                label="New Password"
+                handleChange={handleChange}
+                type={showPassword ? "text" : "password"}
+                handleShowPassword={handleShowPassword}
+              />
+              <Input
+                name="confirmPassword"
+                pass="pass"
+                label="Confirm Password"
+                handleChange={handleChange}
+                type={showPassword ? "text" : "password"}
+                handleShowPassword={handleShowPassword}
+              />
+            </Grid>
+            <Button
+              type="submit"
+              className={classes.loginButton}
+              fullWidth
+              color="primary"
+              variant="contained"
+            >
+              Change Password
+            </Button>
+          </form>
+        </Paper>
+      </Container>
+    </div>
   );
 };
 

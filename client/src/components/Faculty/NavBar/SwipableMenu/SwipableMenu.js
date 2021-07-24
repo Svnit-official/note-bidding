@@ -8,7 +8,6 @@ import MenuIcon from "@material-ui/icons/Menu";
 import IconButton from "@material-ui/core/IconButton";
 import { Link } from "react-router-dom";
 
-
 const useStyles = makeStyles({
   list: {
     width: 250,
@@ -18,17 +17,13 @@ const useStyles = makeStyles({
   },
 });
 
-
-
 export default function TemporaryDrawer({ x }) {
   const classes = useStyles();
   const [state, setState] = useState(x);
-  const userFaculty = JSON.parse(localStorage.getItem('fac_profile'));
+  const userFaculty = JSON.parse(localStorage.getItem("fac_profile"));
   const toggleDrawer = () => {
     setState((pre) => !pre);
   };
-
-
 
   const list = () => (
     <div
@@ -48,12 +43,20 @@ export default function TemporaryDrawer({ x }) {
             <ListItemText primary="Responded" />
           </ListItem>
         </Link>
-        <Link to={`/faculty/${userFaculty.facultyID}/details`} style={{ textDecoration: "none" }}>
+        <Link
+          to={`/faculty/${userFaculty.facultyID}/details`}
+          style={{ textDecoration: "none" }}
+        >
           <ListItem button>
             <ListItemText primary="Details" />
           </ListItem>
         </Link>
-     </List>
+        <Link to="/faculty/resetPassword" style={{ textDecoration: "none" }}>
+          <ListItem button>
+            <ListItemText primary="Change Password" />
+          </ListItem>
+        </Link>
+      </List>
     </div>
   );
 

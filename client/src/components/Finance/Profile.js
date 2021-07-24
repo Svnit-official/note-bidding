@@ -14,6 +14,7 @@ import useStyles from "./profileStyles";
 import UpdateForm from "./FinanceUpdateForm";
 import { useDispatch, useSelector } from "react-redux";
 import { financeDetails } from "../../actions/auth";
+import NavBar from "../NavBar/NavBar";
 const Dashboard = () => {
   const id = sessionStorage.getItem("finance");
   console.log(id);
@@ -36,16 +37,7 @@ const Dashboard = () => {
   } else {
     return (
       <div style={{ marginLeft: "10px", marginRight: "10px" }}>
-        <Paper className={classes.paper} elevation={2}>
-          <Typography
-            variant="h4"
-            component="h4"
-            align="center"
-            style={{ color: "white" }}
-          >
-            Finance Head Details
-          </Typography>
-        </Paper>
+        <NavBar></NavBar>
         <Grid container spacing={2} className={classes.grid}>
           <Grid item xs={12} sm={8}>
             <Card className={classes.details} elevation={4}>

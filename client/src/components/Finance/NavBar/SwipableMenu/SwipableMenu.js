@@ -8,7 +8,6 @@ import MenuIcon from "@material-ui/icons/Menu";
 import IconButton from "@material-ui/core/IconButton";
 import { Link } from "react-router-dom";
 
-
 const useStyles = makeStyles({
   list: {
     width: 250,
@@ -18,17 +17,13 @@ const useStyles = makeStyles({
   },
 });
 
-
-
 export default function TemporaryDrawer({ x }) {
   const classes = useStyles();
   const [state, setState] = useState(x);
-  const userFinance = JSON.parse(localStorage.getItem('fin_profile'));
+  const userFinance = JSON.parse(localStorage.getItem("fin_profile"));
   const toggleDrawer = () => {
     setState((pre) => !pre);
   };
-
-
 
   const list = () => (
     <div
@@ -45,15 +40,23 @@ export default function TemporaryDrawer({ x }) {
         </Link>
         <Link to="/finance/responded" style={{ textDecoration: "none" }}>
           <ListItem button>
-            <ListItemText primary="Drafts" />
+            <ListItemText primary="Responded" />
           </ListItem>
         </Link>
-        <Link to={`/finance/${userFinance.financeID}/details`} style={{ textDecoration: "none" }}>
+        <Link
+          to={`/finance/${userFinance.financeID}/details`}
+          style={{ textDecoration: "none" }}
+        >
           <ListItem button>
             <ListItemText primary="Details" />
           </ListItem>
         </Link>
-     </List>
+        <Link to="/finance/resetPassword" style={{ textDecoration: "none" }}>
+          <ListItem button>
+            <ListItemText primary="Change Password" />
+          </ListItem>
+        </Link>
+      </List>
     </div>
   );
 

@@ -85,11 +85,11 @@ module.exports.downloadPdf = async (req, res) => {
       border: "10mm",
       margin : "20%",
       header: {
-        height: "45mm",
+        height: "4mm",
         contents: `<div style="text-align: left;">${getDate()}</div>`,
       },
       footer: {
-        height: "45mm",
+        height: "4mm",
         contents: `<div style="text-align: left;">${user} Copy</div>`,
       },
     };

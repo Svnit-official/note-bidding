@@ -8,7 +8,6 @@ import MenuIcon from "@material-ui/icons/Menu";
 import IconButton from "@material-ui/core/IconButton";
 import { Link } from "react-router-dom";
 
-
 const useStyles = makeStyles({
   list: {
     width: 250,
@@ -18,17 +17,13 @@ const useStyles = makeStyles({
   },
 });
 
-
-
 export default function TemporaryDrawer({ x }) {
   const classes = useStyles();
   const [state, setState] = useState(x);
-  const userDean = JSON.parse(localStorage.getItem('dean_profile'));
+  const userDean = JSON.parse(localStorage.getItem("dean_profile"));
   const toggleDrawer = () => {
     setState((pre) => !pre);
   };
-
-
 
   const list = () => (
     <div
@@ -48,12 +43,25 @@ export default function TemporaryDrawer({ x }) {
             <ListItemText primary="Responded" />
           </ListItem>
         </Link>
-        <Link to={`/finance/${userDean.deanID}/details`} style={{ textDecoration: "none" }}>
+        <Link
+          to={`/dean/${userDean.deanID}/details`}
+          style={{ textDecoration: "none" }}
+        >
           <ListItem button>
             <ListItemText primary="Details" />
           </ListItem>
         </Link>
-     </List>
+        <Link to="/club/approved" style={{ textDecoration: "none" }}>
+          <ListItem button>
+            <ListItemText primary="Approved Requests" />
+          </ListItem>
+        </Link>
+        <Link to="/dean/resetPassword" style={{ textDecoration: "none" }}>
+          <ListItem button>
+            <ListItemText primary="Reset Password" />
+          </ListItem>
+        </Link>
+      </List>
     </div>
   );
 

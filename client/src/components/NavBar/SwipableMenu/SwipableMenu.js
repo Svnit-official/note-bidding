@@ -63,6 +63,11 @@ export default function TemporaryDrawer({ x }) {
             <ListItemText primary="Approved Requests" />
           </ListItem>
         </Link>
+        <Link to="/club/resetPassword" style={{ textDecoration: "none" }}>
+          <ListItem button>
+            <ListItemText primary="Change Password" />
+          </ListItem>
+        </Link>
       </List>
     </div>
   );
