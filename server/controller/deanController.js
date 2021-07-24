@@ -120,6 +120,13 @@ module.exports.updateDetailsById = async (req, res) => {
 module.exports.getPendingRequests = async (req, res) => {
   try {
     const requests = await Request.find({ status: "approvedByFinance" });
+    const dean = await Dean.findById(req.params.id);
+    const respondedRequests = dean.respondedRequests;
+    for (let r in requests) {
+      if (respondedRequests.includes(requests[r]._id)) {
+        requests[r].new = false;
+      }
+    }
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
@@ -137,13 +144,45 @@ module.exports.getPendingRequests = async (req, res) => {
   }
 };
 
+module.exports.sendBackPendingRequest = async (req, res) => {
+  try {
+    const request = await Request.findById(req.body.id);
+    //const comments = req.body.comments;
+    const dean = await Dean.findById(req.params.id);
+    const respondedRequests = dean.respondedRequests;
+    if (!respondedRequests.includes(req.body.id)) {
+      dean.respondedRequests.push(req.body.id);
+      await dean.save();
+    }
+    request.status = "sentByDean";
+    await request.save();
+    res.status(200).json({
+      status: "success",
+      requested: req.requestTime,
+      data: {
+        message: "redirect to /respondedRequests",
+        request,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({
+      status: "failed",
+      messsage: err,
+    });
+  }
+};
+
+
 module.exports.approvePendingRequest = async (req, res) => {
   try {
     const request = await Request.findById(req.body.id);
     //const comments = req.body.comments;
     const dean = await Dean.findById(req.params.id);
-    dean.respondedRequests.push(request);
-    await dean.save();
+    if (!dean.respondedRequests.includes(req.body.id)) {
+      dean.respondedRequests.push(request);
+      await dean.save();  
+    }
     request.status= "approvedByDean",
     request.timeline.approvedByDean = { date: getDate(), time: getTime() }; 
     // comments,
@@ -165,14 +204,16 @@ module.exports.approvePendingRequest = async (req, res) => {
     });
   }
 };
+
 module.exports.rejectPendingRequest = async (req, res) => {
   try {
     const request = await Request.findById(req.body.id);
     //const comments = req.body.comments;
     const dean = await Dean.findById(req.params.id);
-    const respondedRequests = dean.respondedRequests;
-    respondedRequests.push(request);
-    await Dean.findByIdAndUpdate(req.params.id, { respondedRequests });
+    if (!dean.respondedRequests.includes(req.body.id)) {
+      dean.respondedRequests.push(request);
+      await dean.save();
+    }
     await Request.findByIdAndUpdate(req.body.id, {
       status: "rejectedByDean",
       //comments,

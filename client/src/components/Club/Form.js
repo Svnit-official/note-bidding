@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import {
   Avatar,
   Button,
@@ -9,11 +9,12 @@ import {
   Container,
 } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch , useSelector } from "react-redux";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Input from "./input";
 import useStyles from "./styles";
 import { clubsignin } from "../../actions/auth";
+
 const initialState = {
   username: "",
   password: "",
@@ -30,8 +31,18 @@ const ClubForm = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(clubsignin(form, history));
+   dispatch(clubsignin(form, history))
   };
+ 
+  
+  // const checkAuthority = () => {
+  //   if(d){
+  //     console.log("authorized");
+  //   }else{
+  //     console.log("not authorized")
+  //   }
+  // }
+
   return (
     <Container component="main" maxWidth="xs">
       <Paper className={classes.paper} elevation={5}>

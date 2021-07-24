@@ -27,10 +27,25 @@ export const clubsignin = (formdata, router) => async (dispatch) => {
   try {
     const { data } = await api.clubLogin(formdata);
     console.log(data);
-    dispatch({ type: "CLUB_LOGIN", data });
-    console.log("loggedIn");
+    if(data.status === "success"){
+
+      dispatch({ type: "CLUB_LOGIN", data });
+       dispatch({type : "AUTHORIZED"});
+      console.log("loggedIn");
+      router.push("/club/home");
+    }
+    else{
+      console.log("not Authorized")
+       dispatch({type : "NOT_AUHORIZED"});
+      router.push("/club/login");
+    }
+       
+    
+    
     sessionStorage.getItem("user");
    } catch (e) {
+     console.log("not authorized");
+    dispatch({type : "NOT_AUHORIZED"});
     console.log(e);
   }
 };

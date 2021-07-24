@@ -93,15 +93,6 @@ const del = async () => {
   process.exit();
 };
 
-
-
-
-const create = async () => {
-
-}
-
-
-
 //connect();
 
 if (process.argv[2] === "--import") {

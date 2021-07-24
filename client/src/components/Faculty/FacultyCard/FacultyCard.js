@@ -31,7 +31,7 @@ export default function FacultyCard({ draft }) {
     id: draft._id,
   };
   let flag = false;
-  if (draft.status !== "sentByClub") {
+  if (draft.status === "sentByClub" || draft.status==="receivedByFaculty") {
     flag = true;
   }
 
@@ -115,7 +115,7 @@ export default function FacultyCard({ draft }) {
           Download Pdf
         </Button>
       </CardActions>
-      {!flag ? (
+      {flag ? (
         <Accordion>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}

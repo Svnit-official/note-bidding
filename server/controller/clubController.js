@@ -147,7 +147,11 @@ module.exports.sendDraft = async (req, res) => {
   try {
     const { id } = req.params;
     const draft = await Request.findById(id);
-    if (draft.status === "sentByFaculty" || draft.status === "sentByFinance")
+    if (
+      draft.status === "sentByFaculty" ||
+      draft.status === "sentByFinance" ||
+      draft.status === "sentByDean"
+    )
       draft.status = "receivedByFaculty";
     else {
       draft.status = "sentByClub";
@@ -316,7 +320,8 @@ module.exports.sendRequest = async (req, res) => {
     if (request._id) {
       if (
         request.status === "sentByFaculty" ||
-        request.status === "sentByFinance"
+        request.status === "sentByFinance" ||
+        request.status === "sentByDean"
       )
         request.status = "receivedByFaculty";
       else {
@@ -354,7 +359,7 @@ module.exports.getReceivedRequests = async (req, res) => {
     const receivedRequests = await Request.find({
       $and: [
         { clubId: req.params.id },
-        { $or: [{ status: "sentByFaculty" }, { status: "sentByFinance" }] },
+        { $or: [{ status: "sentByFaculty" }, { status: "sentByFinance" }, {status: "sentByDean"}] },
       ],
     });
     res.status(200).json({

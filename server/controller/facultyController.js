@@ -133,6 +133,12 @@ module.exports.getPendingRequests = async (req, res) => {
         { $or: [{ status: "sentByClub" }, { status: "receivedByFaculty" }] },
       ],
     });
+    const respondedRequests = faculty.respondedRequests;
+    for (let r in requests) {
+      if (respondedRequests.includes(requests[r]._id)) {
+        requests[r].new = false;
+      }
+    }
     res.status(200).json({
       status: "success",
       requested: req.requestTime,

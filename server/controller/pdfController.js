@@ -4,7 +4,6 @@ const Dean = require("./../models/deanModel");
 const Faculty = require("./../models/facultyModel");
 const Request = require("./../models/requestModel");
 
-const mongodb = require("mongodb");
 const fs = require("fs");
 const pdf = require("pdf-creator-node");
 
@@ -32,9 +31,6 @@ module.exports.downloadPdf = async (req, res) => {
   try {
     console.log("hell");
     const reqid = req.body.id;
-    //const data = await setup(reqid);        
-    //const data = { name: "hello" };
-
     const request = await Request.findById(reqid);
 
     // dates
@@ -94,27 +90,21 @@ module.exports.downloadPdf = async (req, res) => {
     const document = {
       html: template,
       data,
-      //path: "./output.pdf",  //delete output.pdf first if exists
       type: "buffer",
     };
     
-
     let pdfBuffer = null;
     await pdf
       .create(document, options)
       .then((re) => {
         pdfBuffer = re;
-        //console.log(res);
       })
       .catch((error) => {
         console.error(error);
       });
 
-    //console.log(pdfBuffer);
-    // const pdfBinary = mongodb.Binary(pdfBuffer);
     const pdfBinary = pdfBuffer.toString('base64')
-    //console.log(pdfBinary);
-    console.log("hello");
+    
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
