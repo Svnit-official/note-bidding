@@ -59,7 +59,10 @@ module.exports.authentication = async (req, res) => {
       });
     }
     const foundDean = await Dean.findOne({ username }).select("+password");
-    if (foundDean && await foundDean.correctPassword(password, foundDean.password)){
+    if (
+      foundDean &&
+      (await foundDean.correctPassword(password, foundDean.password))
+    ) {
       // req.params.id = foundDean._id;
       const token = jwt.sign({ id: foundDean._id }, "dean", {
         expiresIn: "2h",
@@ -174,18 +177,19 @@ module.exports.getPendingRequests = async (req, res) => {
 };
 
 module.exports.approvePendingRequest = async (req, res) => {
-  console.log(req.body)
+  console.log(req.body);
   try {
     const request = await Request.findById(req.body.id);
     //const comments = req.body.comments;
     const dean = await Dean.findById(req.params.id);
     dean.respondedRequests.push(request);
     await dean.save();
-    request.status= "approvedByDean",
-    request.timeline.approvedByDean = { date: getDate(), time: getTime() }; 
+    (request.status = "approvedByDean"),
+      (request.timeline.approvedByDean = { date: getDate(), time: getTime() });
+    await request.save();
     // comments,
-  
-   // const appRequest = await Request.findById(req.body.id);
+
+    // const appRequest = await Request.findById(req.body.id);
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
