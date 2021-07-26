@@ -7,7 +7,6 @@ const generalReducer = (state = {isLoading : null , isAuthorized : null} ,action
     case "AUTHORIZED" : 
         return {...state , isAuthorized : true};
     case "NOT_AUHORIZED" : 
-        
         return {...state , isAuthorized : false};
     default : 
         return state;

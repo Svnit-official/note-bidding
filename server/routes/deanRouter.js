@@ -42,5 +42,10 @@ router
 router
   .route("/:id/downloadPdf/:user")
   .get(deanAuth, pdfController.downloadPdf);
-  
+
+router
+  .route("/:id/comments")
+  .get(deanAuth, deanController.getComments)
+  .post(deanAuth, deanController.postComments);  
+
 module.exports = router;

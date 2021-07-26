@@ -16,12 +16,16 @@ import { sendRequest } from "../../actions/clubActions";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import CorrectRequestForm from "../Events/CorrectRequestForm";
+import CommentSection from "./CommentSection";
+
 export default function SimpleCard({ event }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState(true);
+
+  //download pdf
   const downloadPdf = () => {
     const linkSource = `${event.pdf}`;
     const downloadLink = document.createElement("a");
@@ -42,6 +46,8 @@ export default function SimpleCard({ event }) {
     e.preventDefault();
     dispatch(sendRequest(event._id, history));
   };
+
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -125,6 +131,7 @@ export default function SimpleCard({ event }) {
         >
           Submit
         </Button>
+        <CommentSection event={event}/>
         <Dialog
           open={open}
           onClose={handleClose}

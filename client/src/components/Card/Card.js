@@ -13,6 +13,7 @@ import {
   Dialog,
   DialogTitle,
   DialogActions,
+  TextField
 } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -22,6 +23,9 @@ import useStyles from "./styles";
 import FileBase from "react-file-base64";
 import UpdateDraft from "../Events/UpdateDraft";
 import { sendRequest, deleteRequest } from "../../actions/clubActions";
+import CommentSection from "./CommentSection";
+
+
 export default function SimpleCard({  draft }) {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -131,6 +135,7 @@ export default function SimpleCard({  draft }) {
         >
           Delete
         </Button>
+        <CommentSection />
       </CardActions>
       <Dialog
         open={open}

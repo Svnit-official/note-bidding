@@ -31,6 +31,7 @@ export const clubsignin = (formdata, router) => async (dispatch) => {
       dispatch({ type: "AUTHORIZED" });
       console.log("loggedIn");
       router.push("/club/home");
+      return data;
     } else {
       console.log("not Authorized");
       dispatch({ type: "NOT_AUHORIZED" });
@@ -44,6 +45,11 @@ export const clubsignin = (formdata, router) => async (dispatch) => {
     console.log(e);
   }
 };
+
+
+
+
+
 export const financesignin = (formdata, router) => async (dispatch) => {
   try {
     const { data } = await api.financeLogin(formdata);

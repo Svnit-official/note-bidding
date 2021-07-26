@@ -54,4 +54,9 @@ router
   .route("/:id/downloadPdf/club")
   .post(clubAuth, pdfController.downloadPdf);
 
+router
+  .route("/:id/comments")
+  .get(clubAuth, clubController.getComments)
+  .post(clubAuth, clubController.postComments);
+
 module.exports = router;

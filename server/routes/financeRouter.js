@@ -45,5 +45,9 @@ router
   .route("/:id/downloadPdf/:user")
   .get(finAuth, pdfController.downloadPdf);
 
+router
+  .route("/:id/comments")
+  .get(finAuth, financeController.getComments)
+  .post(finAuth, financeController.postComments);  
 
 module.exports = router;

@@ -42,7 +42,10 @@ export const getRespondedRequestsDean = (deanID) =>
 export const sendBackPendingRequestsDean = (deanID, formdata) =>
  API.patch(`/dean/${deanID}/pendingRequests`, formdata) // 'Send back' button on request (after adding comments)
 
-export const deanDownloadReceipt = (id, formdata) => API.get(`/club/${id}/downloadPdf/Dean`);
+export const deanDownloadReceipt = (id, formdata) => API.get(`/club/${id}/downloadPdf/dean`);
+export const postDeanComments = (deanId, formdata) =>
+  API.post(`/club/${deanId}/comments`, formdata);
+
 
   ///////////////////////////// CLUB
 export const clubLogin = (formdata) => API.post("/club/login", formdata);
@@ -61,6 +64,7 @@ export const clubResetPassword = (id, formdata) =>
   API.patch(`/club/${id}/changePassword`, formdata);
 export const clubSentBack = (id) => API.get(`/club/${id}/receivedRequests`)
 export const clubDownloadReceipt = (clubId, formdata) => API.post(`/club/${clubId}/downloadPdf/club/`,formdata);
+export const postClubComments = (clubId, formdata) => API.post(`/club/${clubId}/comments`, formdata);
 
 /////////////////////////// FACULTY
 export const facultyLogin = (formdata) => API.post("/faculty/login", formdata);
@@ -83,7 +87,10 @@ export const updateFacultyDetails = (id, formdata) =>
 export const facultyResetPassword = (id, formdata) =>
   API.patch(`/faculty/${id}/changePassword`, formdata);
 
-export const facultyDownloadReceipt = (id, formdata) => API.get(`/club/${id}/downloadPdf/Faculty`);
+export const facultyDownloadReceipt = (id, formdata) => API.get(`/club/${id}/downloadPdf/faculty`);
+export const postFacultyComments = (facultyId, formdata) =>
+  API.post(`/club/${facultyId}/comments`, formdata);
+
 
   /////////////////////////// FINANCE
 export const financeLogin = (formdata) => API.post("/finance/login", formdata);
@@ -106,4 +113,6 @@ export const updateFinanceDetails = (id, formdata) =>
 export const financeResetPassword = (id, formdata) =>
   API.patch(`/finance/${id}/changePassword`, formdata);
 
-export const financeDownloadReceipt = (id, formdata) => API.get(`/club/${id}/downloadPdf/Finance`);
+export const financeDownloadReceipt = (id, formdata) => API.get(`/club/${id}/downloadPdf/finance`);
+export const postFinanceComments = (financeId, formdata) =>
+  API.post(`/club/${financeId}/comments`, formdata);

@@ -29,19 +29,12 @@ const ClubForm = () => {
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-   dispatch(clubsignin(form, history))
+  let x = await dispatch(clubsignin(form, history));
+  console.log(x.status);
   };
  
-  
-  // const checkAuthority = () => {
-  //   if(d){
-  //     console.log("authorized");
-  //   }else{
-  //     console.log("not authorized")
-  //   }
-  // }
 
   return (
     <Container component="main" maxWidth="xs">

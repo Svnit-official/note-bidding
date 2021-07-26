@@ -381,3 +381,48 @@ module.exports.getApprovedRequests = async (req, res) => {
     });
   }
 };
+
+//////////////////////////////////////////////////////route: /:id/comments
+module.exports.getComments = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const request = await Request.findById(id);
+    const comments = request.comments;
+    res.status(200).json({
+      status: "success",
+      comments,
+    })
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({
+      status: "failed",
+      message: err,
+    });
+  }
+}
+
+module.exports.postComments = async(req, res) => {
+  try {
+    const { reqid, comment } = req.body;
+    const time = getTime();
+    const date = getDate();
+    const faculty = await Faculty.findById(req.params.id);
+    const name = faculty.facultyName;
+    const request = await Request.findById(reqid);
+    request.comments.push({ name, date, time, comment });
+    request.save();
+    res.status(200).json({
+      status: "success",
+      data: {
+        comment
+      },
+      message: "redirect to /getComments"
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({
+      status: "failed",
+      message: err,
+    });
+  }
+}
