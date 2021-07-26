@@ -135,7 +135,7 @@ export default function SimpleCard({  draft }) {
         >
           Delete
         </Button>
-        <CommentSection />
+        <CommentSection id={draft._id}/>
       </CardActions>
       <Dialog
         open={open}

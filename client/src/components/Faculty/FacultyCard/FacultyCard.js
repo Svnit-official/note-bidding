@@ -50,10 +50,11 @@ export default function FacultyCard({ draft }) {
     setChecked(event.target.checked);
   };
 
-  const handleApprove = (e) => {
+  const handleApprove =async (e) => {
     console.log(userFaculty.facultyID);
 
-    dispatch(approvePendingRequest(userFaculty.facultyID, request, history));
+   const result =await dispatch(approvePendingRequest(userFaculty.facultyID, request, history));
+    console.log(result);
   };
 
   const handleReject = (e) => {

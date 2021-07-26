@@ -25,7 +25,8 @@ export const approvePendingRequest =
     console.log(facultyID, requestID);
     const { data } = await api.approvePendingRequests(facultyID, requestID);
     console.log(data);
-    router.push("/faculty/home");
+    // router.push("/faculty/home");
+    return data;
   };
 
 export const rejectPendingRequests =

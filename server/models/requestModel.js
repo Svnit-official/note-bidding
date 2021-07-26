@@ -84,6 +84,9 @@ const requestSchema = new mongoose.Schema({
       type: Object,
     }
   },
+  postEventReport: {
+    type: String
+  },
   createdAt: {
     type: Date,
     default: Date.now(),
