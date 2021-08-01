@@ -48,3 +48,9 @@ export const sendBackPendingRequests =
     console.log(data);
     router.push("/faculty/home");
   };
+
+export const postFacultyComments = (facultyID, request) => async (dispatch) => {
+  const {data} = await api.postFacultyComments(facultyID, request);
+  return (data.data.c)
+  // return requireData;
+}

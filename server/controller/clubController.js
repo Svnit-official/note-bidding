@@ -501,13 +501,19 @@ module.exports.getComments = async (req, res) => {
 module.exports.postComments = async(req, res) => {
   try {
     console.log(req.body);
-    const { reqid, comment } = req.body;
+    const { id, comment } = req.body;
     const time = getTime();
     const date = getDate();
     const club = await Club.findById(req.params.id);
     const name = club.clubName;
-    const request = await Request.findById(reqid);
-    request.comments.push({ name, date, time, comment });
+    const request = await Request.findById(id);
+    const commentObject = {
+      name,
+      date,
+      time,
+      comment
+     }
+    request.comments.push(commentObject);
     request.save();
     res.status(200).json({
       status: "success",

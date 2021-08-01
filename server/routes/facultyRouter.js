@@ -45,7 +45,7 @@ router
 
 router
   .route("/:id/comments")
-  .get(facAuth, facultyController.getComments)
+  .get( facAuth,facultyController.getComments)
   .post(facAuth, facultyController.postComments);
   
 module.exports = router;

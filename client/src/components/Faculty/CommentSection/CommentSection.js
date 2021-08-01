@@ -1,36 +1,36 @@
-  
-import React,{useState,useRef} from 'react';
+import React,{useState,useRef,useEffect} from 'react';
 import { Typography,TextField,Button } from '@material-ui/core';
 import useStyles from './styles';
 import { useDispatch } from 'react-redux';
-import {postClubComments} from '../../actions/clubActions'
+import {postFacultyComments} from '../../../actions/facultyActions';
 
-const CommentSection = ({id}) => {
+const CommentSection = ({draft}) => {
     //console.log(post);
     const classes = useStyles();
-    //const [comments,setComments] = useState([post?.comments]);
+    const [comments,setComments] = useState([draft?.comments]);
     const [comment,setComment] = useState('');
-    const user = JSON.parse(localStorage.getItem('club_profile'));
+    const user = JSON.parse(localStorage.getItem('fac_profile'));
     const dispatch = useDispatch();
     //const commentRef = useRef();
 
-    const handleClick = async (e) => {
+    useEffect(()=>{
+        setComments(draft?.comments);
+    } , [])
 
+    const handleClick = async (e) => {
+        e.preventDefault();
         console.log(comment);
 
         const request = {
-            id,
+           id : draft._id,
             comment
         }
 
-        const newComments = await dispatch(postClubComments(user.clubID , request))
+        const newComments = await dispatch(postFacultyComments(user.facultyID , request))
         console.log(newComments);
 
-        // e.preventDefault();
-        // const finalComment =  `${user.result.name} : ${comment}`;
-        // const newComments = await dispatch(commentPost(finalComment , post._id));
-        // setComments(newComments);
-        // setComment('');
+        setComments(newComments);
+        setComment('');
 
         // commentRef.current.scrollIntoView({behavior: 'smooth'});
     }
@@ -38,18 +38,18 @@ const CommentSection = ({id}) => {
     return (
         <div>
              <div className={classes.commentsOuterContainer}>
-                {/* <div className={classes.commentsInnerContainer}>
-                    <Typography gutterBottom variant='h6'>Comments</Typography>
-                    {comments.map((c,i)=>(
-                        <Typography key={i} gutterBottom variant='subtitle1'>
-                            {/* <strong>{c.split(':')}</strong>
-                            {c.split(':')[1]} */}
-                             {/* {c}
-                        </Typography> 
-                     ))}
-                    <div ref={commentRef}/> */}
-                {/* </div>   */} */
-                {/* } */}
+             <div className={classes.commentsInnerContainer}>
+                    {comments.map((c)=>(<div>
+                        <Typography  variant="h6">{c.name}  :</Typography>
+                        <Typography  gutterBottom variant='subtitle1'>
+                            {c.comment}
+                        </Typography>
+                        </div>
+                    ))}
+                </div>
+
+
+             <Typography>comment 1</Typography>
                     <div style={{width : '70%'}}>
                     <Typography gutterBottom variant='h6'>Write a Comment</Typography>
                     <TextField 

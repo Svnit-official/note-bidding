@@ -54,22 +54,28 @@ const requestSchema = new mongoose.Schema({
     default: "draft",
     enum: allowedStatus,
   },
-  comments: [
-    {
-      name: {
-        type: String,
-      },
-      date: {
-        type: String,
-      },
-      time: {
-        type: String,
-      },
-      comment: {
-        type: String,
-      } 
-    }
-  ],
+  // comments: [
+  //   {
+  //     name: {
+  //       type: String,
+  //     },
+  //     date: {
+  //       type: String,
+  //     },
+  //     time: {
+  //       type: String,
+  //     },
+  //     comment: {
+  //       type: String,
+  //     } 
+  //   }
+  // ],
+
+  comments : {
+    type : [Object],
+    default : []
+  },
+
   timeline: {
     sentByClub: {
       type: Object,
