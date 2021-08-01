@@ -38,6 +38,7 @@ export const rejectPendingRequests =
 
 export const getRespondedRequests = (facultyID) => async (dispatch) => {
   const { data } = await api.getRespondedRequests(facultyID);
+  console.log(data);
   dispatch({ type: "GET_RESPONDED_REQUESTS", payload: data.data.requests });
 };
 

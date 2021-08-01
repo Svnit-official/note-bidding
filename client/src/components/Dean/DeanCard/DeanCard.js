@@ -103,7 +103,7 @@ export default function DeanCard({ draft, display }) {
           {draft.eventName}
         </Typography>
         <Typography className={classes.pos} color="textSecondary">
-          {draft.comments}
+          {draft.eventDescription}
         </Typography>
         <Typography variant="body2" component="p">
           {draft.eventDate}

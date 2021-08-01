@@ -99,7 +99,7 @@ export default function FacultyCard({ draft }) {
           {draft.eventName}
         </Typography>
         <Typography className={classes.pos} color="textSecondary">
-          {draft.comments}
+          {draft.eventDescription}
         </Typography>
         <Typography variant="body2" component="p">
           {draft.eventDate}
@@ -157,7 +157,7 @@ export default function FacultyCard({ draft }) {
             <Button
               className={classes.button}
               size="small"
-              variant="contained"
+              variant="outlined"
               color="secondary"
               onClick={handleReject}
             >
