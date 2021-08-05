@@ -26,6 +26,7 @@ import {
   sendBackPendingRequests,
 } from "../../../actions/facultyActions";
 import CommentSection from '../CommentSection/CommentSection';
+import { getRespondedRequests } from "../../../actions/facultyActions";
 
 export default function FacultyCard({ draft }) {
   const dispatch = useDispatch();
@@ -33,6 +34,7 @@ export default function FacultyCard({ draft }) {
   const classes = useStyles();
   const [checked, setChecked] = useState(true);
   const [open , setOpen] = useState(false);
+  const user = JSON.parse(localStorage.getItem("fac_profile"));
 
   const request = {
     id: draft._id,
@@ -72,7 +74,9 @@ export default function FacultyCard({ draft }) {
     dispatch(sendBackPendingRequests(userFaculty.facultyID, request, history));
   };
 
-  const handleOpen = () => {
+  const handleOpen = async() => {
+   
+    await dispatch(getRespondedRequests(user.facultyID));
     setOpen(true)
   }
 

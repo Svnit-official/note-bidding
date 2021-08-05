@@ -34,3 +34,9 @@ export const sendBackPendingRequestsFinance =
     router.push("/finance/home");
     console.log(data);
   };
+
+export const postFinanceComments = (financeId, request) => async (dispatch) => {
+  const {data} = await api.postFinanceComments(financeId, request);
+  console.log(data.data.c);
+  return (data.data.c)
+}

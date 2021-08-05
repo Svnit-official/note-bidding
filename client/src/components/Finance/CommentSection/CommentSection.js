@@ -2,22 +2,21 @@ import React,{useState,useRef,useEffect} from 'react';
 import { Typography,TextField,Button } from '@material-ui/core';
 import useStyles from './styles';
 import { useDispatch } from 'react-redux';
-import {postFacultyComments} from '../../../actions/facultyActions';
-import { getPendingRequests } from "../../../actions/facultyActions";
+import {postFinanceComments} from '../../../actions/financeActions';
 
 const CommentSection = ({draft}) => {
     //console.log(post);
     const classes = useStyles();
     const [comments,setComments] = useState([draft?.comments]);
     const [comment,setComment] = useState('');
-    const user = JSON.parse(localStorage.getItem('fac_profile'));
+    const user = JSON.parse(localStorage.getItem('fin_profile'));
     const dispatch = useDispatch();
     //const commentRef = useRef();
 
+    
     useEffect(()=>{
         setComments(draft?.comments);
     } , [])
-  
 
     const handleClick = async (e) => {
         e.preventDefault();
@@ -28,12 +27,12 @@ const CommentSection = ({draft}) => {
             comment
         }
 
-        const newComments = await dispatch(postFacultyComments(user.facultyID , request))
+        const newComments = await dispatch(postFinanceComments(user.financeID , request))
         console.log(newComments);
 
         setComments(newComments);
         setComment('');
-        
+
         // commentRef.current.scrollIntoView({behavior: 'smooth'});
     }
     

@@ -2,15 +2,14 @@ import React,{useState,useRef,useEffect} from 'react';
 import { Typography,TextField,Button } from '@material-ui/core';
 import useStyles from './styles';
 import { useDispatch } from 'react-redux';
-import {postFacultyComments} from '../../../actions/facultyActions';
-import { getPendingRequests } from "../../../actions/facultyActions";
+import {postDeanComments} from '../../../actions/deanActions';
 
 const CommentSection = ({draft}) => {
     //console.log(post);
     const classes = useStyles();
     const [comments,setComments] = useState([draft?.comments]);
     const [comment,setComment] = useState('');
-    const user = JSON.parse(localStorage.getItem('fac_profile'));
+    const user = JSON.parse(localStorage.getItem('dean_profile'));
     const dispatch = useDispatch();
     //const commentRef = useRef();
 
@@ -28,7 +27,7 @@ const CommentSection = ({draft}) => {
             comment
         }
 
-        const newComments = await dispatch(postFacultyComments(user.facultyID , request))
+        const newComments = await dispatch(postDeanComments(user.deanID , request))
         console.log(newComments);
 
         setComments(newComments);
