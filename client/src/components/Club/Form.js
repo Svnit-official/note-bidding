@@ -7,6 +7,7 @@ import {
   Grid,
   Typography,
   Container,
+  TextField
 } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { useDispatch , useSelector } from "react-redux";
@@ -29,10 +30,13 @@ const ClubForm = () => {
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
+  const [incorrectPassword,setIncorrectPassword] = useState(false);
   const handleSubmit = async(e) => {
     e.preventDefault();
   let x = await dispatch(clubsignin(form, history));
-  console.log(x.status);
+  console.log(x.status)
+  if(x.status==="success") return;
+  else setIncorrectPassword(true);
   };
  
 
@@ -54,11 +58,14 @@ const ClubForm = () => {
               type="text"
             />
             <Input
+              error={incorrectPassword}
+              id="standard-error"
               name="password"
               label="Password"
               handleChange={handleChange}
               type={showPassword ? "text" : "password"}
               handleShowPassword={handleShowPassword}
+
             />
           </Grid>
           <Button

@@ -44,7 +44,7 @@ export const sendBackPendingRequestsDean = (deanID, formdata) =>
 
 export const deanDownloadReceipt = (id, formdata) => API.get(`/club/${id}/downloadPdf/dean`);
 export const postDeanComments = (deanId, formdata) =>
-  API.post(`/club/${deanId}/comments`, formdata);
+  API.post(`/dean/${deanId}/comments`, formdata);
 
 
   ///////////////////////////// CLUB
@@ -89,7 +89,7 @@ export const facultyResetPassword = (id, formdata) =>
 
 export const facultyDownloadReceipt = (id, formdata) => API.get(`/club/${id}/downloadPdf/faculty`);
 export const postFacultyComments = (facultyId, formdata) =>
-  API.post(`/club/${facultyId}/comments`, formdata);
+  API.post(`/faculty/${facultyId}/comments`, formdata);
 
 
   /////////////////////////// FINANCE
@@ -115,4 +115,4 @@ export const financeResetPassword = (id, formdata) =>
 
 export const financeDownloadReceipt = (id, formdata) => API.get(`/club/${id}/downloadPdf/finance`);
 export const postFinanceComments = (financeId, formdata) =>
-  API.post(`/club/${financeId}/comments`, formdata);
+  API.post(`/finance/${financeId}/comments`, formdata);

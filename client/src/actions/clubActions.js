@@ -112,3 +112,11 @@ export const handleReceiptDownload = (id, formdata) => async (dispatch) => {
   downloadLink.download = fileName;
   downloadLink.click();
 };
+
+
+export const postClubComments = (clubID,request) => async (dispatch) => {
+
+  const data = await api.postClubComments(clubID,request);
+  console.log(data);
+  return data;
+}

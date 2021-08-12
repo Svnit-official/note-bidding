@@ -36,3 +36,8 @@ export const sendBackPendingRequestsDean =
     console.log(data);
     router.push("/dean/home");
   };
+
+export const postDeanComments = (deanID,request) => async (dispatch) => {
+  const {data} = await api.postDeanComments(deanID, request);
+  return (data.data.c);
+}

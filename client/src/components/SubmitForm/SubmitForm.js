@@ -58,7 +58,7 @@ const SubmitForm = () => {
           onChange={handleChange}
         />
         <TextField
-          name="comments"
+          name="eventDescription"
           variant="outlined"
           multiline
           rows={3}

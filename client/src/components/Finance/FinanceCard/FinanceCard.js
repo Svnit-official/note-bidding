@@ -10,6 +10,9 @@ import {
   AccordionSummary,
   AccordionDetails,
   Checkbox,
+  Dialog,
+  DialogTitle,
+  DialogActions
 } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -21,12 +24,15 @@ import {
   rejectPendingRequestsFinance,
   sendBackPendingRequestsFinance,
 } from "../../../actions/financeActions";
+import CommentSection from '../CommentSection/CommentSection';
+
 
 export default function FinanceCard({ draft }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles();
   const [checked, setChecked] = useState(true);
+  const [open , setOpen] = useState(false);
   const request = {
     id: draft._id,
   };
@@ -69,6 +75,14 @@ export default function FinanceCard({ draft }) {
     );
   };
 
+  const handleOpen = () => {
+    setOpen(true)
+  }
+
+  const handleClose = () => {
+    setOpen(false);
+  }
+
   const progress = function (status) {
     switch (status) {
       case "sentByClub":
@@ -101,7 +115,9 @@ export default function FinanceCard({ draft }) {
         <Typography variant="h5" component="h2">
           {draft.eventName}
         </Typography>
-        <Typography className={classes.pos} color="textSecondary"></Typography>
+        <Typography className={classes.pos} color="textSecondary">
+          {draft.eventDescription}
+        </Typography>
         <Typography variant="body2" component="p">
           {draft.eventDate}
         </Typography>
@@ -116,6 +132,29 @@ export default function FinanceCard({ draft }) {
         >
           Download Pdf
         </Button>
+        <Button
+          className={classes.button}
+          size="small"
+          variant="outlined"
+          color="primary"
+          onClick={handleOpen}
+        >
+          Write a Comment
+        </Button>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {"Comments"}
+          </DialogTitle>
+          <DialogActions>
+            <CommentSection draft={draft} />
+            
+          </DialogActions>
+        </Dialog>
       </CardActions>
       {!flag ? (
         <Accordion>

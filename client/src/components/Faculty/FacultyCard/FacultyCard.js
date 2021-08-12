@@ -10,6 +10,10 @@ import {
   AccordionSummary,
   AccordionDetails,
   Checkbox,
+  Dialog,
+  DialogTitle,
+  DialogActions,
+
 } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -21,12 +25,17 @@ import {
   rejectPendingRequests,
   sendBackPendingRequests,
 } from "../../../actions/facultyActions";
+import CommentSection from '../CommentSection/CommentSection';
+import { getRespondedRequests } from "../../../actions/facultyActions";
 
 export default function FacultyCard({ draft }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles();
   const [checked, setChecked] = useState(true);
+  const [open , setOpen] = useState(false);
+  const user = JSON.parse(localStorage.getItem("fac_profile"));
+
   const request = {
     id: draft._id,
   };
@@ -50,10 +59,11 @@ export default function FacultyCard({ draft }) {
     setChecked(event.target.checked);
   };
 
-  const handleApprove = (e) => {
+  const handleApprove =async (e) => {
     console.log(userFaculty.facultyID);
 
-    dispatch(approvePendingRequest(userFaculty.facultyID, request, history));
+   const result =await dispatch(approvePendingRequest(userFaculty.facultyID, request, history));
+    console.log(result);
   };
 
   const handleReject = (e) => {
@@ -63,6 +73,16 @@ export default function FacultyCard({ draft }) {
   const handleSendBack = () => {
     dispatch(sendBackPendingRequests(userFaculty.facultyID, request, history));
   };
+
+  const handleOpen = async() => {
+   
+    await dispatch(getRespondedRequests(user.facultyID));
+    setOpen(true)
+  }
+
+  const handleClose = () => {
+    setOpen(false);
+  }
 
   const progress = function (status) {
     switch (status) {
@@ -97,7 +117,9 @@ export default function FacultyCard({ draft }) {
         <Typography variant="h5" component="h2">
           {draft.eventName}
         </Typography>
-        <Typography className={classes.pos} color="textSecondary"></Typography>
+        <Typography className={classes.pos} color="textSecondary">
+          {draft.eventDescription}
+        </Typography>
         <Typography variant="body2" component="p">
           {draft.eventDate}
         </Typography>
@@ -112,7 +134,30 @@ export default function FacultyCard({ draft }) {
         >
           Download Pdf
         </Button>
+        <Button
+          className={classes.button}
+          size="small"
+          variant="outlined"
+          color="primary"
+          onClick={handleOpen}
+        >
+          Write a Comment
+        </Button>
       </CardActions>
+      <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {"Comments"}
+          </DialogTitle>
+          <DialogActions>
+            <CommentSection draft={draft} />
+            
+          </DialogActions>
+        </Dialog>
       {flag ? (
         <Accordion>
           <AccordionSummary
@@ -154,7 +199,7 @@ export default function FacultyCard({ draft }) {
             <Button
               className={classes.button}
               size="small"
-              variant="contained"
+              variant="outlined"
               color="secondary"
               onClick={handleReject}
             >

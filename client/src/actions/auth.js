@@ -36,13 +36,20 @@ export const clubsignin = (formdata, router) => async (dispatch) => {
       console.log("not Authorized");
       dispatch({ type: "NOT_AUHORIZED" });
       router.push("/club/login");
+      const datax = {
+        status : "unauthorized 8"
+      }
+      return datax;
     }
 
     sessionStorage.getItem("user");
   } catch (e) {
     console.log("not authorized");
     dispatch({ type: "NOT_AUHORIZED" });
-    console.log(e);
+    const datax = {
+      status : "unauthorized 2"
+    }
+    return {...datax};
   }
 };
 

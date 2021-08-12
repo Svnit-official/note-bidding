@@ -25,7 +25,8 @@ export const approvePendingRequest =
     console.log(facultyID, requestID);
     const { data } = await api.approvePendingRequests(facultyID, requestID);
     console.log(data);
-    router.push("/faculty/home");
+    // router.push("/faculty/home");
+    return data;
   };
 
 export const rejectPendingRequests =
@@ -37,6 +38,7 @@ export const rejectPendingRequests =
 
 export const getRespondedRequests = (facultyID) => async (dispatch) => {
   const { data } = await api.getRespondedRequests(facultyID);
+  console.log(data);
   dispatch({ type: "GET_RESPONDED_REQUESTS", payload: data.data.requests });
 };
 
@@ -46,3 +48,9 @@ export const sendBackPendingRequests =
     console.log(data);
     router.push("/faculty/home");
   };
+
+export const postFacultyComments = (facultyID, request) => async (dispatch) => {
+  const {data} = await api.postFacultyComments(facultyID, request);
+  return (data.data.c)
+  // return requireData;
+}

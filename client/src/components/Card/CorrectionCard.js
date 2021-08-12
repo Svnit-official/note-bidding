@@ -131,7 +131,7 @@ export default function SimpleCard({ event }) {
         >
           Submit
         </Button>
-        <CommentSection event={event}/>
+        <CommentSection id={event._id}/>
         <Dialog
           open={open}
           onClose={handleClose}

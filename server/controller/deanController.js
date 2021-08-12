@@ -373,18 +373,19 @@ module.exports.getComments = async (req, res) => {
 
 module.exports.postComments = async(req, res) => {
   try {
-    const { reqid, comment } = req.body;
+    const { id, comment } = req.body;
     const time = getTime();
     const date = getDate();
     const dean = await Dean.findById(req.params.id);
     const name = dean.deanName;
-    const request = await Request.findById(reqid);
+    const request = await Request.findById(id);
     request.comments.push({ name, date, time, comment });
+    const c = request.comments;
     request.save();
     res.status(200).json({
       status: "success",
       data: {
-        comment
+        c
       },
       message: "redirect to /getComments"
     });
