@@ -46,10 +46,6 @@ export const clubsignin = (formdata, router) => async (dispatch) => {
   }
 };
 
-
-
-
-
 export const financesignin = (formdata, router) => async (dispatch) => {
   try {
     const { data } = await api.financeLogin(formdata);
@@ -125,7 +121,7 @@ export const changeDeanPassword = (id, form, router) => async (dispatch) => {
     console.log("action");
     const { data } = await api.deanResetPassword(id, form);
     console.log(data);
-    router.push("/dean/home");
+    router.push("/dean/login");
   } catch (error) {
     console.log(error);
   }
@@ -135,7 +131,7 @@ export const changeFinancePassword = (id, form, router) => async (dispatch) => {
     console.log("action");
     const { data } = await api.financeResetPassword(id, form);
     console.log(data);
-    router.push("/finance/home");
+    router.push("/finance/login");
   } catch (error) {
     console.log(error);
   }

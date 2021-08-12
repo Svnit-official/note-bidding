@@ -97,9 +97,7 @@ export default function FacultyCard({ draft }) {
         <Typography variant="h5" component="h2">
           {draft.eventName}
         </Typography>
-        <Typography className={classes.pos} color="textSecondary">
-          {draft.comments}
-        </Typography>
+        <Typography className={classes.pos} color="textSecondary"></Typography>
         <Typography variant="body2" component="p">
           {draft.eventDate}
         </Typography>

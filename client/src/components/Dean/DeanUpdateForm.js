@@ -5,10 +5,11 @@ import useStyles from "./updateStyle";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { updateDeanDetails } from "../../actions/auth";
-const UpdateForm = () => {
+const UpdateForm = ({ details }) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [postData, setPostData] = useState({});
+  const [name, setName] = useState(details.deanName);
   const handleChange = (e) => {
     setPostData({ ...postData, [e.target.name]: e.target.value });
   };
@@ -35,6 +36,7 @@ const UpdateForm = () => {
           label="Username"
           fullWidth
           onChange={handleChange}
+          value={postData.deanName || details.deanName}
         />
         <TextField
           name="deanDesignation"
@@ -42,6 +44,7 @@ const UpdateForm = () => {
           label="Designation"
           onChange={handleChange}
           fullWidth
+          value={postData.deanDesignation || details.deanDesignation}
         />
         <TextField
           name="deanEmail"
@@ -49,6 +52,7 @@ const UpdateForm = () => {
           label="Email"
           onChange={handleChange}
           fullWidth
+          value={postData.deanEmail || details.deanEmail}
         />
         <TextField
           name="deanContact"
@@ -56,6 +60,7 @@ const UpdateForm = () => {
           label="Contact No."
           onChange={handleChange}
           fullWidth
+          value={postData.deanContact || details.deanContact}
         />
         <Typography align="left">Signature Pic</Typography>
         <div className={classes.fileInput}>
