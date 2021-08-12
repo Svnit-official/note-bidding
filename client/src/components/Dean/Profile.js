@@ -15,7 +15,7 @@ import React, { useEffect, useState } from "react";
 import useStyles from "./profileStyles";
 import UpdateForm from "./DeanUpdateForm";
 import { connect } from "react-redux";
-import NavBar from "../NavBar/NavBar";
+import NavBar from "./NavBar/NavBar";
 const Dashboard = () => {
   const id = sessionStorage.getItem("dean");
   console.log(id);
@@ -116,7 +116,7 @@ const Dashboard = () => {
           >
             <DialogTitle id="alert-dialog-title">{"Dean Name"}</DialogTitle>
             <DialogActions>
-              <UpdateForm />
+              <UpdateForm details={d} />
             </DialogActions>
           </Dialog>
         </Grid>

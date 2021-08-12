@@ -13,7 +13,7 @@ import {
   Dialog,
   DialogTitle,
   DialogActions,
-  TextField
+  TextField,
 } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -25,8 +25,7 @@ import UpdateDraft from "../Events/UpdateDraft";
 import { sendRequest, deleteRequest } from "../../actions/clubActions";
 import CommentSection from "./CommentSection";
 
-
-export default function SimpleCard({  draft }) {
+export default function SimpleCard({ draft }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const [open, setOpen] = useState(false);
