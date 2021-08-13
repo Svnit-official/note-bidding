@@ -59,4 +59,11 @@ router
   .get(clubAuth, clubController.getComments)
   .post(clubAuth, clubController.postComments);
 
+router
+  .route("/:id/publishEvent")
+  .get(clubAuth, clubController.publishedEvents)
+  .post(clubAuth, clubController.publishEvent)
+
 module.exports = router;
+
+

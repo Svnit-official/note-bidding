@@ -17,6 +17,7 @@ const clubRouter = require("./routes/clubRouter");
 const facultyRouter = require("./routes/facultyRouter");
 const financeRouter = require("./routes/financeRouter");
 const deanRouter = require("./routes/deanRouter");
+const Event = require("./models/eventModel");
 const cookieParser = require("cookie-parser");
 const MongoStore = require("connect-mongo");
 app.use(express.json());
@@ -53,5 +54,23 @@ app.use("/api/v1/club", clubRouter);
 app.use("/api/v1/faculty", facultyRouter);
 app.use("/api/v1/finance", financeRouter);
 app.use("/api/v1/dean", deanRouter);
+
+app.get("api/v1/home", async (req, res) => {
+  try {
+    const events = await Event.find();
+    req.status(200).json({
+      status: "success",
+      data: {
+        events,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({
+      status: "failed",
+      message: err,
+    });
+  }
+})
 
 module.exports = app;
