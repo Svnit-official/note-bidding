@@ -28,10 +28,15 @@ const FacultyForm = () => {
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
-  const handleSubmit = (e) => {
+
+  const [incorrectPassword,setIncorrectPassword] = useState(false);
+
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    dispatch(facultysignin(form, history));
-  };
+  let x = await dispatch(facultysignin(form, history));
+  if(x==="success") return;
+  else setIncorrectPassword(true);  
+};
   return (
     <Container component="main" maxWidth="xs">
       <Paper className={classes.paper} elevation={5}>
@@ -50,6 +55,8 @@ const FacultyForm = () => {
               type="text"
             />
             <Input
+              error={incorrectPassword}
+              id="standard-error"
               name="password"
               label="Password"
               handleChange={handleChange}

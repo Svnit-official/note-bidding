@@ -3,7 +3,7 @@ const Finance = require("./../models/financeModel");
 const Dean = require("./../models/deanModel");
 const Faculty = require("./../models/facultyModel");
 const Request = require("./../models/requestModel");
-const template = require("./template2.js");
+//const template = require("./template2.js");
 
 const fs = require("fs");
 const pdf = require("pdf-creator-node");
@@ -78,7 +78,6 @@ module.exports.downloadPdf = async (req, res) => {
         deanSign    
     }
     console.log(data);
-    const x = template(data);
     //const user = req.params.user;
     const user = "Club"
     const options = {
@@ -96,10 +95,11 @@ module.exports.downloadPdf = async (req, res) => {
       },
     };
 
-   // const template = fs.readFileSync("./controller/template.html", "utf8");
+    const template = fs.readFileSync("./controller/template.html", "utf8");
 
     const document = {
-     html : x,
+     html : template,
+     data,
       type: "buffer",
     };
     

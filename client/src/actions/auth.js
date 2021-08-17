@@ -7,8 +7,10 @@ export const deansignin = (formdata, router) => async (dispatch) => {
     dispatch({ type: "DEAN_LOGIN", data });
     console.log("loggedIn");
     router.push(`/dean/home`);
+    return "success"
   } catch (e) {
     console.log(e);
+    return "failed"
   }
 };
 export const deanDetails = (id) => async (dispatch) => {
@@ -62,8 +64,10 @@ export const financesignin = (formdata, router) => async (dispatch) => {
     dispatch({ type: "FIN_LOGIN", data: data });
     console.log("loggedIn");
     router.push(`/finance/home`);
+    return "success";
   } catch (e) {
     console.log(e);
+    return "failed";
   }
 };
 export const financeDetails = (id) => async (dispatch) => {
@@ -91,8 +95,10 @@ export const facultysignin = (formdata, router) => async (dispatch) => {
     dispatch({ type: "FAC_LOGIN", data });
     console.log("loggedIn");
     router.push("/faculty/home");
+    return "success"
   } catch (e) {
     console.log(e);
+    return "failed";
   }
 };
 export const facultyDetails = (id) => async (dispatch) => {

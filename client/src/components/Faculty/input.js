@@ -12,17 +12,21 @@ const Input = ({
   autoFocus,
   type,
   handleShowPassword,
+  error
 }) => (
   <Grid item xs={12} sm={half ? 6 : 12}>
     <TextField
       name={name}
       onChange={handleChange}
+      id="standard-error-helper-text"
       variant="outlined"
       required
       fullWidth
       label={label}
       autoFocus={autoFocus}
       type={type}
+      error={error}
+      helperText={error && "Incorrect Username or Password"}
       InputProps={
         name === "password"
           ? {

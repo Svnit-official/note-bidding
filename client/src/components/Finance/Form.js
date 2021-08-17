@@ -28,9 +28,14 @@ const FinanceForm = () => {
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
-  const handleSubmit = (e) => {
+
+  const [incorrectPassword,setIncorrectPassword] = useState(false);
+
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    dispatch(financesignin(form, history));
+   let x =await dispatch(financesignin(form, history));
+   if(x==="success") return;
+  else setIncorrectPassword(true);
   };
   return (
     <Container component="main" maxWidth="xs">
@@ -50,6 +55,8 @@ const FinanceForm = () => {
               type="text"
             />
             <Input
+              error={incorrectPassword}
+              id="standard-error"
               name="password"
               label="Password"
               handleChange={handleChange}
