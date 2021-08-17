@@ -11,16 +11,15 @@ const SubmitForm = ({eventName,clubName}) => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const user = JSON.parse(localStorage.getItem("club_profile"));
-  const clubID = user?.clubID;
-  const [postEvent, setpostEvent] = useState({});
+  const clubId = user?.clubID;
+  const [postEvent, setpostEvent] = useState({eventName, clubName,clubId});
  
  
   const handleChange = (e) => {
     setpostEvent({ ...postEvent, [e.target.name]: e.target.value });
   };
   const handleSubmit = (e) => {
-  setpostEvent({...postEvent , eventName,clubName})
-   dispatch(publishEvent(clubID,postEvent));
+   dispatch(publishEvent(clubId,postEvent));
   };
 
 

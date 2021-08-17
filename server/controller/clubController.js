@@ -536,7 +536,9 @@ module.exports.postComments = async(req, res) => {
 module.exports.publishedEvents = async (req, res) => {
   try {
     const id = req.params.id;
-    const events = await Event.findMany({clubId : id});
+    console.log(id);
+    ///let clubId = id;
+    const events = await Event.find({'clubId' : id});
     res.status(200).json({
       status: "success",
       data: {

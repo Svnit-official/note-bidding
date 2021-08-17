@@ -9,7 +9,9 @@ import IconButton from "@material-ui/core/IconButton";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 //import SwipeableTemporaryDrawer from "../../NavBar/SwipableMenu/SwipableMenu";
 import { useDispatch, useSelector } from "react-redux";
-import { getRequest, getDraftRequest } from "../../../actions/clubActions";
+import { getRequest, getDraftRequest,fetchPublishedEvents } from "../../../actions/clubActions";
+import PublishedCard from "../../Card/PublishedCard";
+import Lode from '../../Loaders/Load';
 
 const Home = () => {
   const [open, setOpen] = useState(false);
@@ -19,8 +21,11 @@ const Home = () => {
   useEffect(() => {
     dispatch(getDraftRequest(user.clubID));
     dispatch(getRequest(user.clubID));
+    dispatch(fetchPublishedEvents(user.clubID));
   }, []);
   const d = useSelector((state) => state.formReducer.drafts);
+  const published = useSelector((state) => state.formReducer.publishedEvents);
+  console.log("These are the published Events : " ,published);
   console.log(d);
   const handleClickOpen = () => {
     setOpen(true);
@@ -51,7 +56,9 @@ const Home = () => {
       <IconButton aria-label="Add" onClick={handleClickOpen}>
         <AddCircleOutlineIcon color="primary" />
       </IconButton>
-
+      {
+        !published ? <Lode /> : (published.map((draft) => (<PublishedCard draft={draft}/>)))
+        }
       <Dialog
         open={open}
         onClose={handleClose}

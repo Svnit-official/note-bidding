@@ -66,6 +66,7 @@ export const clubSentBack = (id) => API.get(`/club/${id}/receivedRequests`)
 export const clubDownloadReceipt = (clubId, formdata) => API.post(`/club/${clubId}/downloadPdf/club/`,formdata);
 export const postClubComments = (clubId, formdata) => API.post(`/club/${clubId}/comments`, formdata);
 export const publishEvent = (clubId, formdata) => API.post(`/club/${clubId}/publishEvent`,formdata);
+export const fetchPublishedEvents = (clubId) => API.get(`/club/${clubId}/publishEvent`)
 /////////////////////////// FACULTY
 export const facultyLogin = (formdata) => API.post("/faculty/login", formdata);
 

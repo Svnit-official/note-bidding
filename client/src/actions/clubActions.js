@@ -125,3 +125,9 @@ export const publishEvent = (clubID , request) => async (dispatch) => {
   const data = await api.publishEvent(clubID,request);
   console.log(data);
 }
+
+export const fetchPublishedEvents = (clubID) => async (dispatch) => {
+  const data = await api.fetchPublishedEvents(clubID);
+  console.log("published Data : " , data.data.data.events);
+  dispatch({ type : "GET_PUBLISHED_EVENTS" , payload : data.data.data.events });
+}

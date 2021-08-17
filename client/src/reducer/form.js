@@ -5,7 +5,7 @@ import {
   CLUB_DRAFT_REQUEST,
 } from "../constents/authActionTypes";
 const formReducer = (
-  state = { submittedForms: {}, draftForms: {} },
+  state = { submittedForms: {}, draftForms: {} ,publishedEvents:[] },
   action
 ) => {
   switch (action.type) {
@@ -26,7 +26,8 @@ const formReducer = (
         ...state,
         drafts: action.payload.data,
       };
-
+    case "GET_PUBLISHED_EVENTS" :
+      return {...state ,publishedEvents : action.payload}
     default:
       return state;
   }
