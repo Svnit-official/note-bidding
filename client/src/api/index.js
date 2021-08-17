@@ -65,7 +65,7 @@ export const clubResetPassword = (id, formdata) =>
 export const clubSentBack = (id) => API.get(`/club/${id}/receivedRequests`)
 export const clubDownloadReceipt = (clubId, formdata) => API.post(`/club/${clubId}/downloadPdf/club/`,formdata);
 export const postClubComments = (clubId, formdata) => API.post(`/club/${clubId}/comments`, formdata);
-
+export const publishEvent = (clubId, formdata) => API.post(`/club/${clubId}/publishEvent`,formdata);
 /////////////////////////// FACULTY
 export const facultyLogin = (formdata) => API.post("/faculty/login", formdata);
 

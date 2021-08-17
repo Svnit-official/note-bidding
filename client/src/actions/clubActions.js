@@ -120,3 +120,8 @@ export const postClubComments = (clubID,request) => async (dispatch) => {
   console.log(data);
   return data;
 }
+
+export const publishEvent = (clubID , request) => async (dispatch) => {
+  const data = await api.publishEvent(clubID,request);
+  console.log(data);
+}

@@ -537,7 +537,7 @@ module.exports.publishedEvents = async (req, res) => {
   try {
     const id = req.params.id;
     const events = await Event.findMany({clubId : id});
-    req.status(200).json({
+    res.status(200).json({
       status: "success",
       data: {
         events,
@@ -557,7 +557,7 @@ module.exports.publishEvent = async (req, res) => {
   try {
     const details = req.body;
     const event = await Event.create(details);
-    req.status(200).json({
+    res.status(200).json({
       status: "success",
       data: {
         event
@@ -578,7 +578,7 @@ module.exports.updateEvent = async (req, res) => {
     const eventId = req.body.id;
     const details = req.body;
     await Event.findByIdAndUpdate(eventId, details);
-    req.status(200).json({
+    res.status(200).json({
       status: "success",
       message: "updated",
     });
