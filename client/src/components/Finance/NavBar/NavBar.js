@@ -17,7 +17,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import VpnKeyOutlinedIcon from "@material-ui/icons/VpnKeyOutlined"; // import {useLocations} from 'react-router-dom';
 import { deanDetails, financeDetails } from "../../../actions/auth";
-// import decode from 'jwt-decode';
+import Loading from "../../Loaders/Load.js";
 
 const NavBar = () => {
   const classes = useStyles();
@@ -50,21 +50,11 @@ const NavBar = () => {
 
   const logout = () => {
     dispatch({ type: "LOGOUT" });
-    history.push("/club/login");
+    history.push("/finance/login");
     setUser(null);
   };
-
-  //   useEffect(() => {
-  //     const token = user?.token;
-  //     if(token){
-  //         const decodedToken = decode(token);
-  //         if(decodedToken.exp * 1000 < new Date().getTime()) logout();
-  //     }
-  //     //setUser(JSON.parse(localStorage.getItem('profile')))
-  //     // eslint-disable-next-line
-  // }, [location])
   if (!d) {
-    return <div>Loading</div>;
+    return <Loading></Loading>;
   }
   return (
     <div className={classes.root}>
@@ -132,7 +122,10 @@ const NavBar = () => {
               </Button>
               <br></br>
 
-              <Link style={{ textDecoration: "none" }} to="/dean/resetPassword">
+              <Link
+                style={{ textDecoration: "none" }}
+                to="/finance/resetPassword"
+              >
                 <Button
                   className={classes.button}
                   variant="contained"

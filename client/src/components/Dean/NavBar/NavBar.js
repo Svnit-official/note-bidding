@@ -17,6 +17,8 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import VpnKeyOutlinedIcon from "@material-ui/icons/VpnKeyOutlined"; // import {useLocations} from 'react-router-dom';
 import { deanDetails } from "../../../actions/auth";
+import Loading from "../../Loaders/Load.js";
+
 // import decode from 'jwt-decode';
 
 const NavBar = () => {
@@ -64,7 +66,7 @@ const NavBar = () => {
   //     // eslint-disable-next-line
   // }, [location])
   if (!d) {
-    return <div>Loading</div>;
+    return <Loading />;
   }
   return (
     <div className={classes.root}>

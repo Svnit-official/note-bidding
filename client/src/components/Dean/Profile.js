@@ -16,6 +16,7 @@ import useStyles from "./profileStyles";
 import UpdateForm from "./DeanUpdateForm";
 import { connect } from "react-redux";
 import NavBar from "./NavBar/NavBar";
+import Loading from "../Loaders/Load.js";
 const Dashboard = () => {
   const id = sessionStorage.getItem("dean");
   console.log(id);
@@ -34,7 +35,7 @@ const Dashboard = () => {
     setOpen(false);
   };
   if (!d) {
-    return <h1>Loading</h1>;
+    return <Loading />;
   } else {
     return (
       <div style={{ marginLeft: "10px", marginRight: "10px" }}>

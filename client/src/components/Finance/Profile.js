@@ -15,6 +15,8 @@ import UpdateForm from "./FinanceUpdateForm";
 import { useDispatch, useSelector } from "react-redux";
 import { financeDetails } from "../../actions/auth";
 import NavBar from "../NavBar/NavBar";
+import Loading from "../Loaders/Load.js";
+
 const Dashboard = () => {
   const id = sessionStorage.getItem("finance");
   console.log(id);
@@ -33,7 +35,7 @@ const Dashboard = () => {
     setOpen(false);
   };
   if (!d) {
-    return <h1>Loading</h1>;
+    return <Loading></Loading>;
   } else {
     return (
       <div style={{ marginLeft: "10px", marginRight: "10px" }}>

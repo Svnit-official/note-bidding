@@ -6,6 +6,7 @@ import BottomNav from "../BottomNav/BottomNav";
 // import AddButton from '../AddButton/AddButton';
 import { useDispatch, useSelector } from "react-redux";
 import { getRequest } from "../../actions/clubActions";
+import Loading from "../Loaders/Load.js";
 
 const SentRequest = () => {
   const dispatch = useDispatch();
@@ -17,17 +18,16 @@ const SentRequest = () => {
   const d = useSelector((state) => state.formReducer.submittedForms);
   console.log(d.requests);
   if (!d.requests) {
-    return <h1>Loading</h1>;
+    return <Loading></Loading>;
   } else {
     return (
       <div>
         <NavBar />
         {d.requests.map((event) =>
           event.status === "sentByClub" ||
-          event.status === "receivedByFaculty"||
+          event.status === "receivedByFaculty" ||
           event.status === "approvedByFaculty" ||
-          event.status === "approvedByFinance" 
-          ? ( 
+          event.status === "approvedByFinance" ? (
             <Card event={event}>Name</Card>
           ) : null
         )}

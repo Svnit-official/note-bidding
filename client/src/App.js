@@ -44,7 +44,7 @@ const App = () => {
           component={() => <Redirect to="/club/login"></Redirect>}
         ></Route>
         {/* ..............club route............. */}
-        <Route path="/club/login" component={ClubForm} />
+        <Route path="/club/login" exact component={ClubForm} />
         <Route
           path="/club/submit"
           component={() =>

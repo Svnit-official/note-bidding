@@ -5,7 +5,7 @@ import BottomNav from "../../BottomNav/BottomNav";
 import { useDispatch, useSelector } from "react-redux";
 import { getPendingRequests } from "../../../actions/facultyActions";
 import FacultyCard from "../FacultyCard/FacultyCard";
-import { CircularProgress, Typography } from "@material-ui/core";
+import Loading from "../../Loaders/Load.js";
 //import {useLocation} from 'react-router-dom'
 
 const FacultyHome = () => {
@@ -22,11 +22,7 @@ const FacultyHome = () => {
   return (
     <div>
       <NavBar />
-      {!d ? (
-        <CircularProgress />
-      ) : (
-        d.map((x, i) => <FacultyCard draft={x} key={i} />)
-      )}
+      {!d ? <Loading /> : d.map((x, i) => <FacultyCard draft={x} key={i} />)}
     </div>
   );
 };

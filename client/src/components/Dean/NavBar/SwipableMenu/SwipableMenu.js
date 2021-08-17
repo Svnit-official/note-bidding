@@ -51,11 +51,6 @@ export default function TemporaryDrawer({ x }) {
             <ListItemText primary="Details" />
           </ListItem>
         </Link>
-        <Link to="/club/approved" style={{ textDecoration: "none" }}>
-          <ListItem button>
-            <ListItemText primary="Approved Requests" />
-          </ListItem>
-        </Link>
         <Link to="/dean/resetPassword" style={{ textDecoration: "none" }}>
           <ListItem button>
             <ListItemText primary="Reset Password" />

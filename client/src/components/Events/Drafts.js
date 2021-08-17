@@ -5,6 +5,7 @@ import NavBar from "../NavBar/NavBar";
 // import AddButton from '../AddButton/AddButton';
 import { useDispatch, useSelector } from "react-redux";
 import { getDraftRequest } from "../../actions/clubActions";
+import Loading from "../Loaders/Load.js";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -16,7 +17,7 @@ const Home = () => {
   const d = useSelector((state) => state.formReducer.drafts);
   console.log(d);
   if (!d) {
-    return <h1>Loading</h1>;
+    return <Loading></Loading>;
   } else {
     return (
       <div>
