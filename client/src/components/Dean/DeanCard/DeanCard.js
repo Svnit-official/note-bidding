@@ -206,4 +206,4 @@ export default function DeanCard({ draft, display }) {
       ) : null}
     </Card>
   );
-};
+}

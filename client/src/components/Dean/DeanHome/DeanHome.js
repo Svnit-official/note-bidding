@@ -5,7 +5,7 @@ import BottomNav from "../../BottomNav/BottomNav";
 import { useDispatch, useSelector } from "react-redux";
 import { getPendingRequestsDean } from "../../../actions/deanActions";
 import DeanCard from "../DeanCard/DeanCard";
-import { CircularProgress } from "@material-ui/core";
+import Loading from "../../Loaders/Load.js";
 
 const DeanHome = () => {
   const dispatch = useDispatch();
@@ -22,7 +22,7 @@ const DeanHome = () => {
   return (
     <div>
       <NavBar />
-      {!d ? <CircularProgress /> : d.map((x) => <DeanCard draft={x} />)}
+      {!d ? <Loading /> : d.map((x) => <DeanCard draft={x} />)}
     </div>
   );
 };

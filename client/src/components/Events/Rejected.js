@@ -6,6 +6,7 @@ import BottomNav from "../BottomNav/BottomNav";
 // import AddButton from '../AddButton/AddButton';
 import { useDispatch, useSelector } from "react-redux";
 import { getRequest } from "../../actions/clubActions";
+import Loading from "../Loaders/Load.js";
 
 const RejectedRequests = () => {
   const dispatch = useDispatch();
@@ -17,7 +18,7 @@ const RejectedRequests = () => {
   const d = useSelector((state) => state.formReducer.submittedForms);
   console.log(d.requests);
   if (!d.requests) {
-    return <h1>Loading</h1>;
+    return <Loading></Loading>;
   } else {
     return (
       <div>

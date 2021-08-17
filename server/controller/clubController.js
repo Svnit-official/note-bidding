@@ -1,5 +1,6 @@
 const Club = require("./../models/clubModel");
 const Request = require("./../models/requestModel");
+const Event = require("./../models/eventModel");
 const jwt = require("jsonwebtoken");
 const mongodb = require("mongodb");
 
@@ -8,7 +9,7 @@ const getDate = function () {
   const dd = String(today.getDate()).padStart(2, "0");
   const mm = String(today.getMonth() + 1).padStart(2, "0");
   const yyyy = today.getFullYear();
-  const date = dd + "/" + mm + "/" + yyyy;
+  const date = dd + "-" + mm + "-" + yyyy;
   return date;
 };
 
@@ -182,9 +183,9 @@ module.exports.deleteDraft = async (req, res) => {
   try{
     const { id } = req.params;
     await Request.findByIdAndDelete(id);
-    // const clubDetails = await Club.findById(req.params.id);
-    // clubDetails.sentRequests.pull(id);
-    // await clubDetails.save();
+    const clubDetails = await Club.findById(req.params.id);
+    clubDetails.sentRequests.pull(id);
+    await clubDetails.save();
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
@@ -530,3 +531,62 @@ module.exports.postComments = async(req, res) => {
     });
   }
 }
+
+///////////////////////////////////////////////////////////////////
+module.exports.publishedEvents = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const events = await Event.findMany({clubId : id});
+    req.status(200).json({
+      status: "success",
+      data: {
+        events,
+      },
+      message: "published",
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({
+      status: "failed",
+      message: err,
+    });
+  }
+};
+
+module.exports.publishEvent = async (req, res) => {
+  try {
+    const details = req.body;
+    const event = await Event.create(details);
+    req.status(200).json({
+      status: "success",
+      data: {
+        event
+      },
+      message: "published"
+    })
+  } catch(err) {
+    console.log(err);
+    res.status(404).json({
+      status: "failed",
+      message: err,
+    });
+  }
+}
+
+module.exports.updateEvent = async (req, res) => {
+  try {
+    const eventId = req.body.id;
+    const details = req.body;
+    await Event.findByIdAndUpdate(eventId, details);
+    req.status(200).json({
+      status: "success",
+      message: "updated",
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({
+      status: "failed",
+      message: err,
+    });
+  }
+};
