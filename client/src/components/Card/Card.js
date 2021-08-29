@@ -134,7 +134,21 @@ export default function SimpleCard({ draft }) {
         >
           Delete
         </Button>
-        <CommentSection id={draft._id}/>
+        {/* <CommentSection id={draft._id}/> */}
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {"Comments"}
+          </DialogTitle>
+          <DialogActions>
+            <CommentSection draft={draft} />
+            
+          </DialogActions>
+        </Dialog>
       </CardActions>
       <Dialog
         open={open}

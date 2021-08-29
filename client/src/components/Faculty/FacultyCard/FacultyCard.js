@@ -76,7 +76,7 @@ export default function FacultyCard({ draft }) {
 
   const handleOpen = async() => {
    
-    await dispatch(getRespondedRequests(user.facultyID));
+    //await dispatch(getRespondedRequests(user.facultyID));
     setOpen(true)
   }
 

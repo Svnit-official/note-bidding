@@ -53,6 +53,23 @@ const Home = () => {
   return (
     <div>
       <NavBar />
+      <div className="row  mt-3 bg-warning">
+       <div className="col-md-6 border">
+         {/* card */}
+         <div class="card col-md-8 offset-2 " style={{borderRadius:"4%"}}>
+          <img src="https://upload.wikimedia.org/wikipedia/en/thumb/1/1b/NIT_Surat_Logo.svg/1200px-NIT_Surat_Logo.svg.png" height="300px"  class="card-img-top" alt="..."/>
+          <div class="card-body">
+            <h3 class="card-title text-center"  ><b>CEV</b></h3>
+            <p class="card-text text-center lead" >Technical Student Society</p>
+          </div>
+        </div>
+         </div>
+         <div className="col-md-6 border">
+           <div style={{fontSize:"3rem",fontWeight:"700",fontStyle:"italic",textShadow:"0px 0px 5px 5px"}}>
+                DASHBOARD
+           </div>
+           </div>
+      </div>
       <IconButton aria-label="Add" onClick={handleClickOpen}>
         <AddCircleOutlineIcon color="primary" />
       </IconButton>
@@ -71,6 +88,7 @@ const Home = () => {
         </DialogActions>
       </Dialog>
     </div>
+    
   );
 };
 

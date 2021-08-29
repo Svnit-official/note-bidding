@@ -9,7 +9,7 @@ import { useHistory } from "react-router-dom";
 // import decode from 'jwt-decode';
 
 const NavBar = () => {
-  const classes = useStyles();
+  const classNamees = useStyles();
   const open = true;
 
   const userClub = JSON.parse(localStorage.getItem("club_profile"));
@@ -41,23 +41,44 @@ const NavBar = () => {
   // }, [location])
 
   return (
-    <div className={classes.root}>
-      <AppBar position="static" color="primary" elevation={6}>
-        <Toolbar>
-          <SimpleDrawer state={open} />
-          <Typography variant="h6" className={classes.title}>
-            SVNIT FORUM
-          </Typography>
-          <Avatar
-            alt="Remy Sharp"
-            src="/broken-image.jpg"
-            className={classes.orange}
-          >
-            B
-          </Avatar>
-        </Toolbar>
-      </AppBar>
-    </div>
+    // <div classNameName={classNamees.root}>
+    //   <AppBar position="static" color="primary" elevation={6}>
+    //     <Toolbar>
+    //       <SimpleDrawer state={open} />
+    //       <Typography variant="h6" classNameName={classNamees.title}>
+    //         SVNIT FORUM
+    //       </Typography>
+    //       <Avatar
+    //         alt="Remy Sharp"
+    //         src="/broken-image.jpg"
+    //         classNameName={classNamees.orange}
+    //       >
+    //         B
+    //       </Avatar>
+    //     </Toolbar>
+    //   </AppBar>
+    // </div>
+    <nav className="navbar navbar-light bg-light">
+      <div className="container-fluid m-2 ">
+        <a className="navbar-brand" href="#">
+          <img src="https://upload.wikimedia.org/wikipedia/en/thumb/1/1b/NIT_Surat_Logo.svg/1200px-NIT_Surat_Logo.svg.png" width="40px" alt="" className="d-inline-block align-text-top" />
+          SVNIT EVENT PORTAL
+        </a>
+        <ul className="nav justify-content-end">
+          <li className="nav-item">
+            {/* <button class="btn waves-effect waves-light" type="submit" name="action">
+              <i class="material-icons right">Login</i>
+            </button> */}
+            <a className="nav-link " aria-current="page" href="">Login</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+
+
+
+
   );
 };
 

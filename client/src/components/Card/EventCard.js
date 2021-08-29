@@ -21,6 +21,7 @@ import FileBase from "react-file-base64";
 import {handleReceiptDownload} from '../../actions/clubActions'
 import {useDispatch,useSelector} from 'react-redux';
 import PublishForm from '../PublishForm/PublishForm';
+import CommentSection from './CommentSection';
 
 export default function SimpleCard({ event }) {
   const [open, setOpen] = useState(false);
@@ -152,7 +153,20 @@ export default function SimpleCard({ event }) {
           Publish Event
         </Button>
         )}
-       
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {"Comments"}
+          </DialogTitle>
+          <DialogActions>
+            <CommentSection draft={event} />
+            
+          </DialogActions>
+        </Dialog>
       </CardActions>
       <Dialog
         open={open}

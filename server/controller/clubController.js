@@ -305,7 +305,7 @@ module.exports.getSentRequests = async (req, res) => {
 
 module.exports.sendRequest = async (req, res) => {
   try {
-    console.log(req.body);
+    //console.log(req.body);
     const club_id = req.params.id;
     const request = req.body;
     request.clubId = club_id;
@@ -501,7 +501,7 @@ module.exports.getComments = async (req, res) => {
 
 module.exports.postComments = async(req, res) => {
   try {
-    console.log(req.body);
+    //console.log(req.body);
     const { id, comment } = req.body;
     const time = getTime();
     const date = getDate();
