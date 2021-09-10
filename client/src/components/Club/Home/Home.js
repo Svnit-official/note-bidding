@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
+import Hombut from "./Hombut";
 import Card from "../../Card/Card";
+import './Home.css';
 import NavBar from "../../NavBar/NavBar";
 import BottomNav from "../../BottomNav/BottomNav";
 // import AddButton from '../AddButton/AddButton';
@@ -53,22 +55,36 @@ const Home = () => {
   return (
     <div>
       <NavBar />
-      <div className="row  mt-3 bg-warning">
-       <div className="col-md-6 border">
+      <div className="container-fluid" style={{backgroundColor:"#fde964",paddingTop:"100px"}}>
+      <div className="row">
+       <div className="col-md-6 col-sm-12  cardpart" >
          {/* card */}
-         <div class="card col-md-8 offset-2 " style={{borderRadius:"4%"}}>
-          <img src="https://upload.wikimedia.org/wikipedia/en/thumb/1/1b/NIT_Surat_Logo.svg/1200px-NIT_Surat_Logo.svg.png" height="300px"  class="card-img-top" alt="..."/>
-          <div class="card-body">
-            <h3 class="card-title text-center"  ><b>CEV</b></h3>
-            <p class="card-text text-center lead" >Technical Student Society</p>
+         <div class="card col-md-7 col-sm-12 offset-md-4 p-4 shadow-lg" style={{borderRadius:"4%",backgroundColor:"#fdfdf7",display:"inline-block"}}>
+          <div className="p-4" ><img src="https://upload.wikimedia.org/wikipedia/en/thumb/1/1b/NIT_Surat_Logo.svg/1200px-NIT_Surat_Logo.svg.png"  height="280px" class="card-img-top" alt="..."/></div>
+          <div class="card-body mt-2 ">
+            <h3 class=" text-center h1 font-weight-bold" ><b>CEV</b></h3>
+            <p class="card-text text-center lead " style={{fontWeight:"400",color:"#B2B8A3"}} >Technical Student Society</p>
           </div>
         </div>
          </div>
-         <div className="col-md-6 border">
-           <div style={{fontSize:"3rem",fontWeight:"700",fontStyle:"italic",textShadow:"0px 0px 5px 5px"}}>
-                DASHBOARD
+         <div className="col-md-4 col-sm-12 pt-4">
+           <div>
+                <p className="headline">DashBoard</p>
+                <br></br>
+                <div className="text-left">
+                  <Hombut color={"text-secondary"} text={"Drafts"} link={"./draft"}/>
+                  <Hombut color={"text-danger"} text={"Corrections"} link={"./correction"}/>
+                </div>
+                <p className="small lead text-left p-2 m-2" >Event requests</p>
+                <div >
+                  <Hombut color={"text-primary"} text={"All"} link={"./events"}/>
+                  <Hombut color={"text-secondary"} text={"Approved"} link={"./correction"}/>
+                  <Hombut color={"text-danger"} text={"Rejected"} link={"./correction"}/>
+                </div>
+                <br></br>
            </div>
            </div>
+      </div>
       </div>
       <IconButton aria-label="Add" onClick={handleClickOpen}>
         <AddCircleOutlineIcon color="primary" />
