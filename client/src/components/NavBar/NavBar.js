@@ -44,13 +44,13 @@ const NavBar = () => {
   // var height=visualViewport.height;
   // console.log(height);
   // console.log(width/4)
-  var  width = visualViewport.width/4;
-  window.onresize= ()=>{
-     width = visualViewport.width/4;
-    console.log(width);
-    setchange(()=>change++);
-    //console.log(document.querySelector("#sidenav").style.width);
-  }
+  // var  width = 400px;
+  // window.onresize= ()=>{
+  //    width = visualViewport.width/4;
+  //   console.log(width);
+  //   setchange(()=>change++);
+  //   //console.log(document.querySelector("#sidenav").style.width);
+  // }
   function drawerclosed(e){
     e.preventDefault();
     console.log("HELLO");
@@ -76,7 +76,7 @@ const NavBar = () => {
     
     <div>
       {dopen?
-    (<div id="sidenav" className="sidenav" style={{width:width}} >
+    (<div id="sidenav" className="sidenav" style={{width:"300px"}} >
         <ul>
           <a href="/club/home"><li>Home</li></a>
           <a href="/club/defaults"><li>Defaults</li></a>

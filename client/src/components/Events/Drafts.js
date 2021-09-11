@@ -6,6 +6,9 @@ import NavBar from "../NavBar/NavBar";
 import { useDispatch, useSelector } from "react-redux";
 import { getDraftRequest } from "../../actions/clubActions";
 import Loading from "../Loaders/Load.js";
+import "../NavBar/Navbar.css"
+import "./Draft.css"
+var  width = visualViewport.width/4;
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -21,11 +24,28 @@ const Home = () => {
   } else {
     return (
       <div>
-        <NavBar />
-        {d.drafts.map((draft) => (
+<NavBar />
+<div className="row container-fluid" style={{paddingTop:"100px"}}>
+     <div className="col-md-5 col-sm-12" style={{backgroundColor:""}}>
+     <div id="sidenavper" className="sidenavper" style={{width:width}}>
+        <ul>
+          <a href="/club/home"><li>Home</li></a>
+          <a href="/club/defaults"><li>Defaults</li></a>
+          <a href="/club/sent"><li>Sent</li></a>
+          <a href="/club/corrections"><li>Correction</li></a>
+          <a href="/club/rejected"><li>Rejected</li></a>
+          <a href="/club/approved"><li>Approved</li></a>
+          <a href="/club/resetPassword"><li>ResetPassword</li></a>
+        </ul>
+    </div>
+     </div>
+     <div className="col-md-7 cardright">
+     {d.drafts.map((draft) => (
           <Card draft={draft}>Name</Card>
         ))}
-      </div>
+    </div> 
+</div>
+</div>
     );
   }
 };
