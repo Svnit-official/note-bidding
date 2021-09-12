@@ -13,12 +13,10 @@ var  width = visualViewport.width/4;
 const Home = () => {
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("club_profile"));
-  console.log(user.clubID);
   useEffect(() => {
     dispatch(getDraftRequest(user.clubID));
   }, []);
   const d = useSelector((state) => state.formReducer.drafts);
-  console.log(d);
   if (!d) {
     return <Loading></Loading>;
   } else {

@@ -80,10 +80,7 @@ export default function SimpleCard({ draft }) {
         return 0;
     }
   };
-
-
-
-  
+  console.log(draft.status);
   return (
     
     <div className="border border-dark rounded" style={{paddingLeft:"2rem",paddingTop:"1rem",paddingRight:"2rem",paddingBottom:"1rem",backgroundColor:"#E8F6EF",marginBottom:"1rem"}} onClick={handleClickOpen}>

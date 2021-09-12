@@ -45,7 +45,6 @@ module.exports.authentication = async (req, res) => {
       const token = jwt.sign({ id: foundClub._id }, "club", {
         expiresIn: "2h",
       });
-      console.log("loggedIn");
       res.status(200).json({
         user: foundClub,
         status: "success",
@@ -263,7 +262,6 @@ module.exports.postDraft = async (req, res) => {
     newRequest = await Request.create(request);
     newRequest.clubId = club_id;
     await newRequest.save();
-    console.log("successful");
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
@@ -305,7 +303,6 @@ module.exports.getSentRequests = async (req, res) => {
 
 module.exports.sendRequest = async (req, res) => {
   try {
-    //console.log(req.body);
     const club_id = req.params.id;
     const request = req.body;
     request.clubId = club_id;
@@ -338,7 +335,6 @@ module.exports.sendRequest = async (req, res) => {
     }
     clubDetails.sentRequests.push(newRequest._id);
     await clubDetails.save();
-    console.log("successful");
     res.status(200).json({
       status: "success",
       requested: req.requestTime,
@@ -501,7 +497,6 @@ module.exports.getComments = async (req, res) => {
 
 module.exports.postComments = async(req, res) => {
   try {
-    //console.log(req.body);
     const { id, comment } = req.body;
     const time = getTime();
     const date = getDate();
@@ -536,8 +531,6 @@ module.exports.postComments = async(req, res) => {
 module.exports.publishedEvents = async (req, res) => {
   try {
     const id = req.params.id;
-    console.log(id);
-    ///let clubId = id;
     const events = await Event.find({'clubId' : id});
     res.status(200).json({
       status: "success",
