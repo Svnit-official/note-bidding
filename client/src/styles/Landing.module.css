@@ -1,0 +1,72 @@
+/* @import '/client/public/BackgroundSVNIT.png' image; */
+/* .backimg{
+
+background-size:934px 474px;
+background:#BDD9F2 url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/building.jpg);  
+background-blend-mode: multiply;
+ opacity: 0.8;
+} */
+.backimg{
+    
+        background-image: url(./logo2.png);
+        background-color:#BDD9F2;
+        background-blend-mode: multiply;
+        background-repeat: no-repeat;
+        background-size:1000px 1000px;
+        background-position:800px 0px;
+        
+      
+}
+.loginbtn{
+    background: #2E475F;
+border-radius: 6px;
+color:white;
+}
+
+.searchbar{
+width: 322px;
+height: 30px;
+border: 1px solid #0C243A;
+box-sizing: border-box;
+border-radius: 6px;
+margin-right: 10px;
+background-color: #BDD9F2;
+}
+.navbar{
+    padding-top: 32px;
+    background-color: #BDD9F2;
+    padding-right:5px;
+}
+
+.logbrandhead{
+    font-family: Roboto;
+font-style: normal;
+font-weight: 900;
+font-size: 64px;
+line-height: 75px;
+
+color: #0C243A;
+}
+.logbrandsub{
+    font-family: Roboto;
+font-style: normal;
+font-weight: 500;
+font-size: 30px;
+line-height: 35px;
+
+color: #0C243A;
+
+}
+
+.contentxtra{
+/* width: 1000px; */
+font-family: Montserrat;
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+color: #2E475F;
+margin-left: auto;
+margin-top:60px;
+padding-left: 5px;
+}

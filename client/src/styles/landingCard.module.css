@@ -1,0 +1,74 @@
+.mainbody{
+    height:150px;
+    background: #ECF3FA;
+    border-radius: 8px;
+    border:1px solid black;
+}
+.eventNamefield{
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 15px;
+    color: #6B7383;
+}
+.eventName{
+    font-family: Tahoma;
+font-style: normal;
+font-weight: bold;
+font-size: 24px;
+line-height: 29px;
+color: #0C243A;
+}
+.clubName{
+    font-family: Tahoma;
+font-style: normal;
+font-weight: normal;
+font-size: 20px;
+line-height: 24px;
+
+color: #0C243A;
+}
+.appdeadfield{
+    font-family: Montserrat;
+font-style: normal;
+font-weight: bold;
+font-size: 12px;
+line-height: 15px;
+/* identical to box height */
+
+color: #6B7383;
+}
+.landCardRightCol{
+    text-align: right;
+}
+.landCardDateBoxes{
+    background: #0C243A;
+border-radius: 3px;
+font-family: Tahoma;
+font-style: normal;
+font-weight: bold;
+font-size: 24px;
+line-height: 29px;
+margin-right: 5px;
+/* identical to box height */
+
+
+color: #FFFFFF;
+}
+.linkbox{
+    background: #185FA0;
+border-radius: 4px;
+font-family: Tahoma;
+font-style: normal;
+font-weight: bold;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+text-decoration: none;
+padding:5px;
+color: #FFFFFF;
+}
+.linkbox:hover{
+    color:white;
+}

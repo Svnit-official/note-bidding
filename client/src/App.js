@@ -25,6 +25,7 @@ import ApprovedEvents from "./components/Events/ApprovedEvents";
 import Events from './components/Club/Home/Events'
 import Modal from "./components/Club/Modal";
 import Login from "./components/Login";
+import Landing from "./components/Landing";
 const App = () => {
   const userClub = JSON.parse(localStorage.getItem("club_profile"));
   const userDean = JSON.parse(localStorage.getItem("dean_profile"));
@@ -46,6 +47,11 @@ const App = () => {
         exact
         component={()=>!userClub ?< Login/> : <Home />}
         
+        />
+        <Route
+        path="/landing"
+        exact
+        component={()=><Landing />}
         />
         <Route
           path="/"
