@@ -24,6 +24,7 @@ import DeanResponded from "./components/Dean/DeanHome/DeanResponded";
 import ApprovedEvents from "./components/Events/ApprovedEvents";
 import Events from './components/Club/Home/Events'
 import Modal from "./components/Club/Modal";
+import Login from "./components/Login";
 const App = () => {
   const userClub = JSON.parse(localStorage.getItem("club_profile"));
   const userDean = JSON.parse(localStorage.getItem("dean_profile"));
@@ -40,6 +41,12 @@ const App = () => {
   return (
     <BrowserRouter forceRefresh={true}>
       <Switch>
+        <Route
+        path="/login"
+        exact
+        component={()=>!userClub ?< Login/> : <Home />}
+        
+        />
         <Route
           path="/"
           exact
@@ -107,6 +114,11 @@ const App = () => {
            !userClub?<Redirect to="/club/modal" />:<Modal />
         }
         />
+        <Route
+        path="/club/login"
+        component={()=>
+          !userClub?<Redirect to="/club/modal" />:<Login/>
+        } />
 
         {/* ..............faculty route........... */}
 
