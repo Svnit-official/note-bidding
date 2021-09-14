@@ -13,7 +13,6 @@ import {
   Dialog,
   DialogTitle,
   DialogActions,
-
 } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -25,15 +24,15 @@ import {
   rejectPendingRequests,
   sendBackPendingRequests,
 } from "../../../actions/facultyActions";
-import CommentSection from '../CommentSection/CommentSection';
+import CommentSection from "../CommentSection/CommentSection";
 import { getRespondedRequests } from "../../../actions/facultyActions";
 
-export default function FacultyCard({ draft }) {
+export default function FacultyCard({ draft, status, color, text }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles();
   const [checked, setChecked] = useState(true);
-  const [open , setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const user = JSON.parse(localStorage.getItem("fac_profile"));
 
   const request = {
@@ -59,11 +58,8 @@ export default function FacultyCard({ draft }) {
     setChecked(event.target.checked);
   };
 
-  const handleApprove =async (e) => {
-    console.log(userFaculty.facultyID);
-
-   const result =await dispatch(approvePendingRequest(userFaculty.facultyID, request, history));
-    console.log(result);
+  const handleApprove = async (e) => {
+    dispatch(approvePendingRequest(userFaculty.facultyID, request, history));
   };
 
   const handleReject = (e) => {
@@ -73,17 +69,27 @@ export default function FacultyCard({ draft }) {
   const handleSendBack = () => {
     dispatch(sendBackPendingRequests(userFaculty.facultyID, request, history));
   };
-
-  const handleOpen = async() => {
-   
+  const stat = draft.status.split("By");
+  const handleOpen = async () => {
     //await dispatch(getRespondedRequests(user.facultyID));
-    setOpen(true)
-  }
+    setOpen(true);
+  };
 
   const handleClose = () => {
     setOpen(false);
+  };
+  let flag2 = false;
+  if (draft.status.includes("rejected")) {
+    flag2 = true;
   }
-
+  let textcolor = "green";
+  if (flag2) {
+    textcolor = "red";
+  }
+  let bgColor = "#ADEECF";
+  if (flag2) {
+    bgColor = "#FDD2BF";
+  }
   const progress = function (status) {
     switch (status) {
       case "sentByClub":
@@ -100,79 +106,103 @@ export default function FacultyCard({ draft }) {
   };
 
   return (
-    <Card
-      className={classes.root}
-      style={{ width: "100%", marginTop: "30px" }}
-      elevation={6}
+    <div
+      className="border border-dark rounded"
+      style={{
+        paddingLeft: "2rem",
+        paddingTop: "1rem",
+        paddingRight: "2rem",
+        paddingBottom: "1rem",
+        backgroundColor: `${bgColor}`,
+        marginBottom: "1rem",
+      }}
     >
-      <MultiStepForm progress={progress(draft.status)} />
-      <CardContent>
-        <Typography
-          className={classes.title}
-          color="textSecondary"
-          gutterBottom
+      <p style={{ marginBottom: "5px", fontWeight: "500", color: "#423F3E" }}>
+        {draft.clubName}
+      </p>
+      <h1 style={{ fontWeight: "700", marginBottom: "0" }}>
+        {draft.eventName}
+      </h1>
+      <div className="d-flex">
+        <div style={{ fontWeight: "400" }}>
+          <p
+            className=""
+            style={{
+              textDecoration: "none",
+              marginTop: "5px",
+              marginBottom: "5px",
+              color: "black",
+            }}
+          >
+            {draft.eventDate?.split("T")[0]}
+          </p>
+          <p
+            className=""
+            style={{
+              marginTop: "5px",
+              marginBottom: "15px",
+              textDecoration: "none",
+              color: "black",
+            }}
+          >
+            {draft.eventDescription}
+          </p>
+        </div>
+        <div
+          className=""
+          style={{
+            marginLeft: "auto",
+            textAlign: "center",
+            fontWeight: "600",
+            color: `${textcolor}`,
+          }}
         >
-          {draft.clubName}
-        </Typography>
-        <Typography variant="h5" component="h2">
-          {draft.eventName}
-        </Typography>
-        <Typography className={classes.pos} color="textSecondary">
-          {draft.eventDescription}
-        </Typography>
-        <Typography variant="body2" component="p">
-          {draft.eventDate}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button
-          className={classes.button}
-          size="small"
-          variant="contained"
-          color="primary"
-          onClick={downloadPdf}
-        >
-          Download Pdf
-        </Button>
-        <Button
-          className={classes.button}
-          size="small"
-          variant="outlined"
-          color="primary"
-          onClick={handleOpen}
-        >
-          Write a Comment
-        </Button>
-      </CardActions>
-      <Dialog
+          <div style={{ color: "#423F3E" }}>status</div>
+          {`${stat[0][0].toUpperCase()}${stat[0].slice(1)} By ${stat[1]}`}
+        </div>
+      </div>
+      <div>
+        <CardActions style={{ padding: "0" }}>
+          <Button
+            className={classes.button}
+            size="small"
+            variant="contained"
+            color="primary"
+            onClick={downloadPdf}
+            style={{ marginLeft: "0" }}
+          >
+            Download Pdf
+          </Button>
+          <Button
+            className={classes.button}
+            size="small"
+            variant="outlined"
+            color="primary"
+            onClick={handleOpen}
+            style={{ marginLeft: "0" }}
+          >
+            Write a Comment
+          </Button>
+        </CardActions>
+        <Dialog
           open={open}
           onClose={handleClose}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">
-            {"Comments"}
-          </DialogTitle>
+          <DialogTitle id="alert-dialog-title">{"Comments"}</DialogTitle>
           <DialogActions>
             <CommentSection draft={draft} />
-            
           </DialogActions>
         </Dialog>
-      {flag ? (
-        <Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-          >
-            <Typography className={classes.heading}>Options</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
+        {flag ? (
+          <>
+            <Typography style={{ padding: "0", marginBottom: "8px" }}>
               <Checkbox
                 checked={checked}
                 onChange={handleChange}
                 inputProps={{ "aria-label": "primary checkbox" }}
+                style={{ paddingLeft: "0" }}
               />
               checking following I agree to give concent for that event.
             </Typography>
@@ -183,6 +213,7 @@ export default function FacultyCard({ draft }) {
               color="primary"
               disabled={!checked}
               onClick={handleApprove}
+              style={{ marginLeft: "0" }}
             >
               Approve
             </Button>
@@ -205,9 +236,9 @@ export default function FacultyCard({ draft }) {
             >
               Reject Request
             </Button>
-          </AccordionDetails>
-        </Accordion>
-      ) : null}
-    </Card>
+          </>
+        ) : null}
+      </div>
+    </div>
   );
 }
