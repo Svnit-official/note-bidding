@@ -224,6 +224,7 @@ export default function FacultyCard({ draft, status, color, text }) {
               variant="contained"
               color="secondary"
               onClick={handleSendBack}
+              style={{ marginLeft: "0" }}
             >
               Send Back for Correction
             </Button>
@@ -233,6 +234,7 @@ export default function FacultyCard({ draft, status, color, text }) {
               variant="outlined"
               color="secondary"
               onClick={handleReject}
+              style={{ marginLeft: "0" }}
             >
               Reject Request
             </Button>
