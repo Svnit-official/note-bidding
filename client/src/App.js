@@ -22,7 +22,7 @@ import FacultyResponded from "./components/Faculty/FacultyHome/FacultyResponded"
 import FinanceResponded from "./components/Finance/FinanceHome/FinanceResponded";
 import DeanResponded from "./components/Dean/DeanHome/DeanResponded";
 import ApprovedEvents from "./components/Events/ApprovedEvents";
-import Events from './components/Club/Home/Events'
+import Events from "./components/Club/Home/Events";
 import Modal from "./components/Club/Modal";
 const App = () => {
   const userClub = JSON.parse(localStorage.getItem("club_profile"));
@@ -89,7 +89,7 @@ const App = () => {
             !userClub ? <Redirect to="/club/login" /> : <ApprovedEvents />
           }
         />
-         <Route
+        <Route
           path="/club/events"
           component={() =>
             !userClub ? <Redirect to="/club/login" /> : <Events />
@@ -102,10 +102,10 @@ const App = () => {
           }
         />
         <Route
-        path="/club/modal"
-        component={()=>
-           !userClub?<Redirect to="/club/modal" />:<Modal />
-        }
+          path="/club/modal"
+          component={() =>
+            !userClub ? <Redirect to="/club/modal" /> : <Modal />
+          }
         />
 
         {/* ..............faculty route........... */}
