@@ -57,10 +57,7 @@ const SentRequest = () => {
           </div>
           <div className="col-md-7 cardright">
             {d.requests.map((event) =>
-              event.status === "sentByClub" ||
-              event.status === "receivedByFaculty" ||
-              event.status === "approvedByFaculty" ||
-              event.status === "approvedByFinance" ? (
+              event.status !== "draft" ? (
                 <Card event={event} color="#D0E8F2" text="#344FA1">
                   Name
                 </Card>

@@ -61,7 +61,18 @@ export default function SimpleCard({ event, status, color, text }) {
   const handleClose = () => {
     setOpen(false);
   };
-
+  let flag2 = false;
+  if (event.status.includes("rejected")) {
+    flag2 = true;
+  }
+  let textcolor = "green";
+  if (flag2) {
+    textcolor = "red";
+  }
+  let bgColor = "#ADEECF";
+  if (flag2) {
+    bgColor = "#FDD2BF";
+  }
   let flag = false;
   if (event.status === "sentByFaculty" || event.status === "sentByFinance") {
     flag = true;
@@ -96,7 +107,7 @@ export default function SimpleCard({ event, status, color, text }) {
         paddingTop: "1rem",
         paddingRight: "2rem",
         paddingBottom: "1rem",
-        backgroundColor: `${color}`,
+        backgroundColor: `${bgColor}`,
         marginBottom: "1rem",
       }}
     >

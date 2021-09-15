@@ -134,7 +134,7 @@ export default function SimpleCard({ draft }) {
             color: "orange",
           }}
         >
-          <div style={{ color: "#423F3E" }}>Status :</div>
+          <div style={{ color: "#423F3E" }}>Status</div>
           Draft
         </div>
       </div>

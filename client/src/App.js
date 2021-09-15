@@ -24,6 +24,7 @@ import DeanResponded from "./components/Dean/DeanHome/DeanResponded";
 import ApprovedEvents from "./components/Events/ApprovedEvents";
 import Events from "./components/Club/Home/Events";
 import Modal from "./components/Club/Modal";
+import Landing from "./components/Home/Home";
 const App = () => {
   const userClub = JSON.parse(localStorage.getItem("club_profile"));
   const userDean = JSON.parse(localStorage.getItem("dean_profile"));
@@ -40,11 +41,7 @@ const App = () => {
   return (
     <BrowserRouter forceRefresh={true}>
       <Switch>
-        <Route
-          path="/"
-          exact
-          component={() => <Redirect to="/club/login"></Redirect>}
-        ></Route>
+        <Route path="/" exact component={Landing}></Route>
         {/* ..............club route............. */}
         <Route path="/club/login" exact component={ClubForm} />
         <Route
