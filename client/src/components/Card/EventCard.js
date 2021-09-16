@@ -12,24 +12,26 @@ import {
   Checkbox,
   Dialog,
   DialogTitle,
-  DialogActions
+  DialogActions,
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MultiStepForm from "../MultiStepForm/MultiStepForm";
 import useStyles from "./styles";
 import FileBase from "react-file-base64";
-import {handleReceiptDownload} from '../../actions/clubActions'
-import {useDispatch,useSelector} from 'react-redux';
-import PublishForm from '../PublishForm/PublishForm';
-import CommentSection from './CommentSection';
+import { handleReceiptDownload } from "../../actions/clubActions";
+import { useDispatch, useSelector } from "react-redux";
+import PublishForm from "../PublishForm/PublishForm";
+import CommentSection from "./CommentSection";
+import SimpleModal from "./Modal";
+import { Link } from "react-router-dom";
 
-export default function SimpleCard({ event }) {
+export default function SimpleCard({ event, status, color, text }) {
   const [open, setOpen] = useState(false);
   const classes = useStyles();
   const [checked, setChecked] = useState(true);
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("club_profile"));
-
+  console.log(event);
   const downloadPdf = () => {
     const linkSource = `${event.pdf}`;
     const downloadLink = document.createElement("a");
@@ -44,14 +46,13 @@ export default function SimpleCard({ event }) {
   };
 
   const handleDownloadReceipt = () => {
-      console.log(user.clubID , event._id);
-      const x = user.clubID
-      const y = {
-        id : event._id
-      }
-   dispatch(handleReceiptDownload(x , y));
-
-  }
+    console.log(user.clubID, event._id);
+    const x = user.clubID;
+    const y = {
+      id: event._id,
+    };
+    dispatch(handleReceiptDownload(x, y));
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -60,7 +61,18 @@ export default function SimpleCard({ event }) {
   const handleClose = () => {
     setOpen(false);
   };
-
+  let flag2 = false;
+  if (event.status.includes("rejected")) {
+    flag2 = true;
+  }
+  let textcolor = "green";
+  if (flag2) {
+    textcolor = "red";
+  }
+  let bgColor = "#ADEECF";
+  if (flag2) {
+    bgColor = "#FDD2BF";
+  }
   let flag = false;
   if (event.status === "sentByFaculty" || event.status === "sentByFinance") {
     flag = true;
@@ -68,7 +80,7 @@ export default function SimpleCard({ event }) {
   console.log(flag);
 
   let isPublished = false;
-  if(event.status === "approvedByDean"){
+  if (event.status === "approvedByDean") {
     isPublished = true;
   }
 
@@ -86,88 +98,128 @@ export default function SimpleCard({ event }) {
         return 0;
     }
   };
-  
+  const status2 = event.status.split("By");
   return (
-    <Card
-      className={classes.root}
-      style={{ width: "100%", marginTop: "30px" }}
-      elevation={6}
+    <div
+      className="border border-dark rounded"
+      style={{
+        paddingLeft: "2rem",
+        paddingTop: "1rem",
+        paddingRight: "2rem",
+        paddingBottom: "1rem",
+        backgroundColor: `${bgColor}`,
+        marginBottom: "1rem",
+      }}
     >
-      <MultiStepForm progress={progress(event.status)} />
-      <CardContent>
-        <Typography
-          className={classes.title}
-          color="textSecondary"
-          gutterBottom
+      <p style={{ marginBottom: "5px", fontWeight: "500", color: "#423F3E" }}>
+        {event.clubName}
+      </p>
+      <h1 style={{ fontWeight: "700", marginBottom: "0" }}>
+        {event.eventName}
+      </h1>
+      <div className="d-flex">
+        <div style={{ fontWeight: "400" }}>
+          <p
+            className=""
+            style={{
+              textDecoration: "none",
+              marginTop: "5px",
+              marginBottom: "5px",
+              color: "black",
+            }}
+          >
+            {event.eventDate?.split("T")[0]}
+          </p>
+          <p
+            className=""
+            style={{
+              marginTop: "5px",
+              marginBottom: "15px",
+              textDecoration: "none",
+              color: "black",
+            }}
+          >
+            {event.eventDescription}
+          </p>
+        </div>
+        <div
+          className=""
+          style={{
+            marginLeft: "auto",
+            textAlign: "center",
+            fontWeight: "600",
+            color: `${text}`,
+          }}
         >
-          {event.clubName}
-        </Typography>
-        <Typography variant="h5" component="h2">
-          {event.eventName}
-        </Typography>
-        <Typography className={classes.pos} color="textSecondary">
-          {event.message}
-        </Typography>
-        <Typography variant="body2" component="p">
-          {event.eventDate}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button
-          className={classes.button}
-          size="small"
-          variant="contained"
-          color="primary"
-          onClick={downloadPdf}
-        >
-          Download Pdf
-        </Button>
-        <Button
-          className={classes.button}
-          size="small"
-          variant="contained"
-          color="secondary"
-          disabled={!flag}
-        >
-          Edit
-        </Button>
-        <Button
-          className={classes.button}
-          size="small"
-          variant="contained"
-          color="secondary"
-          disabled={flag}
-          onClick = {handleDownloadReceipt}
-        >
-          download Receipt
-        </Button>
-        {isPublished && (
+          <div style={{ color: "#423F3E" }}>status</div>
+          {status ||
+            `${status2[0][0].toUpperCase()}${status2[0].slice(1)} By ${
+              status2[1]
+            }`}
+        </div>
+      </div>
+      <SimpleModal state={open} draft={event} />
+      <div>
+        <CardActions style={{ padding: "0" }}>
           <Button
-          className={classes.button}
-          size="small"
-          variant="outlined"
-          color="primary"
-          disabled={!isPublished}
-          onClick={handleClickOpen}
-        >
-          Publish Event
-        </Button>
-        )}
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">
-            {"Comments"}
-          </DialogTitle>
-          <DialogActions>
-            <CommentSection draft={event} />
-            
-          </DialogActions>
-        </Dialog>
-      </CardActions>
+            style={{ marginLeft: "0" }}
+            className={classes.button}
+            size="small"
+            variant="contained"
+            color="primary"
+            onClick={downloadPdf}
+          >
+            Download Pdf
+          </Button>
+          {flag && (
+            <Button
+              className={classes.button}
+              size="small"
+              variant="contained"
+              color="secondary"
+              disabled={!flag}
+            >
+              Edit
+            </Button>
+          )}
+
+          {isPublished && (
+            <Button
+              className={classes.button}
+              size="small"
+              variant="contained"
+              color="secondary"
+              disabled={flag}
+              onClick={handleDownloadReceipt}
+            >
+              download Receipt
+            </Button>
+          )}
+          {isPublished && (
+            <Button
+              className={classes.button}
+              size="small"
+              variant="outlined"
+              color="primary"
+              disabled={!isPublished}
+              onClick={handleClickOpen}
+            >
+              Publish Event
+            </Button>
+          )}
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">{"Comments"}</DialogTitle>
+            <DialogActions>
+              <CommentSection event={event} />
+            </DialogActions>
+          </Dialog>
+        </CardActions>
+      </div>
       <Dialog
         open={open}
         onClose={handleClose}
@@ -176,9 +228,9 @@ export default function SimpleCard({ event }) {
       >
         <DialogTitle id="alert-dialog-title">{"Submit Event Form"}</DialogTitle>
         <DialogActions>
-          <PublishForm eventName={event.eventName} clubName={event.clubName}/>
+          <PublishForm eventName={event.eventName} clubName={event.clubName} />
         </DialogActions>
       </Dialog>
-    </Card>
+    </div>
   );
 }

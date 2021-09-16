@@ -30,7 +30,6 @@ const getTime = function () {
 
 module.exports.downloadPdf = async (req, res) => {
   try {
-    console.log("hell");
     const reqid = req.body.id;
     const request = await Request.findById(reqid);
     const eventName = request.eventName;
@@ -77,7 +76,6 @@ module.exports.downloadPdf = async (req, res) => {
         deanName,
         deanSign    
     }
-    console.log(data);
     //const user = req.params.user;
     const user = "Club"
     const options = {

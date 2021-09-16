@@ -22,10 +22,8 @@ const finAuth = async (req,res,next) => {
             req.userId = decodedData?.sub;    
         }
         if (req.userId == req.params.id) {
-          console.log("auth done");
           return next();
         } else {
-          console.log("unauthorised");
           return next(
             res.status(401).json({
               status: "unauthorised",
@@ -34,7 +32,6 @@ const finAuth = async (req,res,next) => {
           );
         }
     } catch (err) {
-        console.log(err);
         console.log(err);
         res.status(404).json({
           status: "failed",

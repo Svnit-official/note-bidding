@@ -38,7 +38,7 @@ app.use(flash());
 // };
 // app.use(session(sessionconfig));
 app.use((req, res, next) => {
-  console.log("Hello from the index page middleware 👋");
+  //console.log("Hello from the index page middleware 👋");
   req.requestTime = new Date().toISOString();
   next();
 });

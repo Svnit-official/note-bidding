@@ -14,10 +14,10 @@ import {
   DialogTitle,
   DialogActions,
   TextField,
-  Modal
+  Modal,
 } from "@material-ui/core";
 import { useDispatch } from "react-redux";
-import  {useHistory,Link}  from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MultiStepForm from "../MultiStepForm/MultiStepForm";
 import useStyles from "./styles";
@@ -25,7 +25,7 @@ import FileBase from "react-file-base64";
 import UpdateDraft from "../Events/UpdateDraft";
 import { sendRequest, deleteRequest } from "../../actions/clubActions";
 import CommentSection from "./CommentSection";
-import SimpleModal from "./Modal"
+import SimpleModal from "./Modal";
 export default function SimpleCard({ draft }) {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -55,9 +55,9 @@ export default function SimpleCard({ draft }) {
     setOpen(false);
   };
 
-  const handleClose2 =()=>{
+  const handleClose2 = () => {
     setOpen(true);
-  }
+  };
 
   const sendingRequest = () => {
     console.log("sendRequest", draft._id);
@@ -80,129 +80,131 @@ export default function SimpleCard({ draft }) {
         return 0;
     }
   };
-
-
-
-  
+  console.log(draft.status);
   return (
-    
-    <div className="border border-dark rounded" style={{paddingLeft:"2rem",paddingTop:"1rem",paddingRight:"2rem",paddingBottom:"1rem",backgroundColor:"#E8F6EF",marginBottom:"1rem"}} onClick={handleClickOpen}>
-    
-    <span style={{fontWeight:"400",color:"#A7C4BC"}}>{draft.clubName}</span>
-    <h1 style={{fontWeight:"700"}}> {draft.eventName}</h1>
-    <div className="d-flex mt-4">
-        <div style={{fontWeight:"600"}}>
-        <Link className="" style={{textDecoration:"none",color:"black"}}>Send to Dashboard</Link>
+    <div
+      className="border border-dark rounded"
+      style={{
+        paddingLeft: "2rem",
+        paddingTop: "1rem",
+        paddingRight: "2rem",
+        paddingBottom: "1rem",
+        backgroundColor: "#DBE6FD",
+        marginBottom: "1rem",
+      }}
+      onClick={handleClickOpen}
+    >
+      <p style={{ marginBottom: "5px", fontWeight: "500", color: "#423F3E" }}>
+        {draft.clubName}
+      </p>
+      <h1 style={{ fontWeight: "700", marginBottom: "0" }}>
+        {draft.eventName}
+      </h1>
+      <div className="d-flex">
+        <div style={{ fontWeight: "400" }}>
+          <p
+            className=""
+            style={{
+              textDecoration: "none",
+              marginTop: "5px",
+              marginBottom: "5px",
+              color: "black",
+            }}
+          >
+            {draft.eventDate?.split("T")[0]}
+          </p>
+          <p
+            className=""
+            style={{
+              marginTop: "5px",
+              marginBottom: "15px",
+              textDecoration: "none",
+              color: "black",
+            }}
+          >
+            {draft.eventDescription}
+          </p>
         </div>
-       <div className="" style={{marginLeft:"auto",fontWeight:"600",color:"#71EFA3"}}>
-        <div style={{color:"#A7C4BC",marginLeft:"1.5rem"}}>status</div>
-        Approved
-       </div>      
+        <div
+          className=""
+          style={{
+            marginLeft: "auto",
+            textAlign: "center",
+            fontWeight: "600",
+            color: "orange",
+          }}
+        >
+          <div style={{ color: "#423F3E" }}>Status</div>
+          Draft
+        </div>
+      </div>
+      <SimpleModal state={open} draft={draft} />
+      <div>
+        <CardActions style={{ padding: "0" }}>
+          <Button
+            style={{ marginLeft: "0" }}
+            className={classes.button}
+            size="small"
+            variant="contained"
+            color="primary"
+            onClick={sendingRequest}
+          >
+            Send Request
+          </Button>
+          <Button
+            className={classes.button}
+            size="small"
+            variant="contained"
+            color="primary"
+            onClick={downloadPdf}
+          >
+            Download Pdf
+          </Button>
+          <Button
+            className={classes.button}
+            size="small"
+            variant="contained"
+            color="secondary"
+            onClick={handleClickOpen}
+          >
+            Edit
+          </Button>
+          <Button
+            className={classes.button}
+            size="small"
+            variant="contained"
+            color="secondary"
+            onClick={handleDelete}
+          >
+            Delete
+          </Button>
+          {/* <CommentSection id={draft._id}/> */}
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">{"Comments"}</DialogTitle>
+            <DialogActions>
+              <CommentSection draft={draft} />
+            </DialogActions>
+          </Dialog>
+        </CardActions>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {"Submit Event Form"}
+          </DialogTitle>
+          <DialogActions>
+            <UpdateDraft id={draft._id} />
+          </DialogActions>
+        </Dialog>
+      </div>
     </div>
-    <SimpleModal state={open} draft={draft}/> 
-    <div>
-    <button type="button" class="m-2 btn btn-success">Send</button>
-    <button type="button" class="m-2 btn btn-danger">Delete</button>
-    <button type="button" class="m-2 btn btn-warning">Edit</button>
-    </div>
-</div>
-
-
-
-
-
-
-
-
-
-    // <Card
-    //   className={classes.root}
-    //   style={{ width: "100%", marginTop: "30px" }}
-    //   elevation={6}
-    // >
-    //   <MultiStepForm progress={progress(draft.stat)} />
-    //   <CardContent>
-    //     <Typography
-    //       className={classes.title}
-    //       color="textSecondary"
-    //       gutterBottom
-    //     >
-    //       {draft.clubName}
-    //     </Typography>
-    //     <Typography variant="h5" component="h2">
-    //       {draft.eventName}
-    //     </Typography>
-    //     <Typography className={classes.pos} color="textSecondary">
-    //       {draft.message}
-    //     </Typography>
-    //     <Typography variant="body2" component="p">
-    //       {draft.eventDate}
-    //     </Typography>
-    //   </CardContent>
-    //   <CardActions>
-    //     <Button
-    //       className={classes.button}
-    //       size="small"
-    //       variant="contained"
-    //       color="primary"
-    //       onClick={sendingRequest}
-    //     >
-    //       Send Request
-    //     </Button>
-    //     <Button
-    //       className={classes.button}
-    //       size="small"
-    //       variant="contained"
-    //       color="primary"
-    //       onClick={downloadPdf}
-    //     >
-    //       Download Pdf
-    //     </Button>
-    //     <Button
-    //       className={classes.button}
-    //       size="small"
-    //       variant="contained"
-    //       color="secondary"
-    //       onClick={handleClickOpen}
-    //     >
-    //       Edit
-    //     </Button>
-    //     <Button
-    //       className={classes.button}
-    //       size="small"
-    //       variant="contained"
-    //       color="secondary"
-    //       onClick={handleDelete}
-    //     >
-    //       Delete
-    //     </Button>
-    //     {/* <CommentSection id={draft._id}/> */}
-    //     <Dialog
-    //       open={open}
-    //       onClose={handleClose}
-    //       aria-labelledby="alert-dialog-title"
-    //       aria-describedby="alert-dialog-description"
-    //     >
-    //       <DialogTitle id="alert-dialog-title">
-    //         {"Comments"}
-    //       </DialogTitle>
-    //       <DialogActions>
-    //         <CommentSection draft={draft} />
-            
-    //       </DialogActions>
-    //     </Dialog>
-    //   </CardActions>
-    //   <Dialog
-    //     open={open}
-    //     onClose={handleClose}
-    //     aria-labelledby="alert-dialog-title"
-    //     aria-describedby="alert-dialog-description"
-    //   >
-    //     <DialogTitle id="alert-dialog-title">{"Submit Event Form"}</DialogTitle>
-    //     <DialogActions>
-    //       <UpdateDraft id={draft._id} />
-    //     </DialogActions>
-    //   </Dialog>
-    // </Card>
   );
 }

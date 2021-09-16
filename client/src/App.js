@@ -22,10 +22,10 @@ import FacultyResponded from "./components/Faculty/FacultyHome/FacultyResponded"
 import FinanceResponded from "./components/Finance/FinanceHome/FinanceResponded";
 import DeanResponded from "./components/Dean/DeanHome/DeanResponded";
 import ApprovedEvents from "./components/Events/ApprovedEvents";
-import Events from './components/Club/Home/Events'
+import Events from "./components/Club/Home/Events";
 import Modal from "./components/Club/Modal";
-import Login from "./components/Login";
-import Landing from "./components/Landing";
+import Landing from "./components/Home/Home";
+import Profile from "./components/Profile";
 const App = () => {
   const userClub = JSON.parse(localStorage.getItem("club_profile"));
   const userDean = JSON.parse(localStorage.getItem("dean_profile"));
@@ -42,22 +42,7 @@ const App = () => {
   return (
     <BrowserRouter forceRefresh={true}>
       <Switch>
-        <Route
-        path="/login"
-        exact
-        component={()=>!userClub ?< Login/> : <Home />}
-        
-        />
-        <Route
-        path="/landing"
-        exact
-        component={()=><Landing />}
-        />
-        <Route
-          path="/"
-          exact
-          component={() => <Redirect to="/club/login"></Redirect>}
-        ></Route>
+        <Route path="/" exact component={Landing}></Route>
         {/* ..............club route............. */}
         <Route path="/club/login" exact component={ClubForm} />
         <Route
@@ -102,7 +87,7 @@ const App = () => {
             !userClub ? <Redirect to="/club/login" /> : <ApprovedEvents />
           }
         />
-         <Route
+        <Route
           path="/club/events"
           component={() =>
             !userClub ? <Redirect to="/club/login" /> : <Events />
@@ -115,15 +100,15 @@ const App = () => {
           }
         />
         <Route
-        path="/club/modal"
-        component={()=>
-           !userClub?<Redirect to="/club/modal" />:<Modal />
-        }
+          path="/club/modal"
+          component={() =>
+            !userClub ? <Redirect to="/club/modal" /> : <Modal />
+          }
         />
         <Route
-        path="/club/login"
+        path="/club/profile"
         component={()=>
-          !userClub?<Redirect to="/club/modal" />:<Login/>
+          !userClub?<Redirect to="/club/profile" />:<Profile/>
         } />
 
         {/* ..............faculty route........... */}

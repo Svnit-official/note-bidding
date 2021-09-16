@@ -2,14 +2,7 @@ const Dean = require("./../models/deanModel");
 const Request = require("./../models/requestModel");
 //const mongodb = require("mongodb");
 const jwt = require("jsonwebtoken");
-// const fs = require("fs");
-// const jwt = require("jsonwebtoken");
-// const secret = process.env.SECRET || "this-is-my-dean-secret";
-// const expires = process.env.EXPIRES || 1000;
-// const bcrypt = require("bcryptjs");
-// const signToken = function (id) {
-//   return jwt.sign({ id }, secret, { expiresIn: expires });
-// };
+
 const getDate = function () {
   const today = new Date();
   const dd = String(today.getDate()).padStart(2, "0");
@@ -50,7 +43,6 @@ module.exports.authentication = async (req, res) => {
       const token = jwt.sign({ id: foundDean._id }, "dean", {
         expiresIn: "2h",
       });
-      console.log("loggedIn");
       res.status(200).json({
         status: "success",
         requested: req.time,

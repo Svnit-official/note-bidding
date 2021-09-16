@@ -49,7 +49,6 @@ module.exports.authentication = async (req, res) => {
       const token = jwt.sign({ id: foundFaculty._id }, "faculty", {
         expiresIn: "2h",
       });
-      console.log("loggedIn");
       res.status(200).json({
         status: "success",
         requested: req.time,
@@ -402,7 +401,6 @@ module.exports.getComments = async (req, res) => {
 }
 
 module.exports.postComments = async(req, res) => {
-  console.log(req.body);
   try {
     const { id, comment } = req.body;
     const time = getTime();
