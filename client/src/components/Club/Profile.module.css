@@ -1,0 +1,183 @@
+input {border:0;outline:0;}
+input:focus {outline:none!important;}
+.topDiv {
+    background-image: url(./bg.JPG);
+    background-size: cover;
+    /* display: flex; */
+    /* justify-content: center; */
+    align-items: center;
+    padding-bottom: 55px;
+    padding-top: 23px;
+    padding-right: 81px;
+    padding-left: 74px;
+}
+.navbar{
+    display: flex;
+}
+.logo{
+width: 62.8px;
+height: 60.16px;
+}
+
+.navhead{
+font-family: Roboto;
+font-style: normal;
+font-weight: 900;
+font-size: 26px;
+line-height: 30px;
+color: #0C243A;
+}
+.navheadsub{
+font-family: Roboto;
+font-style: normal;
+font-weight: 500;
+font-size: 15px;
+line-height: 18px;
+color: #0C243A;
+}
+.navright{
+font-family: Tahoma;
+font-style: normal;
+font-weight: bold;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+margin-right: 20px;
+
+text-align: right;
+color: #000000;
+}
+.logoutbtn{
+width: 126px;
+height: 36px;
+border: 1.5px solid #000000;
+box-sizing: border-box;
+border-radius: 6px;
+font-family: Tahoma;
+font-style: normal;
+font-weight: normal;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+color: #000000;
+}
+.midmeName{
+font-family: Tahoma;
+font-style: normal;
+font-weight: bold;
+font-size: 48px;
+/* line-height: 58px; */
+/* identical to box height */
+
+text-align: right;
+margin-left: auto;
+color: #000000;
+}
+
+.downpart
+{
+    margin-top:90.84px;
+}
+.changepass{
+font-family: Tahoma;
+font-style: normal;
+font-weight: bold;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+
+text-align: center;
+margin-left: auto;
+color: #C24545;
+}
+
+.clublogo{
+position: absolute;
+width: 298px;
+height: 298px;
+/* box-shadow: 6px 6px 21px rgba(0, 0, 0, 0.15); */
+border-radius: 15px;
+}
+
+@media only screen and (max-width: 1089px) {
+    .clublogo {
+        width: 150px;
+        height: 150px;
+    }
+  }
+  @media only screen and (max-width: 811px) {
+    .clublogo {
+        display: none;
+    }
+  }
+  @media only screen and (max-width: 576px) {
+    .navright,.logoutbtn,.changepass {
+        margin-left: 30px;
+        font-size: 15px;
+    }
+    .midmeName{
+        margin-left:0px;
+        font-size: 25px;
+    }
+
+  }
+  .downDiv{
+      display: flex;
+      justify-content: center;
+  }
+
+  .field{
+    font-family: Tahoma;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 17px;
+    color: #7E8D92;
+
+  }
+  .fieldinput{
+    font-family: Tahoma;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 21px;
+    line-height: 25px;
+    border-width:0px;
+    border:none;
+    color: #000000;
+    width: 300px;
+  }
+  .content{
+      margin-top: 10px;
+  }
+  .sideline{
+    width: 10px;
+    height: 152px;
+    background: #4E93D1;
+    margin-right: 10px;
+    margin-top:10px;
+  }
+  .secsideline{
+    width: 10px;
+    height: 175px;    
+    background: #88CEDD;
+    margin-right: 10px;
+    margin-top:10px;
+  }
+  .thirdsideline{
+    width: 10px;
+    height: 162px;    
+    background: #91F3D6;
+    margin-right: 10px;
+    margin-top:10px;
+  }
+ 
+  .phonenumber
+  {
+    font-family: Tahoma;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 21px;
+    line-height: 25px;
+    display:flex;
+    color: #000000;
+  }

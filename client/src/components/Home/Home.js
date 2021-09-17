@@ -44,6 +44,12 @@ export default function Landing() {
           <img style={{ maxWidth: "90%" }} src={events}></img>
         </div>
       </div>
+      <div className="row container-fluid justify-content-center" style={{ marginTop: "100px" }}>
+                <LandCard eventName={"TechnoInovation"} date={"02 Aug"} clubName={"SVNIT"} linkName={"apple"} link={"http://ah shit here we go again"} />
+                <LandCard eventName={"TechnoInovation"} date={"02 Aug"} clubName={"SVNIT"} linkName={"apple"} link={"http://ah shit here we go again"} />
+                <LandCard eventName={"TechnoInovation"} date={"02 Aug"} clubName={"SVNIT"} linkName={"apple"} link={"http://ah shit here we go again"} />
+                <LandCard eventName={"TechnoInovation"} date={"02 Aug"} clubName={"SVNIT"} linkName={"apple"} link={"http://ah shit here we go again"} />
+            </div>
     </div>
   );
 }

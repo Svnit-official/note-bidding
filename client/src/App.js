@@ -25,6 +25,7 @@ import ApprovedEvents from "./components/Events/ApprovedEvents";
 import Events from "./components/Club/Home/Events";
 import Modal from "./components/Club/Modal";
 import Landing from "./components/Home/Home";
+import Profile from "./components/Club/Profile";
 const App = () => {
   const userClub = JSON.parse(localStorage.getItem("club_profile"));
   const userDean = JSON.parse(localStorage.getItem("dean_profile"));
@@ -44,6 +45,12 @@ const App = () => {
         <Route path="/" exact component={Landing}></Route>
         {/* ..............club route............. */}
         <Route path="/club/login" exact component={ClubForm} />
+        <Route
+          path="/club/profile"
+          component={() =>
+            !userClub ? <Redirect to="/club/login" /> : <Profile />
+          }
+        />
         <Route
           path="/club/submit"
           component={() =>
