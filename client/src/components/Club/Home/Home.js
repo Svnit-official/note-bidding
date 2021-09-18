@@ -61,7 +61,11 @@ const Home = () => {
       <NavBar />
       <div
         className="container-fluid"
-        style={{ backgroundColor: "#fde964", paddingTop: "100px" }}
+        style={{
+          backgroundColor: "#BDD9F2",
+          paddingTop: "100px",
+          paddingBottom: "170px",
+        }}
       >
         <div className="row">
           <div className="col-md-6 col-sm-12  cardpart">
@@ -71,7 +75,7 @@ const Home = () => {
               style={{
                 borderRadius: "4%",
                 backgroundColor: "#fdfdf7",
-                display: "inline-block",
+                display: "block",
               }}
             >
               <div className="p-4">

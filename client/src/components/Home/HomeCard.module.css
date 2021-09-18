@@ -3,14 +3,14 @@
     background: #ECF3FA;
     border-radius: 8px;
     border: 1px solid black;
+    padding: 10px;
 }
 
 .eventNamefield {
     font-family: Montserrat;
     font-style: normal;
     font-weight: bold;
-    font-size: 12px;
-    line-height: 15px;
+    font-size: 13px;
     color: #6B7383;
 }
 
@@ -19,8 +19,8 @@
     font-style: normal;
     font-weight: bold;
     font-size: 24px;
-    line-height: 29px;
     color: #0C243A;
+    margin-top: 5px;
 }
 
 .clubName {
@@ -28,22 +28,22 @@
     font-style: normal;
     font-weight: normal;
     font-size: 20px;
-    line-height: 24px;
     color: #0C243A;
+    margin-top: 25px;
 }
 
 .appdeadfield {
     font-family: Montserrat;
     font-style: normal;
     font-weight: bold;
-    font-size: 12px;
-    line-height: 15px;
-    /* identical to box height */
+    font-size: 13px;
     color: #6B7383;
 }
 
 .landCardRightCol {
     text-align: right;
+    display: flex;
+    flex-direction: column;
 }
 
 .landCardDateBoxes {
@@ -53,8 +53,8 @@
     font-style: normal;
     font-weight: bold;
     font-size: 24px;
-    line-height: 29px;
-    margin-right: 5px;
+    margin-right: 8px;
+    padding: 1px 5px;
     /* identical to box height */
     color: #FFFFFF;
 }

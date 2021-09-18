@@ -23,6 +23,7 @@ import FinanceResponded from "./components/Finance/FinanceHome/FinanceResponded"
 import DeanResponded from "./components/Dean/DeanHome/DeanResponded";
 import ApprovedEvents from "./components/Events/ApprovedEvents";
 import Events from "./components/Club/Home/Events";
+import ClubProfile from "./components/Club/Profile";
 import Modal from "./components/Club/Modal";
 import Landing from "./components/Home/Home";
 const App = () => {
@@ -101,7 +102,13 @@ const App = () => {
         <Route
           path="/club/modal"
           component={() =>
-            !userClub ? <Redirect to="/club/modal" /> : <Modal />
+            !userClub ? <Redirect to="/club/login" /> : <Modal />
+          }
+        />
+        <Route
+          path="/club/details"
+          component={() =>
+            !userClub ? <Redirect to="/club/login" /> : <ClubProfile />
           }
         />
 

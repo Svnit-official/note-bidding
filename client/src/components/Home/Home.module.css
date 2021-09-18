@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Roboto:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;800&family=Roboto:wght@700;800&display=swap');
 body {
     overflow-x: hidden;
 }
@@ -55,4 +55,12 @@ body {
     font-size: 20px;
     color: #2E475F;
     padding: 20px 40px;
+}
+
+.eventHead {
+    font-family: 'Roboto';
+    font-weight: 700;
+    font-size: 3em;
+    text-align: center;
+    padding-top: 25px
 }

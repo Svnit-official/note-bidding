@@ -12,45 +12,49 @@ export default function LandCard(props) {
   return (
     <>
       <div
-        className="col-md-5 "
+        className="col-md-4 "
         style={{ marginTop: "15px", marginLeft: "15px" }}
       >
         <div className={`row ${styles.mainbody}`}>
           <div className="col-6 ">
-            <div className="p-4">
-              <div>
-                <span className={styles.eventNamefield}>Event Name</span>
-              </div>
-              <div>
-                <span className={styles.eventName}>{props.eventName}</span>
-              </div>
-              <br></br>
-              <div>
-                <span className={styles.clubName}>{props.clubName}</span>
-              </div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <span className={styles.eventNamefield}>Event Name</span>
+
+              <span className={styles.eventName}>{props.eventName}</span>
+
+              <span className={styles.clubName}>{props.clubName}</span>
             </div>
           </div>
-          <div className="col-6 justify-content-end">
-            <div className="p-4 ">
-              <div className={styles.landCardRightCol}>
-                <span className={styles.appdeadfield}>
-                  Application deadline
-                </span>
-              </div>
-              <div className={styles.landCardRightCol}>
-                <span className={styles.landCardDateBoxes}>
-                  {props.date.split(" ")[0]}
-                </span>
-                <span className={styles.landCardDateBoxes}>
+          <div className="col-6">
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-end",
+              }}
+            >
+              <span className={styles.eventNamefield}>Event Date</span>
+
+              <div style={{ display: "flex", marginTop: "10px" }}>
+                <div className={styles.landCardRightCol}>
+                  <span className={styles.landCardDateBoxes}>
+                    {props.date.split(" ")[0]}
+                  </span>
+                </div>
+                <span
+                  className={styles.landCardDateBoxes}
+                  style={{ marginRight: "0" }}
+                >
                   {props.date.split(" ")[1]}
                 </span>
               </div>
-              <br></br>
-              <div className={styles.landCardRightCol}>
-                <a href={props.link} className={styles.linkbox}>
-                  {props.linkName}
-                </a>
-              </div>
+
+              <span className={styles.clubName}>{props.clubName}</span>
             </div>
           </div>
         </div>

@@ -8,7 +8,9 @@ export default function Landing() {
       {/* <div className={styles.backimg}> */}
       <div className={`d-flex ${styles.navbar}`}>
         <div className="" style={{ marginLeft: "auto" }}>
-          <button className={`btn ${styles.loginbtn}`}>Admin Login</button>
+          <a href="/club/login" className={`btn ${styles.loginbtn}`}>
+            Login
+          </a>
         </div>
       </div>
       <div className={`row ${styles.topDiv}`}>
@@ -41,8 +43,48 @@ export default function Landing() {
           }}
           className="col-md-6 col-sm-12"
         >
-          <img style={{ maxWidth: "90%" }} src={events}></img>
+          <img
+            style={{ maxWidth: "90%", paddingTop: "2em" }}
+            src={events}
+          ></img>
         </div>
+      </div>
+      <h1 className={styles.eventHead}>All Upcoming Events</h1>
+      <div
+        className="row container-fluid justify-content-center"
+        style={{
+          marginTop: "35px",
+          paddingRight: "0",
+        }}
+      >
+        <LandCard
+          eventName={"TechnoInovation"}
+          date={"02 Aug"}
+          clubName={"SVNIT"}
+          linkName={"apple"}
+          link={"http://ah shit here we go again"}
+        />
+        <LandCard
+          eventName={"TechnoInovation"}
+          date={"02 Aug"}
+          clubName={"SVNIT"}
+          linkName={"apple"}
+          link={"http://ah shit here we go again"}
+        />
+        <LandCard
+          eventName={"TechnoInovation"}
+          date={"02 Aug"}
+          clubName={"SVNIT"}
+          linkName={"apple"}
+          link={"http://ah shit here we go again"}
+        />
+        <LandCard
+          eventName={"TechnoInovation"}
+          date={"02 Aug"}
+          clubName={"SVNIT"}
+          linkName={"apple"}
+          link={"http://ah shit here we go again"}
+        />
       </div>
     </div>
   );

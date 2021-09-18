@@ -1,34 +1,40 @@
-.navcolor
-{
-    background-color:transparent;
-}
-.sidenav {
-    height: 100%; /* 100% Full-height */ /* 0 width - change this with JavaScript */
-    position: fixed; /* Stay in place */
-    z-index: 200; /* Stay on top */
-    top: 0; /* Stay at the top */
-    left: 0;
-    
-    background-color: #F9F871;/* Black*/
-    overflow-x: hidden; /* Disable horizontal scroll */
-    padding-top: 60px; /* Place content 60px from the top */
-    transition: 1s; /* 0.5 second transition effect to slide in the sidenav */
-  }
-.sidenav ul{
-    margin-top: 10px;
-    /* list-style */
-    list-style:none;
-    font-size: 1.5rem;
-    
-}
-.sidenav ul li{
-    padding:5px;
-    
+.navcolor {
+    background-color: transparent;
 }
 
-a{
+.sidenav {
+    height: 100%;
+    /* 100% Full-height */
+    /* 0 width - change this with JavaScript */
+    position: fixed;
+    /* Stay in place */
+    z-index: 200;
+    /* Stay on top */
+    top: 0;
+    /* Stay at the top */
+    left: 0;
+    background-color: #BDD9F2;
+    /* Black*/
+    overflow-x: hidden;
+    /* Disable horizontal scroll */
+    padding-top: 60px;
+    /* Place content 60px from the top */
+    transition: 0.5s;
+    /* 0.5 second transition effect to slide in the sidenav */
+}
+
+.sidenav ul {
+    margin-top: 10px;
+    /* list-style */
+    list-style: none;
+    font-size: 1.5rem;
+}
+
+.sidenav ul li {
+    padding: 5px;
+}
+
+a {
     text-decoration: none;
     color: black;
 }
-
-  
