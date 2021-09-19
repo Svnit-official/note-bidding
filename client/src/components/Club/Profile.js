@@ -9,6 +9,7 @@ export default function Profile() {
           <div className="d-flex">
             <img
               className={styles.logo}
+              alt="logo"
               src="https://upload.wikimedia.org/wikipedia/en/thumb/1/1b/NIT_Surat_Logo.svg/1200px-NIT_Surat_Logo.svg.png"
             ></img>
             <div style={{ marginLeft: "15px" }}>

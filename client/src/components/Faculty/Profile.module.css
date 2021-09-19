@@ -151,11 +151,11 @@ input:focus {
     font-family: Tahoma;
     font-style: normal;
     font-weight: normal;
-    font-size: 21px;
+    font-size: 16px;
     line-height: 25px;
     border-width: 0px;
     border: none;
-    color: #000000;
+    color: #5f5f5f;
     width: 300px;
 }
 
@@ -165,7 +165,7 @@ input:focus {
 
 .sideline {
     width: 10px;
-    height: 152px;
+    height: 210px;
     background: #4E93D1;
     margin-right: 10px;
     margin-top: 10px;
@@ -173,7 +173,7 @@ input:focus {
 
 .secsideline {
     width: 10px;
-    height: 175px;
+    height: 110px;
     background: #88CEDD;
     margin-right: 10px;
     margin-top: 10px;
