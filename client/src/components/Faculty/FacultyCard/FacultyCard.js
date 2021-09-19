@@ -13,8 +13,10 @@ import {
   Dialog,
   DialogTitle,
   DialogActions,
+  Modal
 } from "@material-ui/core";
 import { useDispatch } from "react-redux";
+import SimpleModal from './Modal';
 import { useHistory } from "react-router-dom";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MultiStepForm from "../../MultiStepForm/MultiStepForm";
@@ -34,6 +36,7 @@ export default function FacultyCard({ draft, status, color, text }) {
   const [checked, setChecked] = useState(true);
   const [open, setOpen] = useState(false);
   const user = JSON.parse(localStorage.getItem("fac_profile"));
+  const [openModal , setOpenModal] = useState(false);
 
   const request = {
     id: draft._id,
@@ -74,6 +77,16 @@ export default function FacultyCard({ draft, status, color, text }) {
     //await dispatch(getRespondedRequests(user.facultyID));
     setOpen(true);
   };
+
+  const handleModalOpen = () => {
+    console.log("i am here")
+    setOpenModal(true);
+  }
+
+  const handleModalClose = () => {
+    setOpenModal(false);
+ 
+  }
 
   const handleClose = () => {
     setOpen(false);
@@ -116,6 +129,7 @@ export default function FacultyCard({ draft, status, color, text }) {
         backgroundColor: `${bgColor}`,
         marginBottom: "1rem",
       }}
+      
     >
       <p style={{ marginBottom: "5px", fontWeight: "500", color: "#423F3E" }}>
         {draft.clubName}
@@ -176,6 +190,16 @@ export default function FacultyCard({ draft, status, color, text }) {
           <Button
             className={classes.button}
             size="small"
+            variant="contained"
+            color="primary"
+            onClick={handleModalOpen}
+            style={{ marginLeft: "0" }}
+          >
+            Details
+          </Button>
+          <Button
+            className={classes.button}
+            size="small"
             variant="outlined"
             color="primary"
             onClick={handleOpen}
@@ -195,6 +219,16 @@ export default function FacultyCard({ draft, status, color, text }) {
             <CommentSection draft={draft} />
           </DialogActions>
         </Dialog>
+        <Modal
+                open={openModal}
+                onClose={handleModalClose}
+                aria-labelledby="simple-modal-title"
+                aria-describedby="simple-modal-description"
+            >
+            <SimpleModal draft={draft}/>
+            </Modal>
+          
+
         {flag ? (
           <>
             <Typography style={{ padding: "0", marginBottom: "8px" }}>

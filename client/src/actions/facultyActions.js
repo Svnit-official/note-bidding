@@ -50,7 +50,13 @@ export const sendBackPendingRequests =
   };
 
 export const postFacultyComments = (facultyID, request) => async (dispatch) => {
+  try {
+   
   const { data } = await api.postFacultyComments(facultyID, request);
-  return data.data.c;
+  console.log("data at actions",data);
+  return data.data.c; 
+  } catch (error) {
+    console.log(error);
+  }
   // return requireData;
 };

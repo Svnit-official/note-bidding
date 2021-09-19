@@ -13,7 +13,9 @@ import {
   Dialog,
   DialogTitle,
   DialogActions,
+  Modal
 } from "@material-ui/core";
+import SimpleModal from './Modal';
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -32,6 +34,7 @@ export default function FinanceCard({ draft }) {
   const classes = useStyles();
   const [checked, setChecked] = useState(true);
   const [open, setOpen] = useState(false);
+  const [openModal , setOpenModal] = useState(false);
   const request = {
     id: draft._id,
   };
@@ -81,6 +84,18 @@ export default function FinanceCard({ draft }) {
   const handleClose = () => {
     setOpen(false);
   };
+
+  
+  const handleModalOpen = () => {
+    console.log("i am here")
+    setOpenModal(true);
+  }
+
+  const handleModalClose = () => {
+    setOpenModal(false);
+ 
+  }
+
   let flag2 = false;
   if (draft.status.includes("rejected")) {
     flag2 = true;
@@ -180,6 +195,16 @@ export default function FinanceCard({ draft }) {
           <Button
             className={classes.button}
             size="small"
+            variant="contained"
+            color="primary"
+            onClick={handleModalOpen}
+            style={{ marginLeft: "0" }}
+          >
+            Details
+          </Button>
+          <Button
+            className={classes.button}
+            size="small"
             variant="outlined"
             color="primary"
             onClick={handleOpen}
@@ -199,6 +224,16 @@ export default function FinanceCard({ draft }) {
             </DialogActions>
           </Dialog>
         </CardActions>
+        <Modal
+                open={openModal}
+                onClose={handleModalClose}
+                aria-labelledby="simple-modal-title"
+                aria-describedby="simple-modal-description"
+            >
+            <SimpleModal draft={draft}/>
+            </Modal>
+
+
         {!flag ? (
           <>
             <Typography style={{ padding: "0", marginBottom: "8px" }}>
