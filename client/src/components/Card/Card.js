@@ -23,7 +23,7 @@ import MultiStepForm from "../MultiStepForm/MultiStepForm";
 import useStyles from "./styles";
 import FileBase from "react-file-base64";
 import UpdateDraft from "../Events/UpdateDraft";
-import { sendRequest, deleteRequest } from "../../actions/clubActions";
+import { sendRequest, deleteRequest } from '../../actions/clubActions';
 import CommentSection from "./CommentSection";
 import SimpleModal from "./Modal";
 export default function SimpleCard({ draft }) {
@@ -32,6 +32,8 @@ export default function SimpleCard({ draft }) {
   const [open, setOpen] = useState(false);
   const classes = useStyles();
   const [checked, setChecked] = useState(true);
+  const [openModal , setOpenModal] = useState(false);
+
   const downloadPdf = () => {
     const linkSource = `${draft.pdf}`;
     const downloadLink = document.createElement("a");
@@ -58,6 +60,16 @@ export default function SimpleCard({ draft }) {
   const handleClose2 = () => {
     setOpen(true);
   };
+
+  const handleModalOpen = () => {
+    console.log("i am here")
+    setOpenModal(true);
+  }
+
+  const handleModalClose = () => {
+    setOpenModal(false);
+ 
+  }
 
   const sendingRequest = () => {
     console.log("sendRequest", draft._id);
@@ -92,7 +104,6 @@ export default function SimpleCard({ draft }) {
         backgroundColor: "#DBE6FD",
         marginBottom: "1rem",
       }}
-      onClick={handleClickOpen}
     >
       <p style={{ marginBottom: "5px", fontWeight: "500", color: "#423F3E" }}>
         {draft.clubName}
@@ -138,7 +149,6 @@ export default function SimpleCard({ draft }) {
           Draft
         </div>
       </div>
-      <SimpleModal state={open} draft={draft} />
       <div>
         <CardActions style={{ padding: "0" }}>
           <Button
@@ -159,6 +169,16 @@ export default function SimpleCard({ draft }) {
             onClick={downloadPdf}
           >
             Download Pdf
+          </Button>
+          <Button
+            className={classes.button}
+            size="small"
+            variant="contained"
+            color="primary"
+            onClick={handleModalOpen}
+            style={{ marginLeft: "0" }}
+          >
+            Details
           </Button>
           <Button
             className={classes.button}
@@ -204,6 +224,14 @@ export default function SimpleCard({ draft }) {
             <UpdateDraft id={draft._id} />
           </DialogActions>
         </Dialog>
+        <Modal
+                open={openModal}
+                onClose={handleModalClose}
+                aria-labelledby="simple-modal-title"
+                aria-describedby="simple-modal-description"
+            >
+            <SimpleModal draft={draft}/>
+            </Modal>
       </div>
     </div>
   );

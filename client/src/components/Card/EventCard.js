@@ -13,6 +13,7 @@ import {
   Dialog,
   DialogTitle,
   DialogActions,
+  Modal
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MultiStepForm from "../MultiStepForm/MultiStepForm";
@@ -30,6 +31,7 @@ export default function SimpleCard({ event, status, color, text }) {
   const classes = useStyles();
   const [checked, setChecked] = useState(true);
   const dispatch = useDispatch();
+  const [openModal , setOpenModal] = useState(false);
   const user = JSON.parse(localStorage.getItem("club_profile"));
   console.log(event);
   const downloadPdf = () => {
@@ -61,6 +63,17 @@ export default function SimpleCard({ event, status, color, text }) {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleModalOpen = () => {
+    console.log("i am here")
+    setOpenModal(true);
+  }
+
+  const handleModalClose = () => {
+    setOpenModal(false);
+ 
+  }
+
   let flag2 = false;
   if (event.status.includes("rejected")) {
     flag2 = true;
@@ -158,7 +171,6 @@ export default function SimpleCard({ event, status, color, text }) {
             }`}
         </div>
       </div>
-      <SimpleModal state={open} draft={event} />
       <div>
         <CardActions style={{ padding: "0" }}>
           <Button
@@ -170,6 +182,16 @@ export default function SimpleCard({ event, status, color, text }) {
             onClick={downloadPdf}
           >
             Download Pdf
+          </Button>
+          <Button
+            className={classes.button}
+            size="small"
+            variant="contained"
+            color="primary"
+            onClick={handleModalOpen}
+            style={{ marginLeft: "0" }}
+          >
+            Details
           </Button>
           {flag && (
             <Button
@@ -231,6 +253,14 @@ export default function SimpleCard({ event, status, color, text }) {
           <PublishForm eventName={event.eventName} clubName={event.clubName} />
         </DialogActions>
       </Dialog>
+      <Modal
+                open={openModal}
+                onClose={handleModalClose}
+                aria-labelledby="simple-modal-title"
+                aria-describedby="simple-modal-description"
+            >
+            <SimpleModal draft={event}/>
+            </Modal>
     </div>
   );
 }

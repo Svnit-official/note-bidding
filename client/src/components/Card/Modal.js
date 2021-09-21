@@ -1,16 +1,17 @@
 
-import React from 'react';
+
+import React,{useState,useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import './Modal.css';
-import CloseIcon from '@material-ui/icons/Close';
-
-function rand() {
-    return Math.round(Math.random() * 20) - 10;
-}
+import { useDispatch } from 'react-redux';
+import {postClubComments} from '../../actions/clubActions';
+// function rand() {
+//     return Math.round(Math.random() * 20) - 10;
+// }
 
 function getModalStyle() {
-    const top = 50 ;
+    const top = 50;
     const left = 50;
 
     return {
@@ -31,32 +32,37 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SimpleModal({state,draft}) {
+export default function SimpleModal({draft}) {
     const classes = useStyles();
-    // getModalStyle is not a pure function, we roll the style only on the first render
     const [modalStyle] = React.useState(getModalStyle);
-    console.log(state);
-    const [open, setOpen] = React.useState(state)
+    const [comments,setComments] = useState([draft?.comments]);
+    const [comment,setComment] = useState('');
+    const user = JSON.parse(localStorage.getItem('club_profile'));
+    const dispatch = useDispatch();
+    useEffect(()=>{
+        setComments(draft?.comments);
+    } , [])
 
-    // const handleOpen = () => {
-    //      setOpen(true);
-    //      return true;
-    // };
+   const handleCommentPost = async (e) => {
+    e.preventDefault();
+        console.log(comment);
 
-    const handleClose = () => {
-        // state=false;
-        console.log(open);
-         setOpen(true);
-         console.log(open);
-    };
+        const request = {
+           id : draft._id,
+            comment
+        }
 
-    const body = (
+        const newComments = await dispatch(postClubComments(user.clubID , request))
+        console.log("data at modal",newComments);
+
+        setComments(newComments);
+        setComment('');
+   }
+
+   console.log(draft.comments);
+
+    return (
         <div style={modalStyle} className={classes.paper} >
-            {/* <h2 id="simple-modal-title">Text in a modal</h2>
-      <p id="simple-modal-description">
-        Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-      </p>
-      <SimpleModal /> */}
             <div className="row">
                 <div className="col-md-6">
                     Event Name
@@ -67,12 +73,17 @@ export default function SimpleModal({state,draft}) {
                     {draft.eventDate}
 
                     <div class="form-outline" >
-                        <textarea class="form-control" id="textAreaExample" rows="10" placeholder="Comment If any" style={{backgroundColor:"#FFF7AE"}}></textarea>
+                        {comments.map((c)=>(
+                            <p><strong>{c.name} : </strong>{c.comment}</p>
+                        ))}
+                        <textarea class="form-control" id="textAreaExample" rows="2" placeholder="Comment If any" style={{backgroundColor:"#FFF7AE"}} value = {comment}
+                        onChange={(e)=> setComment(e.target.value)}></textarea>
+                        <button onClick={handleCommentPost}>Send</button>
                     </div>
                 </div>
                 <div className="col-md-6">
-                      <div className="float-right"  onClick={handleClose}> <CloseIcon /><div>
                     <div className="rightboxtop"><h1>Status</h1></div>
+                    
                     <ul style={{ listStyle: "none" }}>
                     <div className="verticol"></div>
                         <li className="" style={{display:"flex"}}  >
@@ -102,31 +113,10 @@ export default function SimpleModal({state,draft}) {
                             </div>
                         </li>
                     </ul>
-                    <div className="float-right" style={{position:"relative"}}>
-                    <button type="button" className="btn" style={{width:"50%",backgroundColor:"#fde964"}}>Download Pdf</button>
-                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    </div>
     );
+                }
 
-    return (
- 
-        <div>
-            {/* <button type="button" onClick={handleOpen}>
-                Open Modal
-            </button> */}
-            <Modal
-                open={state}
-
-                aria-labelledby="simple-modal-title"
-                aria-describedby="simple-modal-description"
-            >
-                {body}
-            </Modal>
-        </div>
-    );
-}
 

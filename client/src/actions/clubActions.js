@@ -117,8 +117,8 @@ export const handleReceiptDownload = (id, formdata) => async (dispatch) => {
 export const postClubComments = (clubID,request) => async (dispatch) => {
 
   const data = await api.postClubComments(clubID,request);
-  console.log(data);
-  return data;
+  console.log('action data : ' , data.data.data.c);
+  return data.data.data.c;
 }
 
 export const publishEvent = (clubID , request) => async (dispatch) => {

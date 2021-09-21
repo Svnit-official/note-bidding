@@ -510,11 +510,12 @@ module.exports.postComments = async(req, res) => {
       comment
      }
     request.comments.push(commentObject);
+    const c = request.comments;
     request.save();
     res.status(200).json({
       status: "success",
       data: {
-        comment
+        c
       },
       message: "redirect to /getComments"
     });

@@ -9,6 +9,7 @@ import {
   Dialog,
   DialogTitle,
   DialogActions,
+  Modal
 } from "@material-ui/core";
 import MultiStepForm from "../MultiStepForm/MultiStepForm";
 import useStyles from "./styles";
@@ -17,6 +18,7 @@ import { useDispatch } from "react-redux";
 import { useHistory, Link } from "react-router-dom";
 import CorrectRequestForm from "../Events/CorrectRequestForm";
 import CommentSection from "./CommentSection";
+import SimpleModal from "./Modal";
 
 export default function SimpleCard({ event, color }) {
   const dispatch = useDispatch();
@@ -24,6 +26,7 @@ export default function SimpleCard({ event, color }) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState(true);
+  const [openModal , setOpenModal] = useState(false);
   console.log(event);
   //download pdf
   const downloadPdf = () => {
@@ -50,6 +53,17 @@ export default function SimpleCard({ event, color }) {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleModalOpen = () => {
+    console.log("i am here")
+    setOpenModal(true);
+  }
+
+  const handleModalClose = () => {
+    setOpenModal(false);
+ 
+  }
+
   let flag = false;
   if (
     event.status === "sentByFaculty" ||
@@ -142,6 +156,16 @@ export default function SimpleCard({ event, color }) {
           Download Pdf
         </Button>
         <Button
+            className={classes.button}
+            size="small"
+            variant="contained"
+            color="primary"
+            onClick={handleModalOpen}
+            style={{ marginLeft: "0" }}
+          >
+            Details
+          </Button>
+        <Button
           className={classes.button}
           size="small"
           variant="contained"
@@ -176,6 +200,14 @@ export default function SimpleCard({ event, color }) {
           </DialogActions>
         </Dialog>
       </CardActions>
+      <Modal
+                open={openModal}
+                onClose={handleModalClose}
+                aria-labelledby="simple-modal-title"
+                aria-describedby="simple-modal-description"
+            >
+            <SimpleModal draft={event}/>
+            </Modal>
     </div>
   );
 }
