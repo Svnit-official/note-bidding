@@ -31,8 +31,19 @@ const FacultyResponded = () => {
       <NavBar />
       <div className="row container-fluid" style={{ paddingTop: "100px" }}>
         <div className="col-md-5 col-sm-12" style={{ backgroundColor: "" }}>
-          <div id="sidenavper" className="sidenavper" style={{ width: width }}>
-            <ul>
+          <div
+            id="sidenavper"
+            className="sidenavper"
+            style={{ width: width, backgroundColor: "#BDD9F2" }}
+          >
+            <ul
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                paddingLeft: "0px",
+              }}
+            >
               <a href="/faculty/home">
                 <li>Dashboard</li>
               </a>

@@ -1,23 +1,11 @@
-import {
-  TextField,
-  Button,
-  Typography,
-  Paper,
-  Card,
-  Grid,
-  Dialog,
-  DialogTitle,
-  DialogActions,
-} from "@material-ui/core";
+import { Button, Dialog, DialogTitle, DialogActions } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import useStyles from "./profileStyles";
 import UpdateForm from "./FacultyUpdateForm";
 import { useDispatch, useSelector } from "react-redux";
 import { facultyDetails } from "../../actions/auth";
-import NavBar from "../NavBar/NavBar";
 import Loading from "../Loaders/Load.js";
 import styles from "./Profile.module.css";
-import drishti from "./drishti.png";
 export default function Profile() {
   const id = sessionStorage.getItem("faculty");
   console.log(id);
@@ -64,7 +52,7 @@ export default function Profile() {
           <img className={styles.clublogo} src={d.facultyPic} alt="club" />
           <div className={styles.midmeName}>{d.facultyName}</div>
           <div className={styles.changepass}>
-            <a href="/club/resetPassword" style={{ color: " #C24545" }}>
+            <a href="/faculty/resetPassword" style={{ color: " #C24545" }}>
               Change Password
             </a>
             <br />

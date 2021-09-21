@@ -17,7 +17,7 @@ const UpdateForm = ({ details }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(updateDeanDetails(id, postData, history));
-    history.go(0);
+    history.push(`/dean/${id}/details`);
   };
   const classes = useStyles();
   return (

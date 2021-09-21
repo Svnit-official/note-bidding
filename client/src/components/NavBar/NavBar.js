@@ -103,8 +103,8 @@ const NavBar = () => {
             <a href="/club/approved">
               <li>Approved</li>
             </a>
-            <a href="/club/resetPassword">
-              <li>ResetPassword</li>
+            <a href="/club/details">
+              <li>Club Profile</li>
             </a>
           </ul>
         </div>
