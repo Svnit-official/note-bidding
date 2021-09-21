@@ -57,6 +57,7 @@ module.exports.downloadPdf = async (req, res) => {
     const dean = await Dean.find({});
     const deanName = dean[0].deanName;
     const deanSign = dean[0].signature;
+    const date = getDate();
 
     const data = {
         //request,
@@ -74,7 +75,8 @@ module.exports.downloadPdf = async (req, res) => {
         finSign,
         finName,
         deanName,
-        deanSign    
+        deanSign,
+        date    
     }
     //const user = req.params.user;
     const user = "Club"
