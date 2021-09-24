@@ -138,15 +138,14 @@ const NavBar = () => {
           </a>
           <ul className="nav ">
             <li className="nav-item">
-              <a href="/club/login">
                 <button
                   type="button"
                   class="btn border-dark border-3 "
                   style={{ fontWeight: "700" }}
+                  onClick={logout}
                 >
                   Logout
                 </button>
-              </a>
             </li>
           </ul>
         </div>

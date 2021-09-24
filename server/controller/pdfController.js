@@ -45,6 +45,7 @@ module.exports.downloadPdf = async (req, res) => {
     const club = await Club.findById(request.clubId);
     const clubSign = club.signature;
     const clubName = club.clubName;
+    const clubHeadName = club.headName;
 
     const faculty = await Faculty.findById(request.facultyId);
     const facName = faculty.facultyName;
@@ -76,6 +77,7 @@ module.exports.downloadPdf = async (req, res) => {
         finName,
         deanName,
         deanSign,
+        clubHeadName,
         date    
     }
     //const user = req.params.user;

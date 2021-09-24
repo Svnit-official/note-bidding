@@ -27,9 +27,16 @@ const SentRequest = () => {
             <div
               id="sidenavper"
               className="sidenavper"
-              style={{ width: width }}
+              style={{ width: width, backgroundColor: "#BDD9F2" }}
+          >
+            <ul
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                paddingLeft: "0px",
+              }}
             >
-              <ul>
                 <a href="/club/home">
                   <li>Home</li>
                 </a>

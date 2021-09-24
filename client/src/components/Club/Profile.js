@@ -26,7 +26,7 @@ export default function Profile() {
         </div>
         <div className={`d-flex ${styles.downpart}`}>
           <img className={styles.clublogo} src={drishti} alt="club" />
-          <div className={styles.midmeName}>DRISHTI</div>
+          <div className={styles.midmeName}>CEV</div>
           <div className={styles.changepass}>
             <a href="/club/resetPassword" style={{ color: " #C24545" }}>
               Change Password
