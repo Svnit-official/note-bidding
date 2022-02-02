@@ -13,7 +13,7 @@ const db =
   // process.env.DATABASE_URL.replace("<PASSWORD>", process.env.USER_PASSWORD) ||
   // process.env.DATABASE_LOCAL;
 
-const connect =  () => {
+const connect = async () => {
   mongoose
     .connect(db, {
       useUnifiedTopology: true,
@@ -93,13 +93,17 @@ const del = async () => {
   process.exit();
 };
 
-//connect();
-
-if (process.argv[2] === "--import") {
-  read();
-} else if (process.argv[2] === "--delete") {
-  del();
-}
-else if (process.argv[2] === "--create") {
-  create();
-}
+connect()
+  .then(() => {
+    if (process.argv[2] === "--import") {
+      read();
+    } else if (process.argv[2] === "--delete") {
+      del();
+    } else if (process.argv[2] === "--create") {
+      create();
+    }
+  })
+  .catch((err) => { 
+    console.log("failed to connect");
+    console.log(err);
+  })
