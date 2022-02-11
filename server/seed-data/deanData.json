@@ -3,32 +3,10 @@
     "username": "sampleDean",
     "password": "samplePass",
     "deanName": "sampledeanName",
-    "deanDesignation": "Nalla",
+    "deanDesignation": "NA",
     "signature": "https://images.unsplash.com/photo-1626432018525-964f683f2ed0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80",
     "deanPic": "https://images.unsplash.com/photo-1626432018525-964f683f2ed0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80",
     "deanEmail": "sampleDean@gmail.com",
-    "deanContact": "998989",
-    "respondedRequests": []
-  },
-  {
-    "username": "sampleDean2",
-    "password": "samplePass2",
-    "deanName": "sampledeanName2",
-    "deanDesignation": "Nalla",
-    "signature": "https://images.unsplash.com/photo-1626432018525-964f683f2ed0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80",
-    "deanPic": "https://images.unsplash.com/photo-1626432018525-964f683f2ed0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80",
-    "deanEmail": "sampleDean2@gmail.com",
-    "deanContact": "998989",
-    "respondedRequests": []
-  },
-  {
-    "username": "sampleDean3",
-    "password": "samplePass3",
-    "deanName": "sampledeanName3",
-    "deanDesignation": "Nalla",
-    "signature": "https://images.unsplash.com/photo-1626432018525-964f683f2ed0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80",
-    "deanPic": "https://images.unsplash.com/photo-1626432018525-964f683f2ed0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80",
-    "deanEmail": "sampleDean3@gmail.com",
     "deanContact": "998989",
     "respondedRequests": []
   }

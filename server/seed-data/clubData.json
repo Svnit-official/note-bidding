@@ -1,38 +1,38 @@
-[
+[ 
+  {
+   "_id": "61fae00240e8c8d1f0fbfd23",
+   "username":"sampleClub",
+   "password":"samplePass",
+   "clubName":"sampleClubName",
+   "clubDescription":"sampleClubDescription",
+   "headName":"sampleHeadName",
+   "clubEmail":"sampleClub@gmail.com",
+   "clubContact":"99798",
+   "clubLogo":"https://images.unsplash.com/photo-1626432018525-964f683f2ed0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80",
+   "signature":"https://images.unsplash.com/photo-1626432018525-964f683f2ed0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80"
+  },
+   {
+     "_id": "61fae00240e8c8d1f0fbfd24",
+     "username": "sampleClub2",
+     "password": "samplePass2",
+     "clubName": "sampleClubName2",
+     "clubDescription": "sampleClubDescription",
+     "headName": "sampleHeadName",
+     "clubEmail": "sampleClub@gmail.com",
+     "clubContact": "99798",
+     "clubLogo": "https://images.unsplash.com/photo-1626432018525-964f683f2ed0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80",
+     "signature": "https://images.unsplash.com/photo-1626432018525-964f683f2ed0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80"
+   },
     {
-      "username": "sampleClub",
-      "password": "samplePass",
-      "clubName": "sampleClubName",
+      "_id": "61fae00240e8c8d1f0fbfd25",
+      "username": "sampleClub3",
+      "password": "samplePass3",
+      "clubName": "sampleClubName3",
       "clubDescription": "sampleClubDescription",
       "headName": "sampleHeadName",
       "clubEmail": "sampleClub@gmail.com",
       "clubContact": "99798",
       "clubLogo": "https://images.unsplash.com/photo-1626432018525-964f683f2ed0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80",
-      "signature": "https://images.unsplash.com/photo-1626432018525-964f683f2ed0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80",
-      "sentRequests": []
-    },
-  {
-    "username": "sampleClub2",
-    "password": "samplePass2",
-    "clubName": "sampleClubName2",
-    "clubDescription": "sampleClubDescription",
-    "headName": "sampleHeadName",
-    "clubEmail": "sampleClub@gmail.com",
-    "clubContact": "99798",
-    "clubLogo": "https://images.unsplash.com/photo-1626432018525-964f683f2ed0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80",
-    "signature": "https://images.unsplash.com/photo-1626432018525-964f683f2ed0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80",
-    "sentRequests": []
-  },
-  {
-    "username": "sampleClub3",
-    "password": "samplePass3",
-    "clubName": "sampleClubName3",
-    "clubDescription": "sampleClubDescription",
-    "headName": "sampleHeadName",
-    "clubEmail": "sampleClub@gmail.com",
-    "clubContact": "99798",
-    "clubLogo": "https://images.unsplash.com/photo-1626432018525-964f683f2ed0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80",
-    "signature": "https://images.unsplash.com/photo-1626432018525-964f683f2ed0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80",
-    "sentRequests": []
-  }
+      "signature": "https://images.unsplash.com/photo-1626432018525-964f683f2ed0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80"
+    }
 ]
