@@ -6,7 +6,8 @@ dotenv.config({ path: "./config.env" });
 const app = require("./app");
 const port = process.env.PORT || 8000;
 const db =
-  "mongodb://Anubhav:svnit@cluster0-shard-00-00.ojfjb.mongodb.net:27017,cluster0-shard-00-01.ojfjb.mongodb.net:27017,cluster0-shard-00-02.ojfjb.mongodb.net:27017/myFirstDatabase?ssl=true&replicaSet=atlas-vyucgy-shard-0&authSource=admin&retryWrites=true&w=majority";
+  "mongodb://mongo:27017/portal";
+// "mongodb://Anubhav:svnit@cluster0-shard-00-00.ojfjb.mongodb.net:27017,cluster0-shard-00-01.ojfjb.mongodb.net:27017,cluster0-shard-00-02.ojfjb.mongodb.net:27017/myFirstDatabase?ssl=true&replicaSet=atlas-vyucgy-shard-0&authSource=admin&retryWrites=true&w=majority";
 mongoose.connect(db, {
   useUnifiedTopology: true,
   useNewUrlParser: true,

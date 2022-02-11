@@ -9,7 +9,8 @@ const Dean = require(`${__dirname}/../models/deanModel`);
 dotenv.config({ path: `${__dirname}/../../config.env` });
 
 const db =
-  "mongodb+srv://Anubhav:svnit@cluster0.ojfjb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+  "mongodb://localhost:27017/portal";
+//  "mongodb+srv://Anubhav:svnit@cluster0.ojfjb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
   // process.env.DATABASE_URL.replace("<PASSWORD>", process.env.USER_PASSWORD) ||
   // process.env.DATABASE_LOCAL;
 
