@@ -54,8 +54,12 @@ const requestSchema = new mongoose.Schema({
     default: "draft",
     enum: allowedStatus,
   },
+  financeRequired :{
+    type: Boolean,
+    required: [true, "If you require finance or not"],
+  },
   // comments: [
-  //   {
+  //   {  
   //     name: {
   //       type: String,
   //     },

@@ -197,7 +197,9 @@ module.exports.approvePendingRequest = async (req, res) => {
       faculty.respondedRequests.push(request._id);
       faculty.save();
     }
-    request.status = "approvedByFaculty"
+    console.log(request.financeRequired);
+    if(request.financeRequired == true) request.status = "approvedByFaculty"
+    else request.status = "approvedByFinance"
     request.facultyId = req.params.id;
     request.timeline.approvedByFaculty = { date: getDate(), time: getTime() };
     await request.save();
@@ -230,7 +232,7 @@ module.exports.rejectPendingRequest = async (req, res) => {
       faculty.save();
     }
     await Request.findByIdAndUpdate(req.body.id, {
-      status: "rejectedByFaculty",
+      status: "rejectedByFaculty",  
       // comments,
     });
     // const rejRequest = await Request.findById(req.body._id);

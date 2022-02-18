@@ -44,14 +44,14 @@ export default function LandCard(props) {
               <div style={{ display: "flex", marginTop: "10px" }}>
                 <div className={styles.landCardRightCol}>
                   <span className={styles.landCardDateBoxes}>
-                    {props.date.split(" ")[0]}
+                    {/* {props.date.split(" ")[0]} */}
                   </span>
                 </div>
                 <span
                   className={styles.landCardDateBoxes}
                   style={{ marginRight: "0" }}
                 >
-                  {props.date.split(" ")[1]}
+                  {/* {props.date.split(" ")[1]} */}
                 </span>
               </div>
 

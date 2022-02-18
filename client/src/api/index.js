@@ -117,3 +117,6 @@ export const financeResetPassword = (id, formdata) =>
 export const financeDownloadReceipt = (id, formdata) => API.get(`/club/${id}/downloadPdf/finance`);
 export const postFinanceComments = (financeId, formdata) =>
   API.post(`/finance/${financeId}/comments`, formdata);
+
+  ////////////////////////////////////////
+  export const publishedEvents = () => API.get('/club/events');

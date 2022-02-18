@@ -3,11 +3,33 @@ const clubController = require("./../controller/clubController");
 const pdfController = require("./../controller/pdfController");
 const clubAuth = require("../middleware/clubAuth.js");
 const router = express.Router();
+const Event = require("./../models/eventModel");
 
 //buttons on request = send, save as draft, delete, update and save as draft, update and send (last two for received requests)
 //buttons on dashboard = Club Details, New Request, Drafts, Sent Requests, Received for Correction
 
 router.route("/login").post(clubController.authentication);
+
+router.route("/events").get( async (req, res) => {
+  try {
+    console.log("test");
+    const events = await Event.find();
+    console.log(events);
+    res.status(200).json({
+      status: "success",
+      data: {
+        events,
+      },
+    }); 
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({
+      status: "failed",
+      message: err,
+    });
+  }
+});
+  
 
 //router.route("/").get(clubAuth, clubController.dashboard); //
 

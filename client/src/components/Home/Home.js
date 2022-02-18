@@ -4,7 +4,19 @@ import LandCard from "./HomeCard";
 import events from "./Images.png";
 // import Archive from "./Archive";
 import Temp from './Temp';
+import {getPublishedEvents} from '../../actions/publishEvent';
+
 export default function Landing() {
+
+  const [Pevents, setPEvents] = React.useState([]);
+
+ React.useEffect(async ()=>{
+  const data = await getPublishedEvents();
+  setPEvents(data);
+},[]) 
+
+
+// console.log(publishedEvents);
   return (
     <div>
       {/* <div className={styles.backimg}> */}
@@ -59,35 +71,11 @@ export default function Landing() {
           paddingRight: "0",
         }}
       >
-        <LandCard
-          eventName={"TechnoInovation"}
-          date={"02 Aug"}
-          clubName={"SVNIT"}
-          linkName={"apple"}
-          link={"http://ah shit here we go again"}
-        />
-        <LandCard
-          eventName={"TechnoInovation"}
-          date={"02 Aug"}
-          clubName={"SVNIT"}
-          linkName={"apple"}
-          link={"http://ah shit here we go again"}
-        />
-        <LandCard
-          eventName={"TechnoInovation"}
-          date={"02 Aug"}
-          clubName={"SVNIT"}
-          linkName={"apple"}
-          link={"http://ah shit here we go again"}
-        />
-        <LandCard
-          eventName={"TechnoInovation"}
-          date={"02 Aug"}
-          clubName={"SVNIT"}
-          linkName={"apple"}
-          link={"http://ah shit here we go again"}
-        />
-      
+       { Pevents.map((i)=>(
+         <LandCard 
+           eventName = {i.eventName}
+         />
+       ))}
       </div>
       <Temp />
     </div>

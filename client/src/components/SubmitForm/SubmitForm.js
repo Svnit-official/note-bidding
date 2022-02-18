@@ -15,21 +15,20 @@ const SubmitForm = () => {
   const user = JSON.parse(localStorage.getItem("club_profile"));
   const clubID = user?.clubID;
   const [postData, setPostData] = useState({});
+  const [chooseFinance , setChooseFinance] = useState(false);
   const handleChange = (e) => {
     setPostData({ ...postData, [e.target.name]: e.target.value });
   };
+  
   const handleSubmit = (e) => {
-    console.log(postData);
-    dispatch(clubFormSubmit({ ...postData }, clubID, history));
+    console.log({ ...postData ,financeRequired : chooseFinance });
+     dispatch(clubFormSubmit({ ...postData ,financeRequired : chooseFinance }, clubID, history));
   };
 
   const saveDraft = (e) => {
     dispatch(clubFormDraft({ ...postData }, clubID, history));
     
   };
-
-  const [chooseFinance , setChooseFinance] = useState(false);
-
 
   return (
     <Paper className={classes.paper} elevation={6}>
@@ -70,7 +69,10 @@ const SubmitForm = () => {
           fullWidth
           onChange={handleChange}
         />
-        <Typography>Do You Want to Choose Finance</Typography><Switch {...label} onChange={()=>setChooseFinance((prev)=>!prev)} />
+        <Typography>Do You Want to Choose Finance</Typography><Switch {...label} onChange={()=>{
+          setChooseFinance((prev)=>!prev)
+            console.log(chooseFinance);
+            }} />
         {chooseFinance &&(
           <div style={{width: '100%'}}>
           <TextField
