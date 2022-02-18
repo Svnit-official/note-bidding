@@ -2,6 +2,8 @@ import React from "react";
 import styles from "./Home.module.css";
 import LandCard from "./HomeCard";
 import events from "./Images.png";
+// import Archive from "./Archive";
+import Temp from './Temp';
 export default function Landing() {
   return (
     <div>
@@ -85,7 +87,9 @@ export default function Landing() {
           linkName={"apple"}
           link={"http://ah shit here we go again"}
         />
+      
       </div>
+      <Temp />
     </div>
   );
 }

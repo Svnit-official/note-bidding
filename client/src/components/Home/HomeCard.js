@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./HomeCard.module.css";
+import Archive from './Archive';
 //below is the template for props.
 // const props ={
 //     eventName:"TechnoInovation",

@@ -4,7 +4,7 @@ export default makeStyles({
     button : {
         zIndex : 7,
         fontSize : '100px',
-        right : '0px',
-        position : 'static',
+        left : '0px',
+        position : 'relative',
     }
 })

@@ -110,6 +110,25 @@ export default function Login() {
                     Login as Club
                   </button>
                   <hr />
+                  <button
+                    // type="submit"
+                    class="btn"
+                    style={{
+                      fontSize: "1.5rem",
+                      color: "white",
+                      backgroundColor: "#316797",
+                      borderRadius: "6px",
+                      width: "394.15px",
+                      height: "47.2px",
+                      marginTop: "30px",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    View Accepted Events
+                  </button>
+                  <hr />
                   <div style={{ textAlign: "center" }}>
                     <p
                       style={{

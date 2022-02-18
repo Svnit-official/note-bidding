@@ -17,7 +17,7 @@ import {
   fetchPublishedEvents,
 } from "../../../actions/clubActions";
 import PublishedCard from "../../Card/PublishedCard";
-import Lode from "../../Loaders/Load";
+import Load from "../../Loaders/Load";
 
 const Home = () => {
   const [open, setOpen] = useState(false);
@@ -134,11 +134,15 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <IconButton aria-label="Add" onClick={handleClickOpen}>
-        <AddCircleOutlineIcon color="primary" />
+      <div style={{left : '0px',display :'flex' ,flexDirection:'row',justifyContent: 'flex-end' , position: 'relative',marginTop:'-100px'}}>
+      <div style={{marginRight : '75px'}}>
+      <IconButton aria-label="Add" onClick={handleClickOpen} size="large">
+        <AddCircleOutlineIcon color="primary" fontSize="Large"/>
       </IconButton>
+      </div>
+      </div>
       {!published ? (
-        <Lode />
+        <Load />
       ) : (
         published.map((draft) => <PublishedCard draft={draft} />)
       )}

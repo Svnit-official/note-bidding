@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import FileBase from "react-file-base64";
-import { TextField, Button, Typography, Paper } from "@material-ui/core";
+import { TextField, Button, Typography, Paper,Switch } from "@material-ui/core";
 import useStyles from "./styles";
 import { useDispatch } from "react-redux";
 import { clubFormSubmit, clubFormDraft } from "../../actions/clubActions";
 import { useHistory } from "react-router-dom";
+
+const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
 const SubmitForm = () => {
   const history = useHistory();
@@ -25,6 +27,8 @@ const SubmitForm = () => {
     dispatch(clubFormDraft({ ...postData }, clubID, history));
     
   };
+
+  const [chooseFinance , setChooseFinance] = useState(false);
 
 
   return (
@@ -66,7 +70,52 @@ const SubmitForm = () => {
           fullWidth
           onChange={handleChange}
         />
+        <Typography>Do You Want to Choose Finance</Typography><Switch {...label} onChange={()=>setChooseFinance((prev)=>!prev)} />
+        {chooseFinance &&(
+          <div style={{width: '100%'}}>
+          <TextField
+          name="FirstPrice"
+          variant="outlined"
+          type = "number"
+          label="First Price"
+          onChange={handleChange}
+        />
+          <TextField
+          name="SecondPrice"
+          type = "number"
+          variant="outlined"
+          label="Second Price"
+          onChange={handleChange}
+        />
 
+<TextField
+          name="ThirdPrice"
+          type = "number"
+          variant="outlined"
+          label="Third Price"
+          onChange={handleChange}
+        />
+
+<TextField
+          name="expences"
+          variant="outlined"
+          multiline
+          rows={3}
+          label="miscellaneous expences"
+          fullWidth
+          onChange={handleChange}
+        />
+        <TextField
+          name="Total"
+          type = "number"
+          variant="outlined"
+          label="Total"
+          fullWidth
+          onChange={handleChange}
+        />
+        </div>
+        )}
+        
         <div className={classes.fileInput}>
           <FileBase
             type="file"
