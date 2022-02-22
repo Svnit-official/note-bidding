@@ -58,6 +58,29 @@ const requestSchema = new mongoose.Schema({
     type: Boolean,
     required: [true, "If you require finance or not"],
   },
+  FirstPrice : {
+    type : Number,
+    required: [true, "Enter 0 if does not required"],
+  },
+  
+  SecondPrice : {
+    type : Number,
+    required: [true, "Enter 0 if does not required"],
+  },
+  
+  ThirdPrice : {
+    type : Number,
+    required: [true, "Enter 0 if does not required"],
+  },
+  
+  expences : {
+    type : String,
+    required: [true, "Enter 0 if does not required"],
+  },
+  Total : {
+    type : Number,
+    required: [true, "Enter 0 if does not required"],
+  },
   // comments: [
   //   {  
   //     name: {

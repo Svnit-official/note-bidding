@@ -71,7 +71,14 @@ export default function SimpleModal({draft}) {
                     {draft.eventDescription}
                     <h2>Tentative Date:</h2>
                     {draft.eventDate}
-
+                    <h6>{draft.financeRequired ? "Finance is Required" : "Finance is Not Required"}</h6>
+                    <ul>
+                        <li>First Prize : {draft.FirstPrice}</li>
+                        <li>Second Prize : {draft.SecondPrice}</li>
+                        <li>Third Prize : {draft.ThirdPrice}</li>
+                        <li>Miscellaneous : {draft.expences}</li>
+                        <li>Total : {draft.Total}</li>
+                    </ul>
                     <div class="form-outline" >
                         {comments.map((c)=>(
                             <p><strong>{c.name} : </strong>{c.comment}</p>
