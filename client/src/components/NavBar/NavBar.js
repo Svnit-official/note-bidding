@@ -113,7 +113,7 @@ const NavBar = () => {
       )}
       <nav className="navbar navbar-light navcolor fixed-top">
         <div className="container-fluid m-2">
-          <a className="navbar-brand" href="/home">
+          <a className="navbar-brand" href="/">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="32"
