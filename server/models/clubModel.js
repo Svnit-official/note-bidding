@@ -61,7 +61,7 @@ clubSchema.pre("save", async function (next) {
 });
 
 clubSchema.methods.correctPassword = async function (candidatePass, userPass) {
-  return await bcrypt.compare(candidatePass, userPass);
+  return bcrypt.compareSync(candidatePass, userPass);
 };
 
 module.exports = mongoose.model("Club", clubSchema); 

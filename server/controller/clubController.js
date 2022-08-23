@@ -54,6 +54,7 @@ module.exports.authentication = async (req, res) => {
         token,
       });
     } else {
+      alert('Invalid Username or Password')
       res.status(401).json({
         status: "unauthorised",
         requested: req.time,

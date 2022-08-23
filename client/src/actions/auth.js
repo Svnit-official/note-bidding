@@ -9,6 +9,7 @@ export const deansignin = (formdata, router) => async (dispatch) => {
     router.push(`/dean/home`);
     return "success"
   } catch (e) {
+    alert("Invalid Username or Password")
     console.log(e);
     return "failed"
   }
@@ -35,6 +36,7 @@ export const clubsignin = (formdata, router) => async (dispatch) => {
       router.push("/club/home");
       return data;
     } else {
+      alert("Invalid Username or Password")
       console.log("not Authorized");
       dispatch({ type: "NOT_AUHORIZED" });
       router.push("/club/login");
@@ -43,9 +45,8 @@ export const clubsignin = (formdata, router) => async (dispatch) => {
       }
       return datax;
     }
-
-    sessionStorage.getItem("user");
   } catch (e) {
+    alert("Invalid Username or Password")
     console.log("not authorized");
     dispatch({ type: "NOT_AUHORIZED" });
     const datax = {
@@ -66,6 +67,7 @@ export const financesignin = (formdata, router) => async (dispatch) => {
     router.push(`/finance/home`);
     return "success";
   } catch (e) {
+    alert("Invalid Username or Password")
     console.log(e);
     return "failed";
   }
@@ -97,6 +99,7 @@ export const facultysignin = (formdata, router) => async (dispatch) => {
     router.push("/faculty/home");
     return "success"
   } catch (e) {
+    alert("Invalid Username or Password")
     console.log(e);
     return "failed";
   }

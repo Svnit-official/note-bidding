@@ -49,7 +49,7 @@ export default function Login() {
         height: "810px",
       }}
     >
-      <button className={styles.backbtn}>Back</button>
+      <a href="/"><button className={styles.backbtn}>Back</button></a>
 
       <div className={`row h-100 ${styles.mainrow}`}>
         <>
